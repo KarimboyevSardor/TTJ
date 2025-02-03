@@ -66,6 +66,7 @@ class YigilishlarAdapter(
             }
             holder.binding.yigilishChipgroupRvItem.addView(chip)
         }
+
         if (yigilishData.image_base64 != null) {
             Glide.with(context)
                 .load(yigilishData.image_base64)
