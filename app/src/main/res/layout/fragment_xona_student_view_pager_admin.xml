@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.admin.XonaStudentViewPager">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/student_rv"
+        tools:listitem="@layout/students_rv_item"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:padding="10dp"
+        />
+    <com.google.android.material.button.MaterialButton
+        android:backgroundTint="#4CAF50"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_margin="10dp"
+        app:cornerRadius="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Student qo'shish"
+        android:id="@+id/add_student_room"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

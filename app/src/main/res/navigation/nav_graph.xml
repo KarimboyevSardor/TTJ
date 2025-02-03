@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/login">
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.example.talabalarniroyxatgaolish.ui.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_main"
+            app:destination="@id/main_admin" />
+        <action
+            android:id="@+id/action_login_to_main2"
+            app:destination="@id/main_student" />
+    </fragment>
+    <fragment
+        android:id="@+id/main_admin"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.Main"
+        android:label="fragment_main_admin"
+        tools:layout="@layout/fragment_main_admin" >
+        <action
+            android:id="@+id/action_main_admin_to_yigilishlar"
+            app:destination="@id/yigilishlar" />
+        <action
+            android:id="@+id/action_main_admin_to_adminlar_admin"
+            app:destination="@id/adminlar_admin" />
+        <action
+            android:id="@+id/action_main_admin_to_eskiDavomat_admin"
+            app:destination="@id/eskiDavomat_admin" />
+        <action
+            android:id="@+id/action_main_admin_to_xonalar_admin"
+            app:destination="@id/xonalar_admin" />
+    </fragment>
+    <fragment
+        android:id="@+id/main_student"
+        android:name="com.example.talabalarniroyxatgaolish.ui.student.Main"
+        android:label="fragment_main_student"
+        tools:layout="@layout/fragment_main_student" >
+        <action
+            android:id="@+id/action_main_student_to_davomat_student"
+            app:destination="@id/davomat_student" />
+        <action
+            android:id="@+id/action_main_student_to_xona_student"
+            app:destination="@id/xona_student" />
+        <action
+            android:id="@+id/action_main_student_to_yigilishlar_student"
+            app:destination="@id/yigilishlar_student" />
+    </fragment>
+    <fragment
+        android:id="@+id/xona_student"
+        android:name="com.example.talabalarniroyxatgaolish.ui.student.Xona"
+        android:label="fragment_xona_student"
+        tools:layout="@layout/fragment_xona_student" />
+    <fragment
+        android:id="@+id/xona_admin"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.XonaOzgaritirishViewPager"
+        android:label="fragment_xona_admin"
+        tools:layout="@layout/fragment_xona_ozgartirish_viewpager_admin" />
+    <fragment
+        android:id="@+id/adminlar_admin"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.Adminlar"
+        android:label="fragment_adminlar"
+        tools:layout="@layout/fragment_adminlar" >
+        <action
+            android:id="@+id/action_adminlar_admin_to_adminQoshish_admin"
+            app:destination="@id/adminQoshish_admin" />
+    </fragment>
+    <fragment
+        android:id="@+id/davomat_admin"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.Davomat"
+        android:label="fragment_davomat_admin"
+        tools:layout="@layout/fragment_davomat_admin" >
+        <action
+            android:id="@+id/action_davomat_admin_to_xonaDavomat_admin"
+            app:destination="@id/xonaDavomat_admin" />
+    </fragment>
+    <fragment
+        android:id="@+id/davomat_student"
+        android:name="com.example.talabalarniroyxatgaolish.ui.student.Davomat"
+        android:label="fragment_davomat_student"
+        tools:layout="@layout/fragment_davomat_student" />
+    <fragment
+        android:id="@+id/eskiDavomat_admin"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.EskiDavomat"
+        android:label="fragment_eski_davomat_admin"
+        tools:layout="@layout/fragment_eski_davomat_admin" >
+        <action
+            android:id="@+id/action_eskiDavomat_admin_to_davomat_admin"
+            app:destination="@id/davomat_admin" />
+    </fragment>
+    <fragment
+        android:id="@+id/yigilish_qoshish_admin"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.Yigilish_qoshish"
+        android:label="fragment_yigilish_qoshish_admin"
+        tools:layout="@layout/fragment_yigilish_qoshish_admin" />
+    <fragment
+        android:id="@+id/yigilishlar"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.Yigilishlar"
+        android:label="fragment_yigilishlar_admin"
+        tools:layout="@layout/fragment_yigilishlar_admin" >
+        <action
+            android:id="@+id/action_yigilishlar_to_yigilish_qoshish_admin"
+            app:destination="@id/yigilish_qoshish_admin" />
+    </fragment>
+    <fragment
+        android:id="@+id/yigilishlar_student"
+        android:name="com.example.talabalarniroyxatgaolish.ui.student.Yigilishlar"
+        android:label="fragment_yigilishlar_student"
+        tools:layout="@layout/fragment_yigilishlar_student" />
+    <fragment
+        android:id="@+id/adminQoshish_admin"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.AdminQoshish"
+        android:label="fragment_admin_qoshish_admin"
+        tools:layout="@layout/fragment_admin_qoshish_admin" />
+    <fragment
+        android:id="@+id/xonalar_admin"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.Xonalar"
+        android:label="fragment_xonalar_admin"
+        tools:layout="@layout/fragment_xonalar_admin" >
+        <action
+            android:id="@+id/action_xonalar_admin_to_xona_admin"
+            app:destination="@id/xona_admin" />
+    </fragment>
+    <fragment
+        android:id="@+id/xonaDavomat_admin"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.XonaDavomat"
+        android:label="fragment_xona_davomat_admin"
+        tools:layout="@layout/fragment_xona_davomat_admin" />
+</navigation>

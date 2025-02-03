@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.Login"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TATU UF TTJ"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="2dp"
+            android:splitMotionEvents="false"
+            android:layout_marginTop="20dp"
+            >
+            <EditText
+                android:autofillHints="1"
+                android:hint="Login"
+                android:inputType="text"
+                android:textColorHint="@color/black"
+                android:background="@drawable/login_et_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/login"
+                android:textColor="@color/black"
+                android:padding="15dp"
+                android:drawableStart="@drawable/user"
+                />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="2dp"
+            android:splitMotionEvents="false"
+            android:layout_marginTop="20dp"
+            >
+            <EditText
+                android:autofillHints="1"
+                android:inputType="textVisiblePassword"
+                android:textColor="@color/black"
+                android:background="@drawable/login_et_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/password"
+                android:padding="15dp"
+                android:hint="Parol"
+                android:textColorHint="@color/black"
+                android:drawableStart="@drawable/lock"
+                />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="Kirish"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:id="@+id/kirish"
+            android:background="@drawable/login_btn"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
