@@ -94,16 +94,23 @@ class Yigilishlar : Fragment() {
     private fun getYigilishlar() {
         lifecycleScope.launch {
             if (isAdded) {
-                yigilishlarAdminVm.getYigilishlar(requireContext())
-                yigilishlarAdminVm._stateYigilishlar.collect{
-                    when (it) {
-                        is Resource.Error -> {
-                            Toast.makeText(requireContext(), "Yig'ilishlarni olib bo'lmadi.", Toast.LENGTH_SHORT).show()
-                        }
-                        is Resource.Loading -> {}
-                        is Resource.Success -> {
-                            yigilishlarList = it.data
-                            liveDates.yigilishlarLiveData.value = yigilishlarList
+                if (yigilishlarList.isEmpty()) {
+                    yigilishlarAdminVm.getYigilishlar(requireContext())
+                    yigilishlarAdminVm._stateYigilishlar.collect {
+                        when (it) {
+                            is Resource.Error -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Yig'ilishlarni olib bo'lmadi.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            is Resource.Loading -> {}
+                            is Resource.Success -> {
+                                yigilishlarList = it.data
+                                liveDates.yigilishlarLiveData.value = yigilishlarList
+                            }
                         }
                     }
                 }
@@ -111,16 +118,19 @@ class Yigilishlar : Fragment() {
         }
         lifecycleScope.launch {
             if (isAdded) {
-                yigilishlarAdminVm.getRates(requireContext())
-                yigilishlarAdminVm._rates.collect {
-                    when (it) {
-                        is Resource.Error -> {
-                            Log.d(TAG, "getYigilishlar: ${it.e.message}")
-                        }
-                        is Resource.Loading -> {}
-                        is Resource.Success -> {
-                            rateList = it.data
-                            liveDates.rateLiveData.value = rateList
+                if (rateList.isEmpty()) {
+                    yigilishlarAdminVm.getRates(requireContext())
+                    yigilishlarAdminVm._rates.collect {
+                        when (it) {
+                            is Resource.Error -> {
+                                Log.d(TAG, "getYigilishlar: ${it.e.message}")
+                            }
+
+                            is Resource.Loading -> {}
+                            is Resource.Success -> {
+                                rateList = it.data
+                                liveDates.rateLiveData.value = rateList
+                            }
                         }
                     }
                 }

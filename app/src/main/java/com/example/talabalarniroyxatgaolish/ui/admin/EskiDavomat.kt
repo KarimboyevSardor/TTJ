@@ -28,13 +28,7 @@ import com.example.talabalarniroyxatgaolish.utils.Utils.davomatList
 import com.example.talabalarniroyxatgaolish.vm.EskiDavomatAdminVm
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
-import java.util.Calendar
-import java.util.Date
 
 
 private const val ARG_PARAM1 = "param1"
@@ -99,16 +93,23 @@ class EskiDavomat : Fragment() {
         lifecycleScope.launch {
             if (isAdded) {
                 try {
-                    eskiDavomatAdminVm.getDavomat(requireContext())
-                    eskiDavomatAdminVm._davomat.collect {
-                        when (it) {
-                            is Resource.Error -> {
-                                Toast.makeText(requireContext(), "Server bilan bog'lanib bo'lmadi.", Toast.LENGTH_SHORT).show()
-                            }
-                            is Resource.Loading -> {}
-                            is Resource.Success -> {
-                                davomatList = it.data
-                                liveDates.davomatLiveData.value = davomatList
+                    if (davomatList.isEmpty()) {
+                        eskiDavomatAdminVm.getDavomat(requireContext())
+                        eskiDavomatAdminVm._davomat.collect {
+                            when (it) {
+                                is Resource.Error -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Server bilan bog'lanib bo'lmadi.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                                is Resource.Loading -> {}
+                                is Resource.Success -> {
+                                    davomatList = it.data
+                                    liveDates.davomatLiveData.value = davomatList
+                                }
                             }
                         }
                     }

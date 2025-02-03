@@ -1,5 +1,7 @@
 package com.example.talabalarniroyxatgaolish.repository
 
+import com.example.talabalarniroyxatgaolish.data.AddRateReq
+import com.example.talabalarniroyxatgaolish.data.AddedRate
 import com.example.talabalarniroyxatgaolish.network.ApiService
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -22,4 +24,8 @@ class YigilishlarYangilashOchirishAdminRep(val apiService: ApiService) {
     )
 
     fun deleteYigilish(id: Long) = apiService.deleteYigilish(id = id)
+
+    fun deleteRate(id: Long) = apiService.deleteRate(id)
+
+    fun addRate(addRate: List<AddedRate>) = apiService.addRate(addRate)
 }

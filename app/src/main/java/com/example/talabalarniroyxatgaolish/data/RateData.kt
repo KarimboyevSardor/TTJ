@@ -1,3 +1,6 @@
 package com.example.talabalarniroyxatgaolish.data
 
-class RateData : ArrayList<RateDataItem>()
+data class RateData(
+    val message: String,
+    val rate: List<Rate>
+)

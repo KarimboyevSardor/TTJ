@@ -3,7 +3,7 @@ package com.example.talabalarniroyxatgaolish.vm
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
-import com.example.talabalarniroyxatgaolish.data.RateDataItem
+import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
 import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
@@ -15,9 +15,9 @@ class LiveDates : ViewModel() {
     var studentlarLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
     var addedTadbirStudentLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
     var addTadbirStudentLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
-    var rateLiveData: MutableLiveData<MutableList<RateDataItem>> = MutableLiveData()
+    var rateLiveData: MutableLiveData<MutableList<Rate>> = MutableLiveData()
 
-    fun getRate() : MutableLiveData<MutableList<RateDataItem>> {
+    fun getRate() : MutableLiveData<MutableList<Rate>> {
         return rateLiveData
     }
 

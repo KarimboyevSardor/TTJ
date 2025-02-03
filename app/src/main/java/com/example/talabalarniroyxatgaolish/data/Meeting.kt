@@ -7,5 +7,6 @@ data class Meeting(
     val image_path: String = "",
     val meeting_place: String = "",
     val name: String = "",
-    val time: String = ""
+    val time: String = "",
+    val image_base64: String = ""
 )

@@ -81,7 +81,6 @@ class Xonalar : Fragment() {
 
         binding!!.apply {
             xonaRv.adapter = xonaAdapter
-
             addRoom.setOnClickListener {
                 showDialog()
             }
@@ -122,7 +121,7 @@ class Xonalar : Fragment() {
         dialog.setView(dialogBinding.root)
         dialogBinding.apply {
             xonaQoshishBtn.setOnClickListener {
-                if (xonalarList.filter { it.room_count == xonaNameEt.text.toString() }.isNotEmpty()) {
+                if (xonalarList.any { it.room_count == xonaNameEt.text.toString() }) {
                     xonaNameEt.error = "Bunday xona mavjud!"
                 } else if (xonaNameEt.text.toString().isNotEmpty()) {
                     addXona(xonaNameEt.text.toString())
@@ -158,23 +157,27 @@ class Xonalar : Fragment() {
         lifecycleScope.launch {
             if (isAdded) {
                 try {
-                    xonalarAdminVm.getXona(requireContext())
-                    xonalarAdminVm._stateXona.collect{
-                        when (it) {
-                            is Resource.Error -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Server bilan bog'lanib bo'lmadi.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                Log.d(TAG, "getXona: ${it.e.message}")
-                            }
-                            is Resource.Loading -> {
+                    if (xonalarList.isEmpty()) {
+                        xonalarAdminVm.getXona(requireContext())
+                        xonalarAdminVm._stateXona.collect {
+                            when (it) {
+                                is Resource.Error -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Server bilan bog'lanib bo'lmadi.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    Log.d(TAG, "getXona: ${it.e.message}")
+                                }
 
-                            }
-                            is Resource.Success -> {
-                                liveDates.xonalarLiveData.value = it.data
-                                xonalarList = it.data
+                                is Resource.Loading -> {
+
+                                }
+
+                                is Resource.Success -> {
+                                    liveDates.xonalarLiveData.value = it.data
+                                    xonalarList = it.data
+                                }
                             }
                         }
                     }

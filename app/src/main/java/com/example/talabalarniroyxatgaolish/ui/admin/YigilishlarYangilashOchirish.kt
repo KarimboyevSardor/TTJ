@@ -29,11 +29,24 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.talabalarniroyxatgaolish.R
+import com.example.talabalarniroyxatgaolish.adapter.StudentBiriktirishAdapter
+import com.example.talabalarniroyxatgaolish.data.AddRateReq
+import com.example.talabalarniroyxatgaolish.data.AddedRate
+import com.example.talabalarniroyxatgaolish.data.Rate
+import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
+import com.example.talabalarniroyxatgaolish.databinding.FragmentStudentUpdateRoomBottomSheetDialogAdminBinding
 import com.example.talabalarniroyxatgaolish.databinding.FragmentYigilishlarYangilashOchirishAdminBinding
+import com.example.talabalarniroyxatgaolish.utils.Utils.addedTadbirStudentList
+import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
+import com.example.talabalarniroyxatgaolish.utils.Utils.studentlarList
 import com.example.talabalarniroyxatgaolish.utils.Utils.yigilishlarList
+import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
 import com.example.talabalarniroyxatgaolish.vm.YigilishlarniYangilashOchirishAdminVm
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -43,11 +56,12 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.util.Locale
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class YigilishlarYangilashOchirish : Fragment() {
+class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -64,18 +78,30 @@ class YigilishlarYangilashOchirish : Fragment() {
     private lateinit var yigilishData: YigilishlarDataItem
     lateinit var yigilishlarniYangilashOchirishAdminVm: YigilishlarniYangilashOchirishAdminVm
     private var binding: FragmentYigilishlarYangilashOchirishAdminBinding? = null
+    lateinit var liveDates: LiveDates
+    private var rates: MutableList<Rate> = mutableListOf()
+    var addTadbirStudents: MutableList<StudentDataItem> = mutableListOf()
+    lateinit var studentBiriktirishAdapter: StudentBiriktirishAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentYigilishlarYangilashOchirishAdminBinding.inflate(layoutInflater)
         yigilishlarniYangilashOchirishAdminVm = ViewModelProvider(requireActivity())[YigilishlarniYangilashOchirishAdminVm::class]
+        liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
 
         yigilishDataId = requireArguments().getLong("yigilish")
         yigilishData = yigilishlarList.filter { it.id == yigilishDataId }[0]
         Log.d("TAG", "onCreateView: $yigilishData")
 
         binding!!.apply {
+            rates = rateList.filter { it.meeting_id == yigilishDataId }.toMutableList()
+            if (rates.isNotEmpty()) {
+                tadbirTv.visibility = View.VISIBLE
+            } else {
+                tadbirTv.visibility = View.GONE
+            }
+            addedChip(yigilishEditDeleteChip)
             if (yigilishData.image_base64 != null) {
                 Picasso.get().load(yigilishData.image_base64).into(yigilishImage)
             } else {
@@ -112,9 +138,7 @@ class YigilishlarYangilashOchirish : Fragment() {
                 val year = calendar.get(Calendar.YEAR)
                 val month = calendar.get(Calendar.MONTH)
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
-
                 val datePickerDialog = DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
-                    // Foydalanuvchi tanlagan sanani ko'rsatamiz
                     val date = "$selectedDay-${selectedMonth + 1}-$selectedYear"
                     dateTv.text = date
                 }, year, month, day)
@@ -125,12 +149,14 @@ class YigilishlarYangilashOchirish : Fragment() {
                 val calendar = Calendar.getInstance()
                 val hour = calendar.get(Calendar.HOUR_OF_DAY)
                 val minute = calendar.get(Calendar.MINUTE)
-
                 val timePickerDialog = TimePickerDialog(requireContext(), { _, selectedHour, selectedMinute ->
                     val time = String.format("%02d:%02d", selectedHour, selectedMinute)
                     timeTv.text = time
                 }, hour, minute, true)
                 timePickerDialog.show()
+            }
+            addStudent.setOnClickListener {
+                showBottomSheetDialog()
             }
         }
 
@@ -151,6 +177,91 @@ class YigilishlarYangilashOchirish : Fragment() {
         return binding!!.root
     }
 
+    private fun showBottomSheetDialog() {
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
+        val bottomSheetDialogBinding = FragmentStudentUpdateRoomBottomSheetDialogAdminBinding.inflate(layoutInflater)
+        bottomSheetDialog.setContentView(bottomSheetDialogBinding.root)
+        bottomSheetDialogBinding.apply {
+            addTadbirStudents = studentlarList
+            liveDates.addTadbirStudentLiveData.value = addTadbirStudents
+            studentBiriktirishAdapter = StudentBiriktirishAdapter(addTadbirStudents) { student ->
+                addedStudent(student,yigilishDataId)
+                addedTadbirStudentList.add(student)
+                addTadbirStudents.remove(student)
+                liveDates.addTadbirStudentLiveData.value = addTadbirStudents
+                liveDates.addedTadbirStudentLiveData.value = addedTadbirStudentList
+                val chip = Chip(requireContext())
+                chip.text = student.name
+                chip.tag = student.id
+                chip.isCloseIconEnabled = true
+                chip.setOnClickListener(this@YigilishlarYangilashOchirish)
+                chip.setOnCloseIconClickListener {
+                    binding!!.yigilishEditDeleteChip.removeView(chip)
+                    addTadbirStudents.add(addedTadbirStudentList.filter { it.id == chip.tag.toString().toLong() }[0])
+                    liveDates.addTadbirStudentLiveData.value = addTadbirStudents
+                    addedTadbirStudentList.remove(addedTadbirStudentList.filter { it.id == chip.tag.toString().toLong() }[0])
+                    liveDates.addedTadbirStudentLiveData.value = addedTadbirStudentList
+                }
+                binding!!.yigilishEditDeleteChip.addView(chip)
+            }
+            liveDates.getAddTadbirStudent().observe(requireActivity()) {
+                studentBiriktirishAdapter.filter(it)
+            }
+            studentBiriktirishAdapter.filter(addTadbirStudents)
+            studentRoomRv.adapter = studentBiriktirishAdapter
+            studentSearch.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    searchStudent(query!!)
+                    return false
+                }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    searchStudent(newText!!)
+                    return false
+                }
+            })
+        }
+        bottomSheetDialog.show()
+    }
+
+    private fun addedStudent(student: StudentDataItem, tadbir_id: Long) {
+        val addRate: MutableList<AddedRate> = mutableListOf()
+        addRate.add(AddedRate(meeting_id = tadbir_id, rate = "", student_id = student.id))
+        val addRateReq = AddRateReq(addRate)
+        yigilishlarniYangilashOchirishAdminVm.addRate(requireContext(), addRateReq, requireActivity())
+    }
+
+    private fun searchStudent(query: String) {
+        var students: MutableList<StudentDataItem> = mutableListOf()
+        for (i in 0 until studentlarList.size) {
+            if (studentlarList[i].name.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT))) {
+                students.add(studentlarList[i])
+            }
+        }
+        studentBiriktirishAdapter.filter(students)
+    }
+
+
+    private fun addedChip(chip_group: ChipGroup) {
+        for (i in 0 until rates.size) {
+            val chip = Chip(requireContext())
+            chip.text = rates[i].name
+            chip.tag = rates[i].id
+            chip.isCloseIconEnabled = true
+            chip.setOnClickListener {
+                Toast.makeText(requireContext(), "${chip.text}", Toast.LENGTH_SHORT).show()
+            }
+            chip.setOnCloseIconClickListener {
+                deleteStudent(chip.tag.toString().toLong(), chip)
+            }
+            chip_group.addView(chip)
+        }
+    }
+
+    private fun deleteStudent(id: Long, chip: Chip) {
+        yigilishlarniYangilashOchirishAdminVm.deleteRate(requireContext(), id, chip, binding!!.yigilishEditDeleteChip)
+    }
+
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.ochirish_menu, menu)
@@ -171,8 +282,8 @@ class YigilishlarYangilashOchirish : Fragment() {
             try {
                 if (isAdded) {
                     yigilishlarniYangilashOchirishAdminVm.deleteYigilish(id = id, requireContext())
-                    yigilishlarniYangilashOchirishAdminVm._stateDeleteYigilish.collect{
-                        when (it) {
+                    yigilishlarniYangilashOchirishAdminVm._stateDeleteYigilish.collect{ it1 ->
+                        when (it1) {
                             is Resource.Error -> {
                                 Toast.makeText(requireContext(), "Server bilan bog'lanib bo'lmadi.", Toast.LENGTH_SHORT).show()
                             }
@@ -180,7 +291,9 @@ class YigilishlarYangilashOchirish : Fragment() {
 
                             }
                             is Resource.Success -> {
-                                Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
+                                yigilishlarList.remove(yigilishlarList.filter { it.id == id }[0])
+                                liveDates.yigilishlarLiveData.value = yigilishlarList
+                                Toast.makeText(requireContext(), it1.data.message, Toast.LENGTH_SHORT).show()
                                 requireActivity().supportFragmentManager.popBackStack()
                             }
                         }
@@ -264,8 +377,8 @@ class YigilishlarYangilashOchirish : Fragment() {
                     image = imagePart,
                     context = requireContext()
                 )
-                yigilishlarniYangilashOchirishAdminVm._stateYigilish.collect{
-                    when (it) {
+                yigilishlarniYangilashOchirishAdminVm._stateYigilish.collect{ it1 ->
+                    when (it1) {
                         is Resource.Error -> {
                             Toast.makeText(
                                 requireContext(),
@@ -277,6 +390,18 @@ class YigilishlarYangilashOchirish : Fragment() {
 
                         }
                         is Resource.Success -> {
+                            val yigilish = YigilishlarDataItem(
+                                description = it1.data.meeting.description,
+                                id = it1.data.meeting.id,
+                                image_base64 = it1.data.meeting.image_base64,
+                                meeting_place = it1.data.meeting.meeting_place,
+                                name = it1.data.meeting.name,
+                                time = it1.data.meeting.time,
+                                image_name = "",
+                                image_path = ""
+                            )
+                            yigilishlarList[yigilishlarList.indexOf(yigilishlarList.filter { it.id == yigilish.id }[0])] = yigilish
+                            liveDates.yigilishlarLiveData.value = yigilishlarList
                             Toast.makeText(
                                 requireContext(),
                                 "Ma'lumot saqlandi.",
@@ -337,6 +462,12 @@ class YigilishlarYangilashOchirish : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    override fun onClick(p0: View?) {
+        if (p0 is Chip) {
+            Toast.makeText(requireContext(), p0.text.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

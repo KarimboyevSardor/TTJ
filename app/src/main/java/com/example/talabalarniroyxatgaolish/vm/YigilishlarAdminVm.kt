@@ -3,7 +3,7 @@ package com.example.talabalarniroyxatgaolish.vm
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.talabalarniroyxatgaolish.data.RateDataItem
+import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
 import com.example.talabalarniroyxatgaolish.network.ApiClient
 import com.example.talabalarniroyxatgaolish.network.ApiService
@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 class YigilishlarAdminVm : ViewModel(){
     private val stateYigilishlar = MutableStateFlow<Resource<MutableList<YigilishlarDataItem>>>(Resource.Loading())
     val _stateYigilishlar: MutableStateFlow<Resource<MutableList<YigilishlarDataItem>>> get() = stateYigilishlar
-    private val rates = MutableStateFlow<Resource<MutableList<RateDataItem>>>(Resource.Loading())
-    val _rates: MutableStateFlow<Resource<MutableList<RateDataItem>>> get() = rates
+    private val rates = MutableStateFlow<Resource<MutableList<Rate>>>(Resource.Loading())
+    val _rates: MutableStateFlow<Resource<MutableList<Rate>>> get() = rates
     fun getYigilishlar(context: Context) {
         val yigilishRep = YigilishlarAdminRep(ApiClient.getRetrofit(context).create(ApiService::class.java))
         try {

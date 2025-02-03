@@ -7,7 +7,9 @@ import com.example.talabalarniroyxatgaolish.data.AddedYigilish
 import com.example.talabalarniroyxatgaolish.data.Auth
 import com.example.talabalarniroyxatgaolish.data.AuthDataItem
 import com.example.talabalarniroyxatgaolish.data.DavomatData
+import com.example.talabalarniroyxatgaolish.data.Meeting
 import com.example.talabalarniroyxatgaolish.data.Message
+import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.RateData
 import com.example.talabalarniroyxatgaolish.data.StudentData
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
@@ -57,7 +59,7 @@ interface ApiService {
         @Part("time") time: RequestBody?,
         @Part("description") description: RequestBody?,
         @Part("meeting_place") meeting_place: RequestBody?
-    ): Flow<AddEditYigilish>
+    ): Flow<AddedYigilish>
 
     @DELETE("api/yigilish/{id}")
     fun deleteYigilish(@Path("id") id: Long) : Flow<Message>
@@ -90,8 +92,11 @@ interface ApiService {
     fun updateStudent(@Body student: StudentDataItem) : Call<StudentDataItem>
 
     @POST("api/rate")
-    fun addRate(@Body addRate: List<AddedRate>) : Call<Message>
+    fun addRate(@Body addRate: List<AddedRate>) : Call<RateData>
 
     @GET("api/rate")
-    fun getRate() : Flow<RateData>
+    fun getRate() : Flow<MutableList<Rate>>
+
+    @DELETE("api/rate/{id}")
+    fun deleteRate(@Path("id") id: Long) : Call<Message>
 }

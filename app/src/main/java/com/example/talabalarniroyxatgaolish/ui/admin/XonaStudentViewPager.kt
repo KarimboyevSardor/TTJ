@@ -51,7 +51,7 @@ class XonaStudentViewPager : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentXonaStudentViewPagerAdminBinding.inflate(layoutInflater)
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class.java]
         xonaAdminVm = ViewModelProvider(requireActivity())[XonaAdminVm::class.java]
@@ -145,21 +145,24 @@ class XonaStudentViewPager : Fragment() {
         lifecycleScope.launch {
             if (isAdded) {
                 try {
-                    xonaAdminVm.getStudentRoomId(requireContext())
-                    xonaAdminVm._students.collect{
-                        when (it) {
-                            is Resource.Error -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Server bilan bog'lanib bo'lmadi.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                Log.d(TAG, "getStudents: ${it.e.message}")
-                            }
-                            is Resource.Loading -> {}
-                            is Resource.Success -> {
-                                studentlarList = it.data
-                                liveDates.studentlarLiveData.value = studentlarList
+                    if (studentlarList.isEmpty()) {
+                        xonaAdminVm.getStudentRoomId(requireContext())
+                        xonaAdminVm._students.collect {
+                            when (it) {
+                                is Resource.Error -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Server bilan bog'lanib bo'lmadi.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    Log.d(TAG, "getStudents: ${it.e.message}")
+                                }
+
+                                is Resource.Loading -> {}
+                                is Resource.Success -> {
+                                    studentlarList = it.data
+                                    liveDates.studentlarLiveData.value = studentlarList
+                                }
                             }
                         }
                     }

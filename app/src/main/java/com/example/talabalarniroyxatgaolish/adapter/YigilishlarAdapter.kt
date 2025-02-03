@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.talabalarniroyxatgaolish.data.RateDataItem
+import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.YigilishlarData
 import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
 import com.example.talabalarniroyxatgaolish.databinding.YigilishRvItemBinding
@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso
 
 class YigilishlarAdapter(
     var yigilishlarList: MutableList<YigilishlarDataItem>,
-    var rateStudent: MutableList<RateDataItem>,
+    var rateStudent: MutableList<Rate>,
     val context: Context,
     val onClickItem: (YigilishlarDataItem) -> Unit
 ) : Adapter<YigilishlarAdapter.YigilishlarVh>() {
@@ -32,7 +32,7 @@ class YigilishlarAdapter(
         notifyDataSetChanged()
     }
 
-    fun filterRate(rateStudent: MutableList<RateDataItem>) {
+    fun filterRate(rateStudent: MutableList<Rate>) {
         this.rateStudent = rateStudent
         notifyDataSetChanged()
     }
@@ -66,12 +66,10 @@ class YigilishlarAdapter(
             }
             holder.binding.yigilishChipgroupRvItem.addView(chip)
         }
-
         if (yigilishData.image_base64 != null) {
             Glide.with(context)
                 .load(yigilishData.image_base64)
                 .into(holder.binding.yigilishImage)
-
         } else {
             holder.binding.yigilishImage.visibility = View.GONE
         }

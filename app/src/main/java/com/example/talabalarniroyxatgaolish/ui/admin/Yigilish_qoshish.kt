@@ -28,10 +28,12 @@ import com.example.talabalarniroyxatgaolish.adapter.TadbirStudentAdapter
 import com.example.talabalarniroyxatgaolish.data.AddRateReq
 import com.example.talabalarniroyxatgaolish.data.AddedRate
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
+import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
 import com.example.talabalarniroyxatgaolish.databinding.FragmentStudentUpdateRoomBottomSheetDialogAdminBinding
 import com.example.talabalarniroyxatgaolish.databinding.FragmentYigilishQoshishAdminBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.addedTadbirStudentList
 import com.example.talabalarniroyxatgaolish.utils.Utils.studentlarList
+import com.example.talabalarniroyxatgaolish.utils.Utils.yigilishlarList
 import com.example.talabalarniroyxatgaolish.vm.AddYigilishAdminVm
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
@@ -281,17 +283,24 @@ class Yigilish_qoshish : Fragment(), View.OnClickListener {
 
                         }
                         is Resource.Success -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "Ma'lumot saqlandi.",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             val rateStudents: MutableList<AddedRate> = mutableListOf()
                             for (i in 0 until addedTadbirStudentList.size) {
                                 rateStudents.add(AddedRate(it.data.meeting.id, "0", addedTadbirStudentList[i].id))
                             }
+                            val yigilish = YigilishlarDataItem(
+                                description = it.data.meeting.description,
+                                id = it.data.meeting.id,
+                                image_base64 = it.data.meeting.image_base64,
+                                meeting_place = it.data.meeting.meeting_place,
+                                name = it.data.meeting.name,
+                                time = it.data.meeting.time,
+                                image_name = "",
+                                image_path = ""
+                            )
+                            yigilishlarList.add(yigilish)
+                            liveDates.yigilishlarLiveData.value = yigilishlarList
                             val addRate = AddRateReq(rateStudents)
-                            addYigilishAdminVm.addRate(requireContext(), addRate)
+                            addYigilishAdminVm.addRate(requireContext(), addRate, requireActivity())
                             requireActivity().onBackPressed()
                         }
                     }
