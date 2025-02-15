@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.talabalarniroyxatgaolish.R
-import com.example.talabalarniroyxatgaolish.databinding.FragmentYigilishAdminBinding
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class BaxolashViewPager : Fragment() {
+
+class Yigilish : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -23,33 +23,21 @@ class BaxolashViewPager : Fragment() {
         }
     }
 
-    private var binding: FragmentYigilishAdminBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentYigilishAdminBinding.inflate(layoutInflater)
-
-        binding!!.apply {
-
-        }
-
-        return binding!!.root
+        return inflater.inflate(R.layout.fragment_yigilish_admin, container, false)
     }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            BaxolashViewPager().apply {
+            Yigilish().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
             }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 }
