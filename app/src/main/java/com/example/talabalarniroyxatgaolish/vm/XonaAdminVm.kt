@@ -60,13 +60,17 @@ class XonaAdminVm : ViewModel() {
         }
     }
 
-    fun xonaDelete(context: Context, id: Long) {
+    fun xonaDelete(context: Context, id: Long, activity: FragmentActivity) {
         val apiService = ApiClient.getRetrofit(context).create(ApiService::class.java)
+        val vm = ViewModelProvider(activity)[LiveDates::class]
         viewModelScope.launch {
             apiService.deleteXona(id).enqueue(object : Callback<Message>{
                 override fun onResponse(call: Call<Message>, response: Response<Message>) {
                     if (response.isSuccessful) {
                         Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                        activity.onBackPressed()
+                        xonalarList.remove(xonalarList.filter { it.id == id }[0])
+                        vm.xonalarLiveData.value = xonalarList
                     } else {
                         Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                     }

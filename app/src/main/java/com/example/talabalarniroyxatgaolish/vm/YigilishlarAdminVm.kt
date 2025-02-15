@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.talabalarniroyxatgaolish.data.Rate
+import com.example.talabalarniroyxatgaolish.data.StudentData
+import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
 import com.example.talabalarniroyxatgaolish.network.ApiClient
 import com.example.talabalarniroyxatgaolish.network.ApiService
@@ -17,6 +19,8 @@ class YigilishlarAdminVm : ViewModel(){
     val _stateYigilishlar: MutableStateFlow<Resource<MutableList<YigilishlarDataItem>>> get() = stateYigilishlar
     private val rates = MutableStateFlow<Resource<MutableList<Rate>>>(Resource.Loading())
     val _rates: MutableStateFlow<Resource<MutableList<Rate>>> get() = rates
+    private val students = MutableStateFlow<Resource<MutableList<StudentDataItem>>>(Resource.Loading())
+    val _students: MutableStateFlow<Resource<MutableList<StudentDataItem>>> get() = students
     fun getYigilishlar(context: Context) {
         val yigilishRep = YigilishlarAdminRep(ApiClient.getRetrofit(context).create(ApiService::class.java))
         try {
@@ -42,6 +46,23 @@ class YigilishlarAdminVm : ViewModel(){
                     }
                     .collect{
                         rates.emit(Resource.Success(it))
+                    }
+            }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    fun getStudents(context: Context) {
+        val yigilishlarAdminRep = YigilishlarAdminRep(ApiClient.getRetrofit(context).create(ApiService::class.java))
+        try {
+            viewModelScope.launch {
+                yigilishlarAdminRep.getStudents()
+                    .catch {
+                        students.emit(Resource.Error(it))
+                    }
+                    .collect{
+                        students.emit(Resource.Success(it))
                     }
             }
         } catch (e: Exception) {

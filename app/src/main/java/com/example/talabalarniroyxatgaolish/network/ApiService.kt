@@ -83,7 +83,7 @@ interface ApiService {
     fun deleteXona(@Path("id") id: Long) : Call<Message>
 
     @GET("api/student")
-    fun getStudentRoomId() : Flow<StudentData>
+    fun getStudent() : Flow<StudentData>
 
     @GET("api/auth/{id}")
     fun getLoginId(@Path("id") id: Long) : Flow<AuthDataItem>

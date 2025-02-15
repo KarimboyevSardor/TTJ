@@ -13,7 +13,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -61,7 +60,7 @@ import java.util.Locale
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
+class YigilishlarYangilashOchirishViewPager : Fragment(), View.OnClickListener {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -73,6 +72,7 @@ class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
         }
     }
 
+    private val TAG = "YIGILISHLARYANGILASHOCHIRISH"
     private var uri: Uri? = null
     private var yigilishDataId: Long = 0
     private lateinit var yigilishData: YigilishlarDataItem
@@ -80,7 +80,7 @@ class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
     private var binding: FragmentYigilishlarYangilashOchirishAdminBinding? = null
     lateinit var liveDates: LiveDates
     private var rates: MutableList<Rate> = mutableListOf()
-    var addTadbirStudents: MutableList<StudentDataItem> = mutableListOf()
+    private var addTadbirStudents: MutableList<StudentDataItem> = mutableListOf()
     lateinit var studentBiriktirishAdapter: StudentBiriktirishAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,12 +92,19 @@ class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
 
         yigilishDataId = requireArguments().getLong("yigilish")
         yigilishData = yigilishlarList.filter { it.id == yigilishDataId }[0]
-        Log.d("TAG", "onCreateView: $yigilishData")
-
+        addTadbirStudents = studentlarList
         binding!!.apply {
             rates = rateList.filter { it.meeting_id == yigilishDataId }.toMutableList()
             if (rates.isNotEmpty()) {
                 tadbirTv.visibility = View.VISIBLE
+                for (i in 0 until rates.size) {
+                    for (j in 0 until studentlarList.size) {
+                        if (studentlarList[j].id == rates[i].student_id) {
+                            addTadbirStudents.removeAt(j)
+                            break
+                        }
+                    }
+                }
             } else {
                 tadbirTv.visibility = View.GONE
             }
@@ -182,7 +189,6 @@ class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
         val bottomSheetDialogBinding = FragmentStudentUpdateRoomBottomSheetDialogAdminBinding.inflate(layoutInflater)
         bottomSheetDialog.setContentView(bottomSheetDialogBinding.root)
         bottomSheetDialogBinding.apply {
-            addTadbirStudents = studentlarList
             liveDates.addTadbirStudentLiveData.value = addTadbirStudents
             studentBiriktirishAdapter = StudentBiriktirishAdapter(addTadbirStudents) { student ->
                 addedStudent(student,yigilishDataId)
@@ -194,7 +200,7 @@ class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
                 chip.text = student.name
                 chip.tag = student.id
                 chip.isCloseIconEnabled = true
-                chip.setOnClickListener(this@YigilishlarYangilashOchirish)
+                chip.setOnClickListener(this@YigilishlarYangilashOchirishViewPager)
                 chip.setOnCloseIconClickListener {
                     binding!!.yigilishEditDeleteChip.removeView(chip)
                     addTadbirStudents.add(addedTadbirStudentList.filter { it.id == chip.tag.toString().toLong() }[0])
@@ -232,9 +238,9 @@ class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
 
     private fun searchStudent(query: String) {
         var students: MutableList<StudentDataItem> = mutableListOf()
-        for (i in 0 until studentlarList.size) {
-            if (studentlarList[i].name.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT))) {
-                students.add(studentlarList[i])
+        for (i in 0 until addTadbirStudents.size) {
+            if (addTadbirStudents[i].name.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT))) {
+                students.add(addTadbirStudents[i])
             }
         }
         studentBiriktirishAdapter.filter(students)
@@ -267,6 +273,7 @@ class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
         inflater.inflate(R.menu.ochirish_menu, menu)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.yigilish_ochirish -> {
@@ -318,7 +325,7 @@ class YigilishlarYangilashOchirish : Fragment(), View.OnClickListener {
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            YigilishlarYangilashOchirish().apply {
+            YigilishlarYangilashOchirishViewPager().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

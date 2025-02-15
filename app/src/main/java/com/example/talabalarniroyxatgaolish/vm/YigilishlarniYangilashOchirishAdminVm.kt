@@ -71,7 +71,6 @@ class YigilishlarniYangilashOchirishAdminVm : ViewModel() {
                 override fun onResponse(call: Call<Message>, response: Response<Message>) {
                     if (response.isSuccessful) {
                         rateList.remove(rateList.filter { it.id == id }[0])
-                        Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
                         chip_group.removeView(chip)
                     } else {
                         Toast.makeText(context, response.message().toString(), Toast.LENGTH_SHORT).show()

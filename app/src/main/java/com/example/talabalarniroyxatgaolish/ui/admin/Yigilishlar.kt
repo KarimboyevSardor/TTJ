@@ -15,6 +15,7 @@ import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.YigilishlarAdapter
 import com.example.talabalarniroyxatgaolish.databinding.FragmentYigilishlarAdminBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
+import com.example.talabalarniroyxatgaolish.utils.Utils.studentlarList
 import com.example.talabalarniroyxatgaolish.utils.Utils.yigilishlarList
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
@@ -50,6 +51,7 @@ class Yigilishlar : Fragment() {
         yigilishlarAdminVm = ViewModelProvider(requireActivity())[YigilishlarAdminVm::class]
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         getYigilishlar()
+        getStudents()
 
         val bottomNavigation: FrameLayout = requireActivity().findViewById(R.id.bottom_navigation_admin)
         val toolbar: Toolbar = requireActivity().findViewById(R.id.bosh_toolbar_admin)
@@ -59,7 +61,7 @@ class Yigilishlar : Fragment() {
         yigilishlarAdapter = YigilishlarAdapter(yigilishlarList, rateList, requireContext()) {
             val bundle = Bundle()
             bundle.putLong("yigilish", it.id)
-            val fr = YigilishlarYangilashOchirish()
+            val fr = YigilishlarYangilashOchirishViewPager()
             fr.arguments = bundle
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container_admin, fr)
@@ -152,5 +154,30 @@ class Yigilishlar : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    fun getStudents() {
+        lifecycleScope.launch {
+            if (isAdded) {
+                try {
+                    yigilishlarAdminVm.getStudents(requireContext())
+                    yigilishlarAdminVm._students.collect{
+                        when (it) {
+                            is Resource.Error -> {
+                                Toast.makeText(requireContext(), "${it.e.message}", Toast.LENGTH_SHORT).show()
+                            }
+                            is Resource.Loading -> {
+
+                            }
+                            is Resource.Success -> {
+                                studentlarList = it.data
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.d(TAG, "getStudents: ${e.message}")
+                }
+            }
+        }
     }
 }

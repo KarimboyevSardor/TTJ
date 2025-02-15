@@ -119,6 +119,8 @@ class Xona : Fragment() {
     private fun deleteRoom(xonaDataItem: XonaDataItem) {
         lifecycleScope.launch {
             val updateStudent = studentlarList.filter { it.room_id == xonaDataItem.id }.toMutableList()
+            xonalarList.remove(xonaDataItem)
+            liveDates.xonalarLiveData.value = xonalarList
             for (i in 0 until updateStudent.size) {
                 updateStudent[i].room_id = -1
                 delay(100)
@@ -126,25 +128,7 @@ class Xona : Fragment() {
             }
             if (isAdded) {
                 try {
-                    xonaAdminVm.xonaDelete(requireContext(), xonaDataItem.id)
-                    xonaAdminVm._xonaDelete.collect{
-                        when (it) {
-                            is Resource.Error -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Server bilan bog'lanib bo'lmadi.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                Log.d(TAG, "deleteRoom: ${it.e.message}")
-                            }
-                            is Resource.Loading -> {}
-                            is Resource.Success -> {
-                                xonalarList.remove(xonaDataItem)
-                                liveDates.xonalarLiveData.value = xonalarList
-                                requireActivity().onBackPressed()
-                            }
-                        }
-                    }
+                    xonaAdminVm.xonaDelete(requireContext(), xonaDataItem.id, requireActivity())
                 } catch (e: Exception) {
                     Log.d(TAG, "deleteRoom: ${e.message}")
                 }
