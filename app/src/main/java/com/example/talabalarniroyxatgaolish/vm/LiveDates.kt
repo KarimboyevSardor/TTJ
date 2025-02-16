@@ -6,10 +6,10 @@ import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
-import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
+import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 
 class LiveDates : ViewModel() {
-    var yigilishlarLiveData: MutableLiveData<MutableList<YigilishlarDataItem>> = MutableLiveData()
+    var tarbirlarLiveData: MutableLiveData<MutableList<TadbirlarDataItem>> = MutableLiveData()
     var davomatLiveData: MutableLiveData<MutableList<DavomatDataItem>> = MutableLiveData()
     var xonalarLiveData: MutableLiveData<MutableList<XonaDataItem>> = MutableLiveData()
     var studentlarLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
@@ -29,8 +29,8 @@ class LiveDates : ViewModel() {
         return addedTadbirStudentLiveData
     }
 
-    fun getYigilish() : MutableLiveData<MutableList<YigilishlarDataItem>> {
-        return yigilishlarLiveData
+    fun getYigilish() : MutableLiveData<MutableList<TadbirlarDataItem>> {
+        return tarbirlarLiveData
     }
 
     fun getDavomat() : MutableLiveData<MutableList<DavomatDataItem>> {

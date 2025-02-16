@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.databinding.FragmentBoshAdminBinding
 
@@ -31,14 +30,14 @@ class Bosh : Fragment() {
     ): View? {
         binding = FragmentBoshAdminBinding.inflate(layoutInflater)
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_admin, Yigilishlar())
+            .replace(R.id.fragment_container_admin, Tadbirlar())
             .commit()
 
         binding!!.apply {
             bottomNavigationAdmin.setOnItemSelectedListener {
                 when(it.itemId) {
                     R.id.yigilish_admin -> {
-                        replaceFragment(Yigilishlar())
+                        replaceFragment(Tadbirlar())
                     }
                     R.id.xona_admin -> {
                         replaceFragment(Xonalar())

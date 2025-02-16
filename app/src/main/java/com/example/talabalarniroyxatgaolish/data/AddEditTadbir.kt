@@ -1,6 +1,6 @@
 package com.example.talabalarniroyxatgaolish.data
 
-data class AddEditYigilish(
+data class AddEditTadbir(
     val description: String,
     val meeting_place: String,
     val name: String,

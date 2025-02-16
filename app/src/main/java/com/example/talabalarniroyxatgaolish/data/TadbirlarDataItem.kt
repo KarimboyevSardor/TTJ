@@ -3,7 +3,7 @@ package com.example.talabalarniroyxatgaolish.data
 import android.os.Parcel
 import android.os.Parcelable
 
-data class YigilishlarDataItem(
+data class TadbirlarDataItem(
     val description: String,
     val id: Long,
     val image_base64: String? = null,
@@ -40,12 +40,12 @@ data class YigilishlarDataItem(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<YigilishlarDataItem> {
-        override fun createFromParcel(parcel: Parcel): YigilishlarDataItem {
-            return YigilishlarDataItem(parcel)
+    companion object CREATOR : Parcelable.Creator<TadbirlarDataItem> {
+        override fun createFromParcel(parcel: Parcel): TadbirlarDataItem {
+            return TadbirlarDataItem(parcel)
         }
 
-        override fun newArray(size: Int): Array<YigilishlarDataItem?> {
+        override fun newArray(size: Int): Array<TadbirlarDataItem?> {
             return arrayOfNulls(size)
         }
     }

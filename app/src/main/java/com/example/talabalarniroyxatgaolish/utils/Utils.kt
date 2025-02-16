@@ -4,10 +4,10 @@ import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
-import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
+import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 
 object Utils {
-    var yigilishlarList: MutableList<YigilishlarDataItem> = mutableListOf()
+    var tadbirlarList: MutableList<TadbirlarDataItem> = mutableListOf()
     var davomatList: MutableList<DavomatDataItem> = mutableListOf()
     var xonalarList: MutableList<XonaDataItem> = mutableListOf()
     var studentlarList: MutableList<StudentDataItem> = mutableListOf()

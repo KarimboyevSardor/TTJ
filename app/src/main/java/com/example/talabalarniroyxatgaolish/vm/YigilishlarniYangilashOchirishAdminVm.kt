@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.talabalarniroyxatgaolish.data.AddRateReq
-import com.example.talabalarniroyxatgaolish.data.AddedYigilish
+import com.example.talabalarniroyxatgaolish.data.AddedTadbir
 import com.example.talabalarniroyxatgaolish.data.Message
 import com.example.talabalarniroyxatgaolish.data.RateData
 import com.example.talabalarniroyxatgaolish.network.ApiClient
@@ -26,8 +26,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class YigilishlarniYangilashOchirishAdminVm : ViewModel() {
-    private val stateYigilish = MutableStateFlow<Resource<AddedYigilish>>(Resource.Loading())
-    val _stateYigilish: MutableStateFlow<Resource<AddedYigilish>> get() = stateYigilish
+    private val stateYigilish = MutableStateFlow<Resource<AddedTadbir>>(Resource.Loading())
+    val _stateYigilish: MutableStateFlow<Resource<AddedTadbir>> get() = stateYigilish
     private val stateDeleteYigilish = MutableStateFlow<Resource<Message>>(Resource.Loading())
     val _stateDeleteYigilish: MutableStateFlow<Resource<Message>> get() = stateDeleteYigilish
     fun editYigilish(id: Long, time: RequestBody, description: RequestBody, name: RequestBody, meeting_place: RequestBody, image: MultipartBody.Part?, context: Context) {

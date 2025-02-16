@@ -94,14 +94,14 @@
     </fragment>
     <fragment
         android:id="@+id/yigilish_qoshish_admin"
-        android:name="com.example.talabalarniroyxatgaolish.ui.admin.Yigilish_qoshish"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.TadbirQoshish"
         android:label="fragment_yigilish_qoshish_admin"
-        tools:layout="@layout/fragment_yigilish_qoshish_admin" />
+        tools:layout="@layout/fragment_tadbir_qoshish_admin" />
     <fragment
         android:id="@+id/yigilishlar"
-        android:name="com.example.talabalarniroyxatgaolish.ui.admin.Yigilishlar"
+        android:name="com.example.talabalarniroyxatgaolish.ui.admin.Tadbirlar"
         android:label="fragment_yigilishlar_admin"
-        tools:layout="@layout/fragment_yigilishlar_admin" >
+        tools:layout="@layout/fragment_tadbirlar_admin" >
         <action
             android:id="@+id/action_yigilishlar_to_yigilish_qoshish_admin"
             app:destination="@id/yigilish_qoshish_admin" />
@@ -110,7 +110,7 @@
         android:id="@+id/yigilishlar_student"
         android:name="com.example.talabalarniroyxatgaolish.ui.student.Yigilishlar"
         android:label="fragment_yigilishlar_student"
-        tools:layout="@layout/fragment_yigilishlar_student" />
+        tools:layout="@layout/fragment_tadbirlar_student" />
     <fragment
         android:id="@+id/adminQoshish_admin"
         android:name="com.example.talabalarniroyxatgaolish.ui.admin.AdminQoshish"

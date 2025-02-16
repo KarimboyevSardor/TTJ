@@ -11,23 +11,20 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.talabalarniroyxatgaolish.data.Rate
-import com.example.talabalarniroyxatgaolish.data.YigilishlarData
-import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
+import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 import com.example.talabalarniroyxatgaolish.databinding.YigilishRvItemBinding
 import com.google.android.material.chip.Chip
-import com.squareup.picasso.Picasso
 
-class YigilishlarAdapter(
-    var yigilishlarList: MutableList<YigilishlarDataItem>,
+class TadbirlarAdapter(
+    var yigilishlarList: MutableList<TadbirlarDataItem>,
     var rateStudent: MutableList<Rate>,
     val context: Context,
-    val onClickItem: (YigilishlarDataItem) -> Unit
-) : Adapter<YigilishlarAdapter.YigilishlarVh>() {
+    val onClickItem: (TadbirlarDataItem) -> Unit
+) : Adapter<TadbirlarAdapter.YigilishlarVh>() {
     inner class YigilishlarVh(var binding: YigilishRvItemBinding) : ViewHolder(binding.root)
 
-    fun filterYigilish(yigilishlarList: MutableList<YigilishlarDataItem>) {
+    fun filterYigilish(yigilishlarList: MutableList<TadbirlarDataItem>) {
         this.yigilishlarList = yigilishlarList
         notifyDataSetChanged()
     }

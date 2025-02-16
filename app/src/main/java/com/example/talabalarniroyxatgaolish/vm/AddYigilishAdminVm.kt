@@ -1,16 +1,13 @@
 package com.example.talabalarniroyxatgaolish.vm
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.talabalarniroyxatgaolish.data.AddEditYigilish
 import com.example.talabalarniroyxatgaolish.data.AddRateReq
-import com.example.talabalarniroyxatgaolish.data.AddedYigilish
-import com.example.talabalarniroyxatgaolish.data.Message
+import com.example.talabalarniroyxatgaolish.data.AddedTadbir
 import com.example.talabalarniroyxatgaolish.data.RateData
 import com.example.talabalarniroyxatgaolish.network.ApiClient
 import com.example.talabalarniroyxatgaolish.network.ApiService
@@ -27,8 +24,8 @@ import retrofit2.Response
 
 class AddYigilishAdminVm : ViewModel() {
     private val TAG = "ADDYIGILISHADMINVIEWMODEL"
-    private val stateAddYigilish = MutableStateFlow<Resource<AddedYigilish>>(Resource.Loading())
-    val _stateAddYigilish: MutableStateFlow<Resource<AddedYigilish>> get() = stateAddYigilish
+    private val stateAddYigilish = MutableStateFlow<Resource<AddedTadbir>>(Resource.Loading())
+    val _stateAddYigilish: MutableStateFlow<Resource<AddedTadbir>> get() = stateAddYigilish
     fun addYigilish(time: RequestBody, description: RequestBody, name: RequestBody, meetingPlace: RequestBody, image: MultipartBody.Part?, context: Context) {
         val addYigilishAdminRep = AddYigilishAdminRep(ApiClient.getRetrofit(context).create(ApiService::class.java))
         try {

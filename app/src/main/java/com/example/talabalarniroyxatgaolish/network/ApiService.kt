@@ -1,13 +1,10 @@
 package com.example.talabalarniroyxatgaolish.network
 
-import com.example.talabalarniroyxatgaolish.data.AddEditYigilish
-import com.example.talabalarniroyxatgaolish.data.AddRateReq
 import com.example.talabalarniroyxatgaolish.data.AddedRate
-import com.example.talabalarniroyxatgaolish.data.AddedYigilish
+import com.example.talabalarniroyxatgaolish.data.AddedTadbir
 import com.example.talabalarniroyxatgaolish.data.Auth
 import com.example.talabalarniroyxatgaolish.data.AuthDataItem
 import com.example.talabalarniroyxatgaolish.data.DavomatData
-import com.example.talabalarniroyxatgaolish.data.Meeting
 import com.example.talabalarniroyxatgaolish.data.Message
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.RateData
@@ -15,8 +12,7 @@ import com.example.talabalarniroyxatgaolish.data.StudentData
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.data.XonaData
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
-import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
-import com.example.talabalarniroyxatgaolish.ui.admin.Davomat
+import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,7 +34,7 @@ interface ApiService {
     ): Flow<Auth>
 
     @GET("api/yigilish/geturl")
-    fun getYigilish() : Flow<MutableList<YigilishlarDataItem>>
+    fun getYigilish() : Flow<MutableList<TadbirlarDataItem>>
 
     @Multipart
     @POST("api/yigilish")
@@ -48,7 +44,7 @@ interface ApiService {
         @Part("time") time: RequestBody,
         @Part("description") description: RequestBody,
         @Part("meeting_place") meeting_place: RequestBody
-    ): Flow<AddedYigilish>
+    ): Flow<AddedTadbir>
 
     @Multipart
     @PUT("api/yigilish/{id}")
@@ -59,7 +55,7 @@ interface ApiService {
         @Part("time") time: RequestBody?,
         @Part("description") description: RequestBody?,
         @Part("meeting_place") meeting_place: RequestBody?
-    ): Flow<AddedYigilish>
+    ): Flow<AddedTadbir>
 
     @DELETE("api/yigilish/{id}")
     fun deleteYigilish(@Path("id") id: Long) : Flow<Message>

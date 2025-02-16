@@ -12,11 +12,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.talabalarniroyxatgaolish.R
-import com.example.talabalarniroyxatgaolish.adapter.YigilishlarAdapter
-import com.example.talabalarniroyxatgaolish.databinding.FragmentYigilishlarAdminBinding
+import com.example.talabalarniroyxatgaolish.adapter.TadbirlarAdapter
+import com.example.talabalarniroyxatgaolish.databinding.FragmentTadbirlarAdminBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
 import com.example.talabalarniroyxatgaolish.utils.Utils.studentlarList
-import com.example.talabalarniroyxatgaolish.utils.Utils.yigilishlarList
+import com.example.talabalarniroyxatgaolish.utils.Utils.tadbirlarList
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
 import com.example.talabalarniroyxatgaolish.vm.YigilishlarAdminVm
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class Yigilishlar : Fragment() {
+class Tadbirlar : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -38,15 +38,15 @@ class Yigilishlar : Fragment() {
     }
 
     private val TAG = "YIGILISHLARADMIN"
-    lateinit var yigilishlarAdapter: YigilishlarAdapter
+    lateinit var tadbirlarAdapter: TadbirlarAdapter
     lateinit var yigilishlarAdminVm: YigilishlarAdminVm
     lateinit var liveDates: LiveDates
-    private var binding: FragmentYigilishlarAdminBinding? = null
+    private var binding: FragmentTadbirlarAdminBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentYigilishlarAdminBinding.inflate(layoutInflater)
+        binding = FragmentTadbirlarAdminBinding.inflate(layoutInflater)
 
         yigilishlarAdminVm = ViewModelProvider(requireActivity())[YigilishlarAdminVm::class]
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
@@ -58,10 +58,10 @@ class Yigilishlar : Fragment() {
         bottomNavigation.visibility = View.VISIBLE
         toolbar.visibility = View.VISIBLE
 
-        yigilishlarAdapter = YigilishlarAdapter(yigilishlarList, rateList, requireContext()) {
+        tadbirlarAdapter = TadbirlarAdapter(tadbirlarList, rateList, requireContext()) {
             val bundle = Bundle()
             bundle.putLong("yigilish", it.id)
-            val fr = YigilishlarYangilashOchirishViewPager()
+            val fr = Tadbir()
             fr.arguments = bundle
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container_admin, fr)
@@ -71,18 +71,18 @@ class Yigilishlar : Fragment() {
             toolbar.visibility = View.GONE
         }
         liveDates.getYigilish().observe(requireActivity()) {
-            yigilishlarAdapter.filterYigilish(it)
+            tadbirlarAdapter.filterYigilish(it)
         }
         liveDates.getRate().observe(requireActivity()) {
-            yigilishlarAdapter.filterRate(it)
+            tadbirlarAdapter.filterRate(it)
             Log.d(TAG, "onCreateView: ${it.size}")
         }
 
         binding!!.apply {
-            yigilishRv.adapter = yigilishlarAdapter
+            yigilishRv.adapter = tadbirlarAdapter
             addYigilish.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_admin, Yigilish_qoshish())
+                    .replace(R.id.fragment_container_admin, TadbirQoshish())
                     .addToBackStack(null)
                     .commit()
                 bottomNavigation.visibility = View.GONE
@@ -96,7 +96,7 @@ class Yigilishlar : Fragment() {
     private fun getYigilishlar() {
         lifecycleScope.launch {
             if (isAdded) {
-                if (yigilishlarList.isEmpty()) {
+                if (tadbirlarList.isEmpty()) {
                     yigilishlarAdminVm.getYigilishlar(requireContext())
                     yigilishlarAdminVm._stateYigilishlar.collect {
                         when (it) {
@@ -110,8 +110,8 @@ class Yigilishlar : Fragment() {
 
                             is Resource.Loading -> {}
                             is Resource.Success -> {
-                                yigilishlarList = it.data
-                                liveDates.yigilishlarLiveData.value = yigilishlarList
+                                tadbirlarList = it.data
+                                liveDates.tarbirlarLiveData.value = tadbirlarList
                             }
                         }
                     }
@@ -143,7 +143,7 @@ class Yigilishlar : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            Yigilishlar().apply {
+            Tadbirlar().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

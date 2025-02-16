@@ -4,9 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.talabalarniroyxatgaolish.data.Rate
-import com.example.talabalarniroyxatgaolish.data.StudentData
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
-import com.example.talabalarniroyxatgaolish.data.YigilishlarDataItem
+import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 import com.example.talabalarniroyxatgaolish.network.ApiClient
 import com.example.talabalarniroyxatgaolish.network.ApiService
 import com.example.talabalarniroyxatgaolish.repository.YigilishlarAdminRep
@@ -15,8 +14,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class YigilishlarAdminVm : ViewModel(){
-    private val stateYigilishlar = MutableStateFlow<Resource<MutableList<YigilishlarDataItem>>>(Resource.Loading())
-    val _stateYigilishlar: MutableStateFlow<Resource<MutableList<YigilishlarDataItem>>> get() = stateYigilishlar
+    private val stateYigilishlar = MutableStateFlow<Resource<MutableList<TadbirlarDataItem>>>(Resource.Loading())
+    val _stateYigilishlar: MutableStateFlow<Resource<MutableList<TadbirlarDataItem>>> get() = stateYigilishlar
     private val rates = MutableStateFlow<Resource<MutableList<Rate>>>(Resource.Loading())
     val _rates: MutableStateFlow<Resource<MutableList<Rate>>> get() = rates
     private val students = MutableStateFlow<Resource<MutableList<StudentDataItem>>>(Resource.Loading())
