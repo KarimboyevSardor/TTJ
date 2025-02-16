@@ -4,6 +4,7 @@ data class Rate(
     val id: Long,
     val meeting_id: Long,
     val name: String,
-    val rate: String,
-    val student_id: Long
+    var rate: String,
+    val student_id: Long,
+    var emoji: String
 )

@@ -95,4 +95,7 @@ interface ApiService {
 
     @DELETE("api/rate/{id}")
     fun deleteRate(@Path("id") id: Long) : Call<Message>
+
+    @PUT("api/rate")
+    fun editRate(@Body editRate: List<Rate>) : Call<RateData>
 }

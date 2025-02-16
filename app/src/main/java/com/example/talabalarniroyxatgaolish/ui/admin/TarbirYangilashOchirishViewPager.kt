@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -252,7 +253,9 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
     }
 
     private fun deleteStudent(id: Long, chip: Chip) {
+        Log.d(TAG, "deleteStudent: ")
         yigilishlarniYangilashOchirishAdminVm.deleteRate(requireContext(), id, chip, binding!!.yigilishEditDeleteChip)
+        liveDates.rateLiveData.value = rateList
     }
 
     @Deprecated("Deprecated in Java")

@@ -16,6 +16,11 @@ class LiveDates : ViewModel() {
     var addedTadbirStudentLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
     var addTadbirStudentLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
     var rateLiveData: MutableLiveData<MutableList<Rate>> = MutableLiveData()
+    var baholashLiveData: MutableLiveData<MutableList<Rate>> = MutableLiveData()
+
+    fun getBaholash() : MutableLiveData<MutableList<Rate>> {
+        return baholashLiveData
+    }
 
     fun getRate() : MutableLiveData<MutableList<Rate>> {
         return rateLiveData

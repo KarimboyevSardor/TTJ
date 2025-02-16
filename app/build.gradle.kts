@@ -68,6 +68,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.0")
     //calendar
     implementation("com.github.afsalkodasseri:KalendarView:2.7")
+    //lottie animation
+    implementation("com.airbnb.android:lottie:5.2.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
