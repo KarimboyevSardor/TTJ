@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.talabalarniroyxatgaolish.adapter.BaholashAdapter
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.databinding.FragmentBaxolashViewPagerAdminBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
 import com.example.talabalarniroyxatgaolish.vm.BaholashViewPagerAdminVm
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
+import kotlinx.coroutines.launch
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -42,12 +44,9 @@ class BaxolashViewPager : Fragment() {
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         baholashViewPagerAdminVm = ViewModelProvider(requireActivity())[BaholashViewPagerAdminVm::class]
         baholashAdapter = BaholashAdapter(rateList.filter { it.meeting_id == param1!! }.toMutableList(), requireContext(), requireActivity())
-        liveDates.baholashLiveData.value = rateList.filter { it.meeting_id == param1!! }.toMutableList()
-        liveDates.getRate().observe(requireActivity()) { it ->
-            baholashAdapter.filter(it.filter { it.meeting_id == param1!! }.toMutableList())
-        }
-        liveDates.getBaholash().observe(requireActivity()) {
-            Log.d(TAG, "onCreateView: $it")
+        liveDates.getBaholash().observe(requireActivity()) { it ->
+            baholashAdapter.updateList(it)
+            Log.d(TAG, "onCreateView: LiveData ${it.filter { it.meeting_id == param1!! }.toMutableList()}")
         }
         binding!!.apply {
             recyclerView.adapter = baholashAdapter
@@ -93,8 +92,8 @@ class BaxolashViewPager : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume: ")
-        liveDates.getRate().observe(requireActivity()) {
-            baholashAdapter.filter(it.filter { it.meeting_id == param1!! }.toMutableList())
+        liveDates.getRate().observe(requireActivity()) { it ->
+            baholashAdapter.updateList(it.filter { it.meeting_id == param1!! }.toMutableList())
         }
     }
 

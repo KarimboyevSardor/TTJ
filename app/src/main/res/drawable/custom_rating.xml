@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Rating bar'ning orqa foni -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="#D3D3D3"/> <!-- Kulrang -->
+        </shape>
+    </item>
+
+    <!-- Yulduzchalar progress'ini o'zgartirish -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape android:shape="rectangle">
+                <solid android:color="#FFD700"/> <!-- Oltin rang -->
+            </shape>
+        </clip>
+    </item>
+
+    <!-- Rating yulduzlari (filled stars) -->
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape android:shape="rectangle">
+                <solid android:color="#FFA500"/> <!-- To‘q sariq -->
+            </shape>
+        </clip>
+    </item>
+</layer-list>

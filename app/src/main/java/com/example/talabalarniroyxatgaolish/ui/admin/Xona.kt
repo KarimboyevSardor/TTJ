@@ -152,6 +152,7 @@ class Xona : Fragment() {
         binding = null
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.ochirish_menu, menu)

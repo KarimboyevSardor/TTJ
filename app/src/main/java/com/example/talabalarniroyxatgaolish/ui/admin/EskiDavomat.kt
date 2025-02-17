@@ -66,7 +66,7 @@ class EskiDavomat : Fragment() {
         getDavomat()
         davomatAdapter = DavomatAdapter(davomatList.filter { !it.is_there }.toMutableList(), requireContext())
         liveDates.getDavomat().observe(requireActivity()) { it ->
-            davomatAdapter.filter(it.filter { !it.is_there }.toMutableList())
+            davomatAdapter.updateList(it.filter { !it.is_there }.toMutableList())
         }
 
         binding!!.apply {

@@ -1,28 +1,43 @@
 package com.example.talabalarniroyxatgaolish.adapter
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.data.Rate
-import com.example.talabalarniroyxatgaolish.data.RateData
 import com.example.talabalarniroyxatgaolish.databinding.BaholashRvItemBinding
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 
 class BaholashAdapter(var rates: MutableList<Rate>, val context: Context, val activity: FragmentActivity) : Adapter<BaholashAdapter.BaholashAdapterVh>() {
 
-    fun filter(rates: MutableList<Rate>) {
+    private val TAG = "BAHOLASHADAPTER"
+    fun updateList(rates: MutableList<Rate>) {
+        val diffCallback = BaholashDiffUtil(this.rates, rates)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.rates = rates
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    class BaholashDiffUtil(
+        private val oldList: List<Rate>,
+        private val newList: List<Rate>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
     lateinit var liveDates: LiveDates
 
@@ -45,7 +60,7 @@ class BaholashAdapter(var rates: MutableList<Rate>, val context: Context, val ac
 
     override fun onBindViewHolder(holder: BaholashAdapterVh, position: Int) {
         liveDates = ViewModelProvider(activity)[LiveDates::class]
-        liveDates.baholashLiveData.value = rates
+        Log.d(TAG, "onBindViewHolder: Adapter ${liveDates.baholashLiveData.value}")
         holder.binding.zor.text = "\uD83D\uDE0D"
         holder.binding.yaxshi.text = "\uD83D\uDE42"
         holder.binding.orta.text = "\uD83D\uDE10"
@@ -53,7 +68,7 @@ class BaholashAdapter(var rates: MutableList<Rate>, val context: Context, val ac
         holder.binding.yomon.text = "\uD83D\uDE21"
         val rate = rates[position]
         holder.binding.txtStudentName.text = rate.name
-        if (rate.emoji != null) {
+        if (rate.emoji != "") {
             when (rate.emoji) {
                 "\uD83D\uDE0D" -> {
                     holder.binding.zor.setTextColor(korinar)
@@ -72,9 +87,7 @@ class BaholashAdapter(var rates: MutableList<Rate>, val context: Context, val ac
                 }
             }
         }
-        if (rate.rate != "") {
-            holder.binding.ratingBar.rating = rate.rate.toFloat()
-        }
+        holder.binding.ratingBar.rating = rate.rate.toFloat()
 
         holder.binding.zor.setOnClickListener { view ->
             if (!zor) {

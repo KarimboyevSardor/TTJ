@@ -2,6 +2,7 @@ package com.example.talabalarniroyxatgaolish.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
@@ -12,8 +13,24 @@ class StudentBiriktirishAdapter(var studentList: MutableList<StudentDataItem>, v
     inner class StudentBiriktirishAdapterViewHolder(val binding: StudentUpdateRoomRvItemBinding) : ViewHolder(binding.root)
 
     fun filter(studentList: MutableList<StudentDataItem>) {
+        val diffCallback = StudentBiriktirishDiffUtil(this.studentList, studentList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.studentList = studentList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    class StudentBiriktirishDiffUtil(
+        private val oldList: List<StudentDataItem>,
+        private val newList: List<StudentDataItem>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 
     override fun onCreateViewHolder(

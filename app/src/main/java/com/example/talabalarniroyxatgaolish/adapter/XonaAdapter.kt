@@ -2,6 +2,7 @@ package com.example.talabalarniroyxatgaolish.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
@@ -11,8 +12,24 @@ class XonaAdapter(var xonaList: MutableList<XonaDataItem>, val xonaOnClick: (Xon
     inner class XonaVh(val binding: RoomRvItemBinding) : ViewHolder(binding.root)
 
     fun filter(xonaList: MutableList<XonaDataItem>) {
+        val diffCallback = XonaDiffUtil(this.xonaList, xonaList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.xonaList = xonaList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    class XonaDiffUtil(
+        private val oldList: List<XonaDataItem>,
+        private val newList: List<XonaDataItem>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): XonaVh {

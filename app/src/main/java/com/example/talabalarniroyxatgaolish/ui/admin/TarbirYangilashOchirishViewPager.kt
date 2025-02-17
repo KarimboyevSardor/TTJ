@@ -88,7 +88,6 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
         binding = FragmentYigilishlarTadbirOchirishViewPagerAdminBinding.inflate(layoutInflater)
         yigilishlarniYangilashOchirishAdminVm = ViewModelProvider(requireActivity())[YigilishlarniYangilashOchirishAdminVm::class]
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
-
         yigilishData = tadbirlarList.filter { it.id == param1!!.toLong() }[0]
         addTadbirStudents = studentlarList
         binding!!.apply {
@@ -220,7 +219,7 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
 
     private fun addedStudent(student: StudentDataItem, tadbir_id: Long) {
         val addRate: MutableList<AddedRate> = mutableListOf()
-        addRate.add(AddedRate(meeting_id = tadbir_id, rate = "", student_id = student.id))
+        addRate.add(AddedRate(meeting_id = tadbir_id, rate = "0", student_id = student.id, emoji = ""))
         val addRateReq = AddRateReq(addRate)
         yigilishlarniYangilashOchirishAdminVm.addRate(requireContext(), addRateReq, requireActivity())
     }

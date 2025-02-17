@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.talabalarniroyxatgaolish.R
@@ -17,9 +18,25 @@ class StudentsAdapter(var studentsList: MutableList<StudentDataItem>, val onDele
 
     inner class StudentAdapterVh(val binding: StudentsRvItemBinding) : ViewHolder(binding.root)
 
-    fun filter(studentsList: MutableList<StudentDataItem>) {
-        this.studentsList = studentsList
-        notifyDataSetChanged()
+    fun filter(studentList: MutableList<StudentDataItem>) {
+        val diffCallback = StudentsDiffUtil(this.studentsList, studentList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.studentsList = studentList
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    class StudentsDiffUtil(
+        private val oldList: List<StudentDataItem>,
+        private val newList: List<StudentDataItem>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentAdapterVh {

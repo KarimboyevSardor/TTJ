@@ -13,6 +13,7 @@ import com.example.talabalarniroyxatgaolish.network.ApiClient
 import com.example.talabalarniroyxatgaolish.network.ApiService
 import com.example.talabalarniroyxatgaolish.repository.BaholashViewPagerAdminRep
 import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback

@@ -98,4 +98,7 @@ interface ApiService {
 
     @PUT("api/rate")
     fun editRate(@Body editRate: List<Rate>) : Call<RateData>
+
+    @GET("api/rate/{meeting_id}")
+    fun getRateMeetingId(@Path("meeting_id") meeting_id: Long) : Flow<MutableList<Rate>>
 }
