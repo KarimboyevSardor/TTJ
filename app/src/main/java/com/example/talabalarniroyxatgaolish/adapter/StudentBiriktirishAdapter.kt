@@ -17,6 +17,7 @@ class StudentBiriktirishAdapter(var studentList: MutableList<StudentDataItem>, v
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.studentList = studentList
         diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     class StudentBiriktirishDiffUtil(

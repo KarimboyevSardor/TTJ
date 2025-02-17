@@ -36,6 +36,7 @@ class BaxolashViewPager : Fragment() {
     lateinit var liveDates: LiveDates
     lateinit var baholashAdapter: BaholashAdapter
     lateinit var baholashViewPagerAdminVm: BaholashViewPagerAdminVm
+    private var baholangan = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,9 +44,10 @@ class BaxolashViewPager : Fragment() {
         binding = FragmentBaxolashViewPagerAdminBinding.inflate(layoutInflater)
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         baholashViewPagerAdminVm = ViewModelProvider(requireActivity())[BaholashViewPagerAdminVm::class]
+        liveDates.baholashLiveData.value = rateList.filter { it.meeting_id == param1!! }.toMutableList()
         baholashAdapter = BaholashAdapter(rateList.filter { it.meeting_id == param1!! }.toMutableList(), requireContext(), requireActivity())
-        liveDates.getBaholash().observe(requireActivity()) { it ->
-            baholashAdapter.updateList(it)
+        liveDates.getRate().observe(requireActivity()) { it ->
+            baholashAdapter.updateList(it.filter { it.meeting_id == param1!! }.toMutableList())
             Log.d(TAG, "onCreateView: LiveData ${it.filter { it.meeting_id == param1!! }.toMutableList()}")
         }
         binding!!.apply {
@@ -53,6 +55,30 @@ class BaxolashViewPager : Fragment() {
             btnSubmit.setOnClickListener {
                 if (liveDates.baholashLiveData.value!!.isNotEmpty()) {
                     editRate(liveDates.baholashLiveData.value!!)
+                }
+            }
+            for (i in 0 until liveDates.baholashLiveData.value!!.size) {
+                if (liveDates.baholashLiveData.value!![i].rate.toFloat() > 0.0) {
+                    baholangan = true
+                    break
+                }
+            }
+            if (baholangan) {
+                isEnabled.text = "Qayta baholash"
+                isEnabled.isChecked = false
+                isEmpty.visibility = View.VISIBLE
+            } else {
+                isEnabled.text = "Baholash"
+                isEnabled.isChecked = true
+                isEmpty.visibility = View.GONE
+            }
+            isEnabled.setOnCheckedChangeListener { compoundButton, b ->
+                if (b) {
+                    isEnabled.text = "Baholash"
+                    isEmpty.visibility = View.GONE
+                } else {
+                    isEnabled.text = "Qayta baholash"
+                    isEmpty.visibility = View.VISIBLE
                 }
             }
         }
