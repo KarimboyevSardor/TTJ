@@ -13,9 +13,11 @@ import com.example.talabalarniroyxatgaolish.adapter.BaholashAdapter
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.databinding.FragmentBaxolashViewPagerAdminBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
+import com.example.talabalarniroyxatgaolish.utils.Utils.tadbirlarList
 import com.example.talabalarniroyxatgaolish.vm.BaholashViewPagerAdminVm
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -44,6 +46,7 @@ class BaxolashViewPager : Fragment() {
         binding = FragmentBaxolashViewPagerAdminBinding.inflate(layoutInflater)
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         baholashViewPagerAdminVm = ViewModelProvider(requireActivity())[BaholashViewPagerAdminVm::class]
+        val tadbir = tadbirlarList.filter { it.id == param1!!}[0]
         liveDates.baholashLiveData.value = rateList.filter { it.meeting_id == param1!! }.toMutableList()
         baholashAdapter = BaholashAdapter(rateList.filter { it.meeting_id == param1!! }.toMutableList(), requireContext(), requireActivity())
         liveDates.getRate().observe(requireActivity()) { it ->
@@ -80,6 +83,27 @@ class BaxolashViewPager : Fragment() {
                     isEnabled.text = "Qayta baholash"
                     isEmpty.visibility = View.VISIBLE
                 }
+            }
+            val date_time = tadbir.time.split(" ")
+            val date = date_time[0].split("-")
+            val calendar = Calendar.getInstance()
+            val nowMonth = calendar.get(Calendar.MONTH) + 1
+            val nowYear = calendar.get(Calendar.YEAR)
+            val nowDay = calendar.get(Calendar.DAY_OF_MONTH)
+            Log.d(TAG, "onCreateView: $nowDay, $nowMonth, $nowYear")
+            if (date[1] == "12") {
+                if (nowMonth == 1 && nowDay.toString() == date[0]) {
+                    isEmpty.visibility = View.VISIBLE
+                    isEnabled.visibility = View.GONE
+                }
+            } else {
+                if (nowMonth == (date[1].toInt() + 1) && nowDay.toString() == date[0]) {
+                    isEmpty.visibility = View.VISIBLE
+                    isEnabled.visibility = View.GONE
+                }
+            }
+            info.setOnClickListener {
+                Toast.makeText(requireContext(), "Baholashni tadbir boshlanganidan 1 oygacha o'zgartirish mumkin.", Toast.LENGTH_SHORT).show()
             }
         }
 
