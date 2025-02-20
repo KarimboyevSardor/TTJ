@@ -9,17 +9,17 @@
 
     <androidx.cardview.widget.CardView
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/calendar"
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="@color/white"
         app:cardCornerRadius="8dp">
 
-        <CalendarView
+        <androidx.viewpager2.widget.ViewPager2
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/calenarView"
+            android:layout_height="300dp"
+            android:id="@+id/viewpager2"
             android:weekDayTextAppearance="@style/CustomWeekDayText"
             android:dateTextAppearance="@style/CustomDateText"
             />

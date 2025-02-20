@@ -17,18 +17,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.ak.ColoredDate
 import com.ak.EventObjects
 import com.example.talabalarniroyxatgaolish.R
+import com.example.talabalarniroyxatgaolish.adapter.CalendarViewPagerAdapter
 import com.example.talabalarniroyxatgaolish.adapter.DavomatAdapter
 import com.example.talabalarniroyxatgaolish.data.CalendarDateData
 import com.example.talabalarniroyxatgaolish.data.DateColor
 import com.example.talabalarniroyxatgaolish.databinding.FragmentEskiDavomatAdminBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.davomatList
+import com.example.talabalarniroyxatgaolish.utils.Utils.oylarList
 import com.example.talabalarniroyxatgaolish.vm.EskiDavomatAdminVm
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
 import kotlinx.coroutines.launch
+import java.time.Month
+import java.time.format.TextStyle
+import java.util.Calendar
+import java.util.Locale
 
 
 private const val ARG_PARAM1 = "param1"
@@ -51,6 +58,9 @@ class EskiDavomat : Fragment() {
     lateinit var liveDates: LiveDates
     lateinit var davomatAdapter: DavomatAdapter
     private val TAG = "ESKIDAVOMATADMIN"
+    private var oy = 0
+    private var currentMonth = 0
+    lateinit var calendarViewPagerAdapter: CalendarViewPagerAdapter
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,32 +71,56 @@ class EskiDavomat : Fragment() {
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         val bottomNavigation: FrameLayout = requireActivity().findViewById(R.id.bottom_navigation_admin)
         val toolbar1: Toolbar = requireActivity().findViewById(R.id.bosh_toolbar_admin)
+        val calendar = Calendar.getInstance()
+        oy = calendar.get(Calendar.MONTH) + 1
+        currentMonth = oy
         toolbar1.visibility = View.VISIBLE
         bottomNavigation.visibility = View.VISIBLE
         getDavomat()
+        setDate()
+        calendarViewPagerAdapter = CalendarViewPagerAdapter(this,currentMonth + 12, oy, 2025)
+
         davomatAdapter = DavomatAdapter(davomatList.filter { !it.is_there }.toMutableList(), requireContext())
         liveDates.getDavomat().observe(requireActivity()) { it ->
             davomatAdapter.updateList(it.filter { !it.is_there }.toMutableList())
         }
 
         binding!!.apply {
-            studentDavomatRv.adapter = davomatAdapter
-            calenarView.setOnDateChangeListener { p0, p1, p2, p3 ->
-                val date = "$p1-${p2 + 1}-$p3"
-                val bundle = Bundle()
-                bundle.putString("date", date)
-                val fr = Davomat()
-                fr.arguments = bundle
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_admin, fr)
-                    .addToBackStack(null)
-                    .commit()
-                toolbar1.visibility = View.GONE
-                bottomNavigation.visibility = View.GONE
+            viewpager2.adapter = calendarViewPagerAdapter
+            viewpager2.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            viewpager2.currentItem = 0
+            val calendar = Calendar.getInstance().apply {
+                set(2025, 2, 20)
             }
+            viewpager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                }
+            })
+            val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("uz"))
+            studentDavomatRv.adapter = davomatAdapter
+//            calenarView.setOnDateChangeListener { p0, p1, p2, p3 ->
+//                val date = "$p1-${p2 + 1}-$p3"
+//                val bundle = Bundle()
+//                bundle.putString("date", date)
+//                val fr = Davomat()
+//                fr.arguments = bundle
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .replace(R.id.fragment_container_admin, fr)
+//                    .addToBackStack(null)
+//                    .commit()
+//                toolbar1.visibility = View.GONE
+//                bottomNavigation.visibility = View.GONE
+//            }
+
         }
 
         return binding!!.root
+    }
+
+    private fun setDate() {
+
     }
 
     private fun getDavomat() {
