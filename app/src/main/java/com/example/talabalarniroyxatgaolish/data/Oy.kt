@@ -1,7 +1,8 @@
 package com.example.talabalarniroyxatgaolish.data
 
 data class Oy(
-    var oy: String = "",
-    var yil: String = "",
-    var haftaKuni: Int = 0
+    var oyName: String = "",
+    var oyCount: Int = 0,
+    var yil: Int = 0,
+    var dayCount: Int = 0
 )

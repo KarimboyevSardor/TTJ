@@ -6,34 +6,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
 import android.widget.FrameLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.ak.ColoredDate
-import com.ak.EventObjects
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.CalendarViewPagerAdapter
 import com.example.talabalarniroyxatgaolish.adapter.DavomatAdapter
-import com.example.talabalarniroyxatgaolish.data.CalendarDateData
-import com.example.talabalarniroyxatgaolish.data.DateColor
+import com.example.talabalarniroyxatgaolish.data.Oy
 import com.example.talabalarniroyxatgaolish.databinding.FragmentEskiDavomatAdminBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.davomatList
-import com.example.talabalarniroyxatgaolish.utils.Utils.oylarList
+import com.example.talabalarniroyxatgaolish.utils.Utils.oyList
 import com.example.talabalarniroyxatgaolish.vm.EskiDavomatAdminVm
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
 import kotlinx.coroutines.launch
-import java.time.Month
-import java.time.format.TextStyle
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
@@ -61,7 +53,6 @@ class EskiDavomat : Fragment() {
     private var oy = 0
     private var currentMonth = 0
     lateinit var calendarViewPagerAdapter: CalendarViewPagerAdapter
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -78,7 +69,7 @@ class EskiDavomat : Fragment() {
         bottomNavigation.visibility = View.VISIBLE
         getDavomat()
         setDate()
-        calendarViewPagerAdapter = CalendarViewPagerAdapter(this,currentMonth + 12, oy, 2025)
+        calendarViewPagerAdapter = CalendarViewPagerAdapter(this,currentMonth + 12)
 
         davomatAdapter = DavomatAdapter(davomatList.filter { !it.is_there }.toMutableList(), requireContext())
         liveDates.getDavomat().observe(requireActivity()) { it ->
@@ -87,18 +78,14 @@ class EskiDavomat : Fragment() {
 
         binding!!.apply {
             viewpager2.adapter = calendarViewPagerAdapter
-            viewpager2.layoutDirection = View.LAYOUT_DIRECTION_RTL
-            viewpager2.currentItem = 0
-            val calendar = Calendar.getInstance().apply {
-                set(2025, 2, 20)
-            }
+//            viewpager2.layoutDirection = View.LAYOUT_DIRECTION_RTL
+//            viewpager2.currentItem = 0
+            viewpager2.currentItem = calendarViewPagerAdapter.itemCount
             viewpager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-
                 }
             })
-            val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("uz"))
             studentDavomatRv.adapter = davomatAdapter
 //            calenarView.setOnDateChangeListener { p0, p1, p2, p3 ->
 //                val date = "$p1-${p2 + 1}-$p3"
@@ -120,7 +107,29 @@ class EskiDavomat : Fragment() {
     }
 
     private fun setDate() {
+        val calendar = Calendar.getInstance()
+        val currentOy = calendar.get(Calendar.MONTH) + 1
+        val currentYil = calendar.get((Calendar.YEAR))
+        var i = currentOy + 12
+        while (i >= 1) {
+            if (i > 12) {
+                val oy = i % 12
+                oyList.add(Oy(getMonthName(currentYil, i), oy, currentYil))
+            } else {
+                oyList.add(Oy(getMonthName(currentYil - 1, i), i, currentYil - 1))
+            }
+            i--
+        }
+        oyList.reverse()
+    }
 
+    fun getMonthName(year: Int, month: Int): String {
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.YEAR, year)
+            set(Calendar.MONTH, month - 1)
+        }
+        val sdf = SimpleDateFormat("MMMM", Locale("uz"))
+        return sdf.format(calendar.time)
     }
 
     private fun getDavomat() {
