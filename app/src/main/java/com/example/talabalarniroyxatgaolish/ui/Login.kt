@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.databinding.FragmentLoginBinding
-import com.example.talabalarniroyxatgaolish.ui.admin.Bosh
+import com.example.talabalarniroyxatgaolish.ui.admin.BoshAdmin
 import com.example.talabalarniroyxatgaolish.vm.LoginVm
 import com.example.talabalarniroyxatgaolish.vm.Resource
 // o'z paket nomingizni qo'llang
@@ -55,27 +55,13 @@ class Login : Fragment() {
         return binding!!.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     private fun auth(login: String, password: String) {
         lifecycleScope.launch {
-            loginVm.auth(login, password, requireContext())
             if (isAdded) {
-                loginVm._stateLogin.collect {
-                    when (it) {
-                        is Resource.Error -> {
-                            Toast.makeText(requireContext(), "${it.e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                        is Resource.Loading -> {}
-                        is Resource.Success -> {
-                            Log.d(TAG, "auth: ${it.data}")
-                            requireActivity().supportFragmentManager.beginTransaction()
-                                .replace(R.id.fragmentContainerView, Bosh()) // MainFragmentni yuklaydi
-                                .commit()
-                        }
-                    }
+                try {
+                    loginVm.auth(login, password, requireContext(), requireActivity())
+                } catch (e: Exception) {
+                    Log.d(TAG, "auth: ${e.message}")
                 }
             }
         }

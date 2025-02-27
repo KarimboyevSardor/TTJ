@@ -13,10 +13,30 @@ class LiveDates : ViewModel() {
     var davomatLiveData: MutableLiveData<MutableList<DavomatDataItem>> = MutableLiveData()
     var xonalarLiveData: MutableLiveData<MutableList<XonaDataItem>> = MutableLiveData()
     var studentlarLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
+    var qoshilganStudentLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
+    var qoshiluvchiStudentLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
     var addedTadbirStudentLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
     var addTadbirStudentLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
     var rateLiveData: MutableLiveData<MutableList<Rate>> = MutableLiveData()
     var baholashLiveData: MutableLiveData<MutableList<Rate>> = MutableLiveData()
+    var xonaDavomatLiveData: MutableLiveData<MutableList<DavomatDataItem>> = MutableLiveData()
+    var xonaStudentLiveDate: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
+
+    fun getStudentRoom() : MutableLiveData<MutableList<StudentDataItem>>{
+        return xonaStudentLiveDate
+    }
+
+    fun getXonaDavomat() : MutableLiveData<MutableList<DavomatDataItem>> {
+        return xonaDavomatLiveData
+    }
+
+    fun getAddTadbirStudent() : MutableLiveData<MutableList<StudentDataItem>> {
+        return addTadbirStudentLiveData
+    }
+
+    fun getAddedTadbirStudent() : MutableLiveData<MutableList<StudentDataItem>> {
+        return addedTadbirStudentLiveData
+    }
 
     fun getBaholash() : MutableLiveData<MutableList<Rate>> {
         return baholashLiveData
@@ -26,12 +46,12 @@ class LiveDates : ViewModel() {
         return rateLiveData
     }
 
-    fun getAddTadbirStudent() : MutableLiveData<MutableList<StudentDataItem>> {
-        return addTadbirStudentLiveData
+    fun getQoshiluvchiStudent() : MutableLiveData<MutableList<StudentDataItem>> {
+        return qoshiluvchiStudentLiveData
     }
 
-    fun getAddedTadbirStudent() : MutableLiveData<MutableList<StudentDataItem>> {
-        return addedTadbirStudentLiveData
+    fun getQoshilganStudent() : MutableLiveData<MutableList<StudentDataItem>> {
+        return qoshilganStudentLiveData
     }
 
     fun getYigilish() : MutableLiveData<MutableList<TadbirlarDataItem>> {

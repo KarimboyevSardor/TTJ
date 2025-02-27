@@ -51,8 +51,8 @@ class BaxolashViewPager : Fragment() {
         baholashAdapter = BaholashAdapter(rateList.filter { it.meeting_id == param1!! }.toMutableList(), requireContext(), requireActivity())
         liveDates.getRate().observe(requireActivity()) { it ->
             baholashAdapter.updateList(it.filter { it.meeting_id == param1!! }.toMutableList())
-            Log.d(TAG, "onCreateView: LiveData ${it.filter { it.meeting_id == param1!! }.toMutableList()}")
         }
+        Log.d(TAG, "onCreateView: $rateList")
         binding!!.apply {
             recyclerView.adapter = baholashAdapter
             btnSubmit.setOnClickListener {

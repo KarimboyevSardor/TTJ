@@ -5,6 +5,7 @@ import com.example.talabalarniroyxatgaolish.data.AddedTadbir
 import com.example.talabalarniroyxatgaolish.data.Auth
 import com.example.talabalarniroyxatgaolish.data.AuthDataItem
 import com.example.talabalarniroyxatgaolish.data.DavomatData
+import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
 import com.example.talabalarniroyxatgaolish.data.Message
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.RateData
@@ -31,7 +32,7 @@ interface ApiService {
     fun auth(
         @Path("login") login: String,
         @Path("password") password: String
-    ): Flow<Auth>
+    ): Call<Auth>
 
     @GET("api/yigilish/geturl")
     fun getYigilish() : Flow<MutableList<TadbirlarDataItem>>
@@ -44,7 +45,7 @@ interface ApiService {
         @Part("time") time: RequestBody,
         @Part("description") description: RequestBody,
         @Part("meeting_place") meeting_place: RequestBody
-    ): Flow<AddedTadbir>
+    ): Call<AddedTadbir>
 
     @Multipart
     @PUT("api/yigilish/{id}")
@@ -55,7 +56,7 @@ interface ApiService {
         @Part("time") time: RequestBody?,
         @Part("description") description: RequestBody?,
         @Part("meeting_place") meeting_place: RequestBody?
-    ): Flow<AddedTadbir>
+    ): Call<AddedTadbir>
 
     @DELETE("api/yigilish/{id}")
     fun deleteYigilish(@Path("id") id: Long) : Flow<Message>
@@ -101,4 +102,20 @@ interface ApiService {
 
     @GET("api/rate/{meeting_id}")
     fun getRateMeetingId(@Path("meeting_id") meeting_id: Long) : Flow<MutableList<Rate>>
+
+    @GET("api/davomat/{room_id}/{date}")
+    fun getRoomDavomat(@Path("room_id") room_id: Long, @Path("date") date: String) : Flow<MutableList<DavomatDataItem>>
+
+    @GET("api/student/{room_id}")
+    fun getRoomStudent(@Path("room_id") room_id: Long) : Flow<MutableList<StudentDataItem>>
+
+    @GET("api/davomat/{room_id}/{date}")
+    fun getRoomDavomat1(@Path("room_id") room_id: Long, @Path("date") date: String) : Call<MutableList<DavomatDataItem>>
+
+    @GET("api/student/{room_id}")
+    fun getRoomStudent1(@Path("room_id") room_id: Long) : Call<MutableList<StudentDataItem>>
+
+    @POST("api/davomat")
+    fun setDavomat(@Body davomat: List<DavomatDataItem>) : Call<MutableList<DavomatDataItem>>
+
 }

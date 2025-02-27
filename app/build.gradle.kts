@@ -66,8 +66,6 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.8")
     //glide
     implementation("com.github.bumptech.glide:glide:4.15.0")
-    //calendar
-    implementation("com.github.afsalkodasseri:KalendarView:2.7")
     //lottie animation
     implementation("com.airbnb.android:lottie:5.2.0")
 

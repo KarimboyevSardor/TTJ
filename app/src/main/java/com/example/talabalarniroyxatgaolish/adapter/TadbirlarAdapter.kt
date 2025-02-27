@@ -46,6 +46,15 @@ class TadbirlarAdapter(
         val yigilishData = yigilishlarList[position]
         val rates = rateStudent.filter { it.meeting_id == yigilishData.id }
         if (rates.isNotEmpty()) {
+            holder.binding.yigilishChipgroupRvItem.removeAllViews()
+            for (i in rates.indices) {
+                val chip = Chip(context)
+                chip.text = rates[i].name
+                chip.setOnClickListener {
+                    Toast.makeText(context, chip.text.toString(), Toast.LENGTH_SHORT).show()
+                }
+                holder.binding.yigilishChipgroupRvItem.addView(chip)
+            }
             holder.binding.tadbirStudentRvItem.visibility = View.VISIBLE
         } else {
             holder.binding.tadbirStudentRvItem.visibility = View.GONE
@@ -54,15 +63,6 @@ class TadbirlarAdapter(
         holder.binding.yigilishName.text = yigilishData.name
         holder.binding.yigilishVaqti.text = yigilishData.time
         holder.binding.yigilishDescription.text = yigilishData.description
-        holder.binding.yigilishChipgroupRvItem.removeAllViews()
-        for (i in rates.indices) {
-            val chip = Chip(context)
-            chip.text = rates[i].name
-            chip.setOnClickListener {
-                Toast.makeText(context, chip.text.toString(), Toast.LENGTH_SHORT).show()
-            }
-            holder.binding.yigilishChipgroupRvItem.addView(chip)
-        }
         if (yigilishData.image_base64 != null) {
             Glide.with(context)
                 .load(yigilishData.image_base64)
@@ -72,16 +72,6 @@ class TadbirlarAdapter(
         }
         holder.itemView.setOnClickListener {
             onClickItem(yigilishData)
-        }
-    }
-
-    private fun base64ToBitmap(base64String: String): Bitmap? {
-        return try {
-            val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
-            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-            null
         }
     }
 }

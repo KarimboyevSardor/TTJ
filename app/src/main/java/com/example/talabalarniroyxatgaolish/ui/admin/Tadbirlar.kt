@@ -75,7 +75,6 @@ class Tadbirlar : Fragment() {
         }
         liveDates.getRate().observe(requireActivity()) {
             tadbirlarAdapter.filterRate(it)
-            Log.d(TAG, "onCreateView: ${it.size}")
         }
 
         binding!!.apply {
@@ -120,19 +119,16 @@ class Tadbirlar : Fragment() {
         }
         lifecycleScope.launch {
             if (isAdded) {
-                if (rateList.isEmpty()) {
-                    yigilishlarAdminVm.getRates(requireContext())
-                    yigilishlarAdminVm._rates.collect {
-                        when (it) {
-                            is Resource.Error -> {
-                                Log.d(TAG, "getYigilishlar: ${it.e.message}")
-                            }
-
-                            is Resource.Loading -> {}
-                            is Resource.Success -> {
-                                rateList = it.data
-                                liveDates.rateLiveData.value = rateList
-                            }
+                yigilishlarAdminVm.getRates(requireContext())
+                yigilishlarAdminVm._rates.collect {
+                    when (it) {
+                        is Resource.Error -> {
+                            Log.d(TAG, "getYigilishlar: ${it.e.message}")
+                        }
+                        is Resource.Loading -> {}
+                        is Resource.Success -> {
+                            rateList = it.data
+                            liveDates.rateLiveData.value = rateList
                         }
                     }
                 }

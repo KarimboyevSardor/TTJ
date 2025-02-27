@@ -15,4 +15,16 @@
     <color name="light_green">#C8E6C9</color>
     <color name="dark_green">#388E3C</color>
     <color name="korinmas">#3FFFFFFF</color>
+    <color name="sariq">#FF9800</color>
+    <color name="red_standard">#FF0000</color>
+    <color name="red_dark">#8B0000</color>
+    <color name="red_firebrick">#B22222</color>
+    <color name="red_crimson">#DC143C</color>
+    <color name="red_indian">#CD5C5C</color>
+    <color name="red_light_coral">#F08080</color>
+    <color name="red_salmon">#FA8072</color>
+    <color name="red_tomato">#FF6347</color>
+    <color name="red_orange_red">#FF4500</color>
+    <color name="red_deep_pink">#FF1493</color>
+
 </resources>

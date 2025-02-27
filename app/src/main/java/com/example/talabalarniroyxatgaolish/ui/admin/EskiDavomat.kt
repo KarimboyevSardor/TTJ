@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -13,6 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.CalendarViewPagerAdapter
@@ -28,6 +31,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import kotlin.math.abs
 
 
 private const val ARG_PARAM1 = "param1"
@@ -65,8 +69,8 @@ class EskiDavomat : Fragment() {
         val calendar = Calendar.getInstance()
         oy = calendar.get(Calendar.MONTH) + 1
         currentMonth = oy
-        toolbar1.visibility = View.VISIBLE
-        bottomNavigation.visibility = View.VISIBLE
+        toolbar1.visibility = VISIBLE
+        bottomNavigation.visibility = VISIBLE
         getDavomat()
         setDate()
         calendarViewPagerAdapter = CalendarViewPagerAdapter(this,currentMonth + 12)
@@ -78,14 +82,14 @@ class EskiDavomat : Fragment() {
 
         binding!!.apply {
             viewpager2.adapter = calendarViewPagerAdapter
-//            viewpager2.layoutDirection = View.LAYOUT_DIRECTION_RTL
-//            viewpager2.currentItem = 0
-            viewpager2.currentItem = calendarViewPagerAdapter.itemCount
+            viewpager2.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            viewpager2.setCurrentItem(calendarViewPagerAdapter.itemCount - 1, false)
             viewpager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                 }
             })
+
             studentDavomatRv.adapter = davomatAdapter
 //            calenarView.setOnDateChangeListener { p0, p1, p2, p3 ->
 //                val date = "$p1-${p2 + 1}-$p3"
@@ -104,6 +108,15 @@ class EskiDavomat : Fragment() {
         }
 
         return binding!!.root
+    }
+
+    fun formatDate(date: String): String {
+        val parts = date.split("-")
+        if (parts.size != 3) return date
+        val year = parts[0]
+        val month = parts[1].toInt().toString()
+        val day = parts[2].toInt().toString()
+        return "$year-$month-$day"
     }
 
     private fun setDate() {

@@ -70,7 +70,8 @@ class TadbirQoshish : Fragment(), View.OnClickListener {
     private lateinit var studentBiriktirishAdapter: StudentBiriktirishAdapter
     private lateinit var liveDates: LiveDates
     private lateinit var tadbirStudentAdapter: TadbirStudentAdapter
-    var addTadbirStudents: MutableList<StudentDataItem> = mutableListOf()
+    private lateinit var qoshilganStudents: MutableList<StudentDataItem>
+    private lateinit var qoshiluvchiStudents: MutableList<StudentDataItem>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -78,26 +79,27 @@ class TadbirQoshish : Fragment(), View.OnClickListener {
         binding = FragmentTadbirQoshishAdminBinding.inflate(layoutInflater)
         addYigilishAdminVm = ViewModelProvider(requireActivity())[AddYigilishAdminVm::class]
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
-        addTadbirStudents = mutableListOf()
-        liveDates.getAddedTadbirStudent().observe(requireActivity()) {
-            if (it.isNotEmpty()) {
-                binding!!.tadbirTv.visibility = View.VISIBLE
-            } else {
-                binding!!.tadbirTv.visibility = View.GONE
-            }
-        }
-        liveDates.addedTadbirStudentLiveData.value = addedTadbirStudentList
+        qoshiluvchiStudents = mutableListOf()
+        qoshilganStudents = mutableListOf()
+        liveDates.qoshilganStudentLiveData.value = qoshilganStudents
         
-        tadbirStudentAdapter = TadbirStudentAdapter(addedTadbirStudentList) { student ->
-            addedTadbirStudentList.remove(student)
-            addTadbirStudents.add(student)
-            liveDates.addedTadbirStudentLiveData.value = addedTadbirStudentList
-            liveDates.addTadbirStudentLiveData.value = addTadbirStudents
+        tadbirStudentAdapter = TadbirStudentAdapter(qoshilganStudents) { student ->
+            qoshilganStudents.remove(student)
+            qoshiluvchiStudents.add(student)
+            liveDates.qoshilganStudentLiveData.value = qoshilganStudents
+            liveDates.qoshiluvchiStudentLiveData.value = qoshiluvchiStudents
         }
-        liveDates.getAddedTadbirStudent().observe(requireActivity()) {
+        liveDates.getQoshilganStudent().observe(requireActivity()) {
             tadbirStudentAdapter.filter(it)
         }
-        binding!!.apply {
+        binding?.apply {
+            liveDates.getQoshilganStudent().observe(requireActivity()) {
+                if (it.isNotEmpty()) {
+                    tadbirTv.visibility = View.VISIBLE
+                } else {
+                    tadbirTv.visibility = View.GONE
+                }
+            }
             (activity as AppCompatActivity).setSupportActionBar(toolbar)
             (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
             val backIcon = toolbar.navigationIcon
@@ -168,13 +170,13 @@ class TadbirQoshish : Fragment(), View.OnClickListener {
         val bottomSheetDialogBinding = FragmentStudentUpdateRoomBottomSheetDialogAdminBinding.inflate(layoutInflater)
         bottomSheetDialog.setContentView(bottomSheetDialogBinding.root)
         bottomSheetDialogBinding.apply {
-            addTadbirStudents = studentlarList
-            liveDates.addTadbirStudentLiveData.value = addTadbirStudents
-            studentBiriktirishAdapter = StudentBiriktirishAdapter(addTadbirStudents) { student ->
-                addedTadbirStudentList.add(student)
-                addTadbirStudents.remove(student)
-                liveDates.addTadbirStudentLiveData.value = addTadbirStudents
-                liveDates.addedTadbirStudentLiveData.value = addedTadbirStudentList
+            qoshiluvchiStudents = studentlarList
+            liveDates.qoshiluvchiStudentLiveData.value = qoshiluvchiStudents
+            studentBiriktirishAdapter = StudentBiriktirishAdapter(qoshiluvchiStudents) { student ->
+                qoshilganStudents.add(student)
+                qoshiluvchiStudents.remove(student)
+                liveDates.qoshiluvchiStudentLiveData.value = qoshiluvchiStudents
+                liveDates.qoshilganStudentLiveData.value = qoshilganStudents
                 val chip = Chip(requireContext())
                 chip.text = student.name
                 chip.tag = student.id
@@ -182,17 +184,17 @@ class TadbirQoshish : Fragment(), View.OnClickListener {
                 chip.setOnClickListener(this@TadbirQoshish)
                 chip.setOnCloseIconClickListener {
                     binding!!.chipgroup.removeView(chip)
-                    addTadbirStudents.add(addedTadbirStudentList.filter { it.id == chip.tag.toString().toLong() }[0])
-                    liveDates.addTadbirStudentLiveData.value = addTadbirStudents
-                    addedTadbirStudentList.remove(addedTadbirStudentList.filter { it.id == chip.tag.toString().toLong() }[0])
-                    liveDates.addedTadbirStudentLiveData.value = addedTadbirStudentList
+                    qoshiluvchiStudents.add(qoshilganStudents.filter { it.id == chip.tag.toString().toLong() }[0])
+                    liveDates.qoshiluvchiStudentLiveData.value = qoshiluvchiStudents
+                    qoshilganStudents.remove(qoshilganStudents.filter { it.id == chip.tag.toString().toLong() }[0])
+                    liveDates.qoshilganStudentLiveData.value = qoshilganStudents
                 }
                 binding!!.chipgroup.addView(chip)
             }
-            liveDates.getAddTadbirStudent().observe(requireActivity()) {
+            liveDates.getQoshiluvchiStudent().observe(requireActivity()) {
                 studentBiriktirishAdapter.filter(it)
             }
-            studentBiriktirishAdapter.filter(addTadbirStudents)
+            studentBiriktirishAdapter.filter(qoshiluvchiStudents)
             studentRoomRv.adapter = studentBiriktirishAdapter
             studentSearch.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -249,6 +251,10 @@ class TadbirQoshish : Fragment(), View.OnClickListener {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 
     private fun saveYigilish(yigilishName: String, yigilishMaqsadi: String, date: String, time: String, yigilishJoyi: String) {
         var imagePart = createMultipartFromUri()
@@ -267,43 +273,10 @@ class TadbirQoshish : Fragment(), View.OnClickListener {
                     description = description,
                     meetingPlace = meetingPlace,
                     image = imagePart,
-                    context = requireContext()
+                    context = requireContext(),
+                    activity = requireActivity(),
+                    qoshilganStudents = qoshilganStudents
                 )
-                addYigilishAdminVm._stateAddYigilish.collect{
-                    when (it) {
-                        is Resource.Error -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "Ma'lumotni saqlab bo'lmadi.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        is Resource.Loading -> {
-
-                        }
-                        is Resource.Success -> {
-                            val rateStudents: MutableList<AddedRate> = mutableListOf()
-                            for (i in 0 until addedTadbirStudentList.size) {
-                                rateStudents.add(AddedRate(it.data.meeting.id, "0", addedTadbirStudentList[i].id))
-                            }
-                            val yigilish = TadbirlarDataItem(
-                                description = it.data.meeting.description,
-                                id = it.data.meeting.id,
-                                image_base64 = it.data.meeting.image_base64,
-                                meeting_place = it.data.meeting.meeting_place,
-                                name = it.data.meeting.name,
-                                time = it.data.meeting.time,
-                                image_name = "",
-                                image_path = ""
-                            )
-                            tadbirlarList.add(yigilish)
-                            liveDates.tarbirlarLiveData.value = tadbirlarList
-                            val addRate = AddRateReq(rateStudents)
-                            addYigilishAdminVm.addRate(requireContext(), addRate, requireActivity())
-                            requireActivity().onBackPressed()
-                        }
-                    }
-                }
             }
         }
     }

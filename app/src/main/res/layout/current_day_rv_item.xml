@@ -11,16 +11,14 @@
     >
 
     <TextView
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        android:padding="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="1"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textAlignment="center"
         android:id="@+id/calendar_day_tv"
-        />
+        android:layout_width="402dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/current_day_background"
+        android:text="22"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
 </com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,65 @@
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:elevation="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    android:layout_margin="10dp"
+    android:backgroundTint="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <!-- Student ismi va ID -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvStudentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Karimboyev Sardor"
+                android:textColor="#222222"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fakultet_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:text="Telekommunikatsiya texnologiyalari injineringi fakulteti"
+                android:textColor="#777777"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/kurs_tv"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:text="4-kurs talabasi"
+                android:textColor="#777777"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Davomat uchun Switch -->
+        <CheckBox
+            android:enabled="true"
+            android:id="@+id/switchAttendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bor"
+            android:textSize="14sp"
+            android:textColor="#333333"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -27,6 +27,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.StudentBiriktirishAdapter
 import com.example.talabalarniroyxatgaolish.data.AddRateReq
@@ -36,7 +37,6 @@ import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 import com.example.talabalarniroyxatgaolish.databinding.FragmentStudentUpdateRoomBottomSheetDialogAdminBinding
 import com.example.talabalarniroyxatgaolish.databinding.FragmentYigilishlarTadbirOchirishViewPagerAdminBinding
-import com.example.talabalarniroyxatgaolish.utils.Utils.addedTadbirStudentList
 import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
 import com.example.talabalarniroyxatgaolish.utils.Utils.studentlarList
 import com.example.talabalarniroyxatgaolish.utils.Utils.tadbirlarList
@@ -46,7 +46,6 @@ import com.example.talabalarniroyxatgaolish.vm.YigilishlarniYangilashOchirishAdm
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -73,13 +72,13 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
 
     private val TAG = "YIGILISHLARYANGILASHOCHIRISH"
     private var uri: Uri? = null
-    private var yigilishDataId: Long = 0
     private lateinit var yigilishData: TadbirlarDataItem
     lateinit var yigilishlarniYangilashOchirishAdminVm: YigilishlarniYangilashOchirishAdminVm
     private var binding: FragmentYigilishlarTadbirOchirishViewPagerAdminBinding? = null
     lateinit var liveDates: LiveDates
     private var rates: MutableList<Rate> = mutableListOf()
-    private var addTadbirStudents: MutableList<StudentDataItem> = mutableListOf()
+    private lateinit var qoshilganStudents: MutableList<StudentDataItem>
+    private lateinit var qoshiluvchiStudents: MutableList<StudentDataItem>
     lateinit var studentBiriktirishAdapter: StudentBiriktirishAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,25 +88,16 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
         yigilishlarniYangilashOchirishAdminVm = ViewModelProvider(requireActivity())[YigilishlarniYangilashOchirishAdminVm::class]
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         yigilishData = tadbirlarList.filter { it.id == param1!!.toLong() }[0]
-        addTadbirStudents = studentlarList
+        qoshilganStudents = mutableListOf()
+        qoshiluvchiStudents = mutableListOf()
+        qoshiluvchiStudents = studentlarList
         binding!!.apply {
-            rates = rateList.filter { it.meeting_id == param1!! }.toMutableList()
-            if (rates.isNotEmpty()) {
-                tadbirTv.visibility = View.VISIBLE
-                for (i in 0 until rates.size) {
-                    for (j in 0 until studentlarList.size) {
-                        if (studentlarList[j].id == rates[i].student_id) {
-                            addTadbirStudents.removeAt(j)
-                            break
-                        }
-                    }
-                }
-            } else {
-                tadbirTv.visibility = View.GONE
-            }
+            addRate()
             addedChip(yigilishEditDeleteChip)
             if (yigilishData.image_base64 != null) {
-                Picasso.get().load(yigilishData.image_base64).into(yigilishImage)
+                Glide.with(requireContext())
+                    .load(yigilishData.image_base64)
+                    .into(yigilishImage)
             } else {
                 rasmJoylashTv.visibility = View.VISIBLE
             }
@@ -168,8 +158,24 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
                 }
             }
         }
-
         return binding!!.root
+    }
+
+    private fun addRate() {
+        rates = rateList.filter { it.meeting_id == param1!! }.toMutableList()
+        if (rates.isNotEmpty()) {
+            binding?.tadbirTv?.visibility = View.VISIBLE
+            for (i in 0 until rates.size) {
+                for (j in 0 until studentlarList.size) {
+                    if (studentlarList[j].id == rates[i].student_id) {
+                        qoshiluvchiStudents.removeAt(j)
+                        break
+                    }
+                }
+            }
+        } else {
+            binding?.tadbirTv?.visibility = View.GONE
+        }
     }
 
     private fun showBottomSheetDialog() {
@@ -177,13 +183,13 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
         val bottomSheetDialogBinding = FragmentStudentUpdateRoomBottomSheetDialogAdminBinding.inflate(layoutInflater)
         bottomSheetDialog.setContentView(bottomSheetDialogBinding.root)
         bottomSheetDialogBinding.apply {
-            liveDates.addTadbirStudentLiveData.value = addTadbirStudents
-            studentBiriktirishAdapter = StudentBiriktirishAdapter(addTadbirStudents) { student ->
+            liveDates.qoshiluvchiStudentLiveData.value = qoshiluvchiStudents
+            studentBiriktirishAdapter = StudentBiriktirishAdapter(qoshiluvchiStudents) { student ->
                 addedStudent(student,param1!!)
-                addedTadbirStudentList.add(student)
-                addTadbirStudents.remove(student)
-                liveDates.addTadbirStudentLiveData.value = addTadbirStudents
-                liveDates.addedTadbirStudentLiveData.value = addedTadbirStudentList
+                qoshilganStudents.add(student)
+                qoshiluvchiStudents.remove(student)
+                liveDates.qoshiluvchiStudentLiveData.value = qoshiluvchiStudents
+                liveDates.qoshilganStudentLiveData.value = qoshilganStudents
                 val chip = Chip(requireContext())
                 chip.text = student.name
                 chip.tag = student.id
@@ -191,17 +197,17 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
                 chip.setOnClickListener(this@TarbirYangilashOchirishViewPager)
                 chip.setOnCloseIconClickListener {
                     binding!!.yigilishEditDeleteChip.removeView(chip)
-                    addTadbirStudents.add(addedTadbirStudentList.filter { it.id == chip.tag.toString().toLong() }[0])
-                    liveDates.addTadbirStudentLiveData.value = addTadbirStudents
-                    addedTadbirStudentList.remove(addedTadbirStudentList.filter { it.id == chip.tag.toString().toLong() }[0])
-                    liveDates.addedTadbirStudentLiveData.value = addedTadbirStudentList
+                    deleteStudent(rateList.filter { it.meeting_id == param1!! && it.student_id == student.id }[0].id, chip)
+                    qoshiluvchiStudents.add(qoshilganStudents.filter { it.id == chip.tag.toString().toLong() }[0])
+                    liveDates.qoshiluvchiStudentLiveData.value = qoshiluvchiStudents
+                    qoshilganStudents.remove(qoshilganStudents.filter { it.id == chip.tag.toString().toLong() }[0])
+                    liveDates.qoshilganStudentLiveData.value = qoshilganStudents
                 }
                 binding!!.yigilishEditDeleteChip.addView(chip)
             }
-            liveDates.getAddTadbirStudent().observe(requireActivity()) {
+            liveDates.getQoshiluvchiStudent().observe(requireActivity()) {
                 studentBiriktirishAdapter.filter(it)
             }
-            studentBiriktirishAdapter.filter(addTadbirStudents)
             studentRoomRv.adapter = studentBiriktirishAdapter
             studentSearch.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -222,13 +228,14 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
         addRate.add(AddedRate(meeting_id = tadbir_id, rate = "0", student_id = student.id, emoji = ""))
         val addRateReq = AddRateReq(addRate)
         yigilishlarniYangilashOchirishAdminVm.addRate(requireContext(), addRateReq, requireActivity())
+        addRate()
     }
 
     private fun searchStudent(query: String) {
         var students: MutableList<StudentDataItem> = mutableListOf()
-        for (i in 0 until addTadbirStudents.size) {
-            if (addTadbirStudents[i].name.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT))) {
-                students.add(addTadbirStudents[i])
+        for (i in 0 until qoshiluvchiStudents.size) {
+            if (qoshiluvchiStudents[i].name.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT))) {
+                students.add(qoshiluvchiStudents[i])
             }
         }
         studentBiriktirishAdapter.filter(students)
@@ -245,6 +252,10 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
                 Toast.makeText(requireContext(), "${chip.text}", Toast.LENGTH_SHORT).show()
             }
             chip.setOnCloseIconClickListener {
+//                qoshiluvchiStudents.add(studentlarList.filter { it.id == rates.filter { it.id == chip.tag.toString().toLong()}[0].student_id}[0])
+//                liveDates.qoshiluvchiStudentLiveData.value = qoshiluvchiStudents
+//                qoshilganStudents.remove(qoshilganStudents.filter { it.id == rates[i].student_id }[0])
+//                liveDates.qoshilganStudentLiveData.value = qoshilganStudents
                 deleteStudent(chip.tag.toString().toLong(), chip)
             }
             chip_group.addView(chip)
@@ -252,9 +263,9 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
     }
 
     private fun deleteStudent(id: Long, chip: Chip) {
-        Log.d(TAG, "deleteStudent: ")
         yigilishlarniYangilashOchirishAdminVm.deleteRate(requireContext(), id, chip, binding!!.yigilishEditDeleteChip)
         liveDates.rateLiveData.value = rateList
+        addRate()
     }
 
     @Deprecated("Deprecated in Java")
@@ -371,41 +382,9 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
                     description = description,
                     meeting_place = meetingPlace,
                     image = imagePart,
-                    context = requireContext()
+                    context = requireContext(),
+                    activity = requireActivity()
                 )
-                yigilishlarniYangilashOchirishAdminVm._stateYigilish.collect{ it1 ->
-                    when (it1) {
-                        is Resource.Error -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "Ma'lumotni saqlab bo'lmadi.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        is Resource.Loading -> {
-
-                        }
-                        is Resource.Success -> {
-                            val yigilish = TadbirlarDataItem(
-                                description = it1.data.meeting.description,
-                                id = it1.data.meeting.id,
-                                image_base64 = it1.data.meeting.image_base64,
-                                meeting_place = it1.data.meeting.meeting_place,
-                                name = it1.data.meeting.name,
-                                time = it1.data.meeting.time,
-                                image_name = "",
-                                image_path = ""
-                            )
-                            tadbirlarList[tadbirlarList.indexOf(tadbirlarList.filter { it.id == yigilish.id }[0])] = yigilish
-                            liveDates.tarbirlarLiveData.value = tadbirlarList
-                            Toast.makeText(
-                                requireContext(),
-                                "Ma'lumot saqlandi.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
             }
         }
     }
@@ -453,11 +432,6 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
             type = "image/*"
         }
         galleryLauncher.launch(intent)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 
     override fun onClick(p0: View?) {

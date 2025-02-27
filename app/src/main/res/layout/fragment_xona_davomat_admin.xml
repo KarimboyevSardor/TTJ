@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.admin.XonaDavomat">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.admin.XonaDavomat"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:background="@color/green"
+        app:title="Davomat"
+        app:titleTextColor="@color/white"
+        android:id="@+id/toolbar"
+        />
+    <!-- RecyclerView studentlar uchun -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvStudentList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/student_add_davomat_rv_item"
+        />
 
-</FrameLayout>
+    <!-- Davomatni saqlash tugmasi -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saqlash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Saqlash"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:textAllCaps="false"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#2196F3"
+        android:textColor="#FFFFFF"/>
+
+</LinearLayout>
