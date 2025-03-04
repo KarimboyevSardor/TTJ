@@ -1,5 +1,6 @@
 package com.example.talabalarniroyxatgaolish.utils
 
+import com.example.talabalarniroyxatgaolish.data.AdminDataItem
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
 import com.example.talabalarniroyxatgaolish.data.Date
 import com.example.talabalarniroyxatgaolish.data.Oy
@@ -17,4 +18,6 @@ object Utils {
     var rateList: MutableList<Rate> = mutableListOf()
     var dates: MutableList<Date> = mutableListOf()
     var oyList: MutableList<Oy> = mutableListOf()
+    var currentDateDavomat: MutableList<DavomatDataItem> = mutableListOf()
+    var adminsList: MutableList<AdminDataItem> = mutableListOf()
 }

@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.StudentDavomatAdapter
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
@@ -18,6 +20,7 @@ import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.databinding.FragmentDavomatAdminBinding
 import com.example.talabalarniroyxatgaolish.databinding.FragmentXonaDavomatAdminBinding
+import com.example.talabalarniroyxatgaolish.utils.Utils.currentDateDavomat
 import com.example.talabalarniroyxatgaolish.utils.Utils.xonalarList
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
@@ -28,7 +31,7 @@ import kotlinx.coroutines.launch
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class XonaDavomat : Fragment() {
+class XonaDavomat : Fragment(), StudentDavomatAdapter.AdapterListener {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -57,7 +60,13 @@ class XonaDavomat : Fragment() {
         xonaDavomatAdminVm = ViewModelProvider(requireActivity())[XonaDavomatAdminVm::class]
         room_id = arguments?.getLong("room_id")!!
         date = arguments?.getString("date")!!
-        getRoomDavomat()
+        qoshilganStudent = mutableListOf()
+        qoshilganStudent = currentDateDavomat.filter { it.room_id == room_id }.toMutableList()
+        if (qoshilganStudent.isEmpty()) {
+            getStudents()
+        } else {
+            setAdapter()
+        }
         binding!!.apply {
             toolbar.title = xonalarList.filter { it.id == room_id }[0].room_count + " - xona"
             setHasOptionsMenu(true)
@@ -73,43 +82,13 @@ class XonaDavomat : Fragment() {
                 setDavomat()
             }
         }
-
         return binding!!.root
     }
 
-//    private fun getRoomDavomat1() {
-//        lifecycleScope.launch {
-//            if (isAdded) {
-//                try {
-//                    xonaDavomatAdminVm.getRoomDate1(requireContext(), formatDate(date), room_id, requireActivity())
-//                    if (liveDates.davomatLiveData.value!!.isEmpty()) {
-//                        getStudents1()
-//                    } else {
-//                        setAdapter(liveDates.davomatLiveData.value!!)
-//                    }
-//                } catch (e: Exception) {
-//                    Log.d(TAG, "getStudents: ${e.message}")
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun getStudents1() {
-//        lifecycleScope.launch {
-//            if (isAdded) {
-//                try {
-//                    xonaDavomatAdminVm.getStudentRoom1(requireContext(), room_id, requireActivity())
-//                    if (liveDates.xonaStudentLiveDate.value!!.isNotEmpty()) {
-//                        setStudent(liveDates.xonaStudentLiveDate.value!!)
-//                    } else {
-//                        setAdapter(mutableListOf())
-//                    }
-//                } catch (e: Exception) {
-//                    Log.d(TAG, "getStudents: ${e.message}")
-//                }
-//            }
-//        }
-//    }
+    private fun setAdapter() {
+        studentDavomatAdapter = StudentDavomatAdapter(qoshilganStudent, this)
+        binding!!.rvStudentList.adapter = studentDavomatAdapter
+    }
 
     private fun setDavomat() {
         if (qoshilganStudent.isNotEmpty()) {
@@ -125,50 +104,7 @@ class XonaDavomat : Fragment() {
         }
     }
 
-    private fun setAdapter(qoshilganStudent: MutableList<DavomatDataItem>) {
-        if (qoshilganStudent.isEmpty()) {
-            studentDavomatAdapter = StudentDavomatAdapter(mutableListOf()) { position, checkBox ->
-                if (checkBox.isChecked) {
-                    qoshilganStudent[position].is_there = true
-                    liveDates.xonaDavomatLiveData.value = qoshilganStudent
-                } else {
-                    qoshilganStudent[position].is_there = false
-                    liveDates.xonaDavomatLiveData.value = qoshilganStudent
-                }
-                liveDates.xonaDavomatLiveData.observe(requireActivity()) {
-                    studentDavomatAdapter.filter(it)
-                }
-            }
-        } else {
-            studentDavomatAdapter = StudentDavomatAdapter(qoshilganStudent) { position, checkBox ->
-                if (checkBox.isChecked) {
-                    qoshilganStudent[position].is_there = true
-                    liveDates.xonaDavomatLiveData.value = qoshilganStudent
-                } else {
-                    qoshilganStudent[position].is_there = false
-                    liveDates.xonaDavomatLiveData.value = qoshilganStudent
-                }
-                liveDates.xonaDavomatLiveData.observe(requireActivity()) {
-                    studentDavomatAdapter.filter(it)
-                }
-            }
-        }
-        binding?.rvStudentList?.adapter = studentDavomatAdapter
-    }
-
-    fun formatDate(inputDate: String): String {
-        val parts = inputDate.split("-")
-        if (parts.size != 3) return "Noto'g'ri format"
-
-        val year = parts[0]
-        val month = parts[1].padStart(2, '0') // Oy oldiga 0 qo'shish
-        val day = parts[2].padStart(2, '0')   // Kun oldiga 0 qo'shish
-
-        return "$year-$month-$day"
-    }
-
     private fun setStudent(students: MutableList<StudentDataItem>) {
-        val qoshilganStudent: MutableList<DavomatDataItem> = mutableListOf()
         for (i in 0 until students.size) {
             qoshilganStudent.add(
                 DavomatDataItem(
@@ -182,9 +118,8 @@ class XonaDavomat : Fragment() {
                     course_count = students[i].course_count.toLong()
                 )
             )
-            liveDates.xonaDavomatLiveData.value = qoshilganStudent
-            setAdapter(qoshilganStudent)
         }
+        setAdapter()
     }
 
     private fun getStudents() {
@@ -199,41 +134,7 @@ class XonaDavomat : Fragment() {
                             }
                             is Resource.Loading -> {}
                             is Resource.Success -> {
-                                if (it.data.isEmpty()) {
-                                    setAdapter(mutableListOf())
-                                } else {
-                                    setStudent(it.data)
-                                }
-
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.d(TAG, "getStudents: ${e.message}")
-                }
-            }
-        }
-    }
-
-    private fun getRoomDavomat() {
-        lifecycleScope.launch {
-            xonaDavomatAdminVm.getRoomDate(requireContext(), formatDate(date), room_id)
-            if (isAdded) {
-                try {
-                    xonaDavomatAdminVm._roomDavomat.collect {
-                        when (it) {
-                            is Resource.Error -> {
-                                Log.d(TAG, "getStudents: ${it.e.message}")
-                            }
-                            is Resource.Loading -> {}
-                            is Resource.Success -> {
-                                delay(100)
-                                if (it.data.isEmpty()) {
-                                    getStudents()
-                                } else {
-                                    liveDates.xonaDavomatLiveData.value = it.data
-                                    setAdapter(it.data)
-                                }
+                                setStudent(it.data)
                             }
                         }
                     }
@@ -262,7 +163,7 @@ class XonaDavomat : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        liveDates.xonaDavomatLiveData.value = mutableListOf()
+        qoshilganStudent = mutableListOf()
         Log.d(TAG, "onStart: ")
     }
 
@@ -284,5 +185,13 @@ class XonaDavomat : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy: ")
+    }
+
+    override fun onAdapterFunctionCalled(position: Int, switch: CheckBox) {
+        if (switch.isChecked) {
+            qoshilganStudent[position].is_there = true
+        } else {
+            qoshilganStudent[position].is_there = false
+        }
     }
 }

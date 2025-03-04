@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
-import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.databinding.StudentAddDavomatRvItemBinding
 
-class StudentDavomatAdapter(var studentList: MutableList<DavomatDataItem>, val onClick: (position: Int, CheckBox) -> Unit) : RecyclerView.Adapter<StudentDavomatAdapter.StudentDavomatAdapterVM>() {
+class StudentDavomatAdapter(var studentList: MutableList<DavomatDataItem>, val listener: AdapterListener) : RecyclerView.Adapter<StudentDavomatAdapter.StudentDavomatAdapterVM>() {
+
+    interface AdapterListener {
+        fun onAdapterFunctionCalled(position: Int, switch: CheckBox)
+    }
 
     fun filter(studentList: MutableList<DavomatDataItem>) {
         val diffCallback = BaholashDiffUtil(this.studentList, studentList)
@@ -50,7 +53,7 @@ class StudentDavomatAdapter(var studentList: MutableList<DavomatDataItem>, val o
         holder.binding.kursTv.text = "${student.course_count} - kurs talabasi"
         holder.binding.switchAttendance.isChecked = student.is_there
         holder.binding.switchAttendance.setOnClickListener {
-            onClick(position, holder.binding.switchAttendance)
+            listener.onAdapterFunctionCalled(position, holder.binding.switchAttendance)
         }
     }
 

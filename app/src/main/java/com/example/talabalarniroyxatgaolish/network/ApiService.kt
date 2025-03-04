@@ -2,10 +2,14 @@ package com.example.talabalarniroyxatgaolish.network
 
 import com.example.talabalarniroyxatgaolish.data.AddedRate
 import com.example.talabalarniroyxatgaolish.data.AddedTadbir
+import com.example.talabalarniroyxatgaolish.data.AdminData
+import com.example.talabalarniroyxatgaolish.data.AdminDataItem
 import com.example.talabalarniroyxatgaolish.data.Auth
+import com.example.talabalarniroyxatgaolish.data.AuthData
 import com.example.talabalarniroyxatgaolish.data.AuthDataItem
 import com.example.talabalarniroyxatgaolish.data.DavomatData
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
+import com.example.talabalarniroyxatgaolish.data.LoginData
 import com.example.talabalarniroyxatgaolish.data.Message
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.RateData
@@ -103,19 +107,24 @@ interface ApiService {
     @GET("api/rate/{meeting_id}")
     fun getRateMeetingId(@Path("meeting_id") meeting_id: Long) : Flow<MutableList<Rate>>
 
-    @GET("api/davomat/{room_id}/{date}")
-    fun getRoomDavomat(@Path("room_id") room_id: Long, @Path("date") date: String) : Flow<MutableList<DavomatDataItem>>
-
     @GET("api/student/{room_id}")
     fun getRoomStudent(@Path("room_id") room_id: Long) : Flow<MutableList<StudentDataItem>>
-
-    @GET("api/davomat/{room_id}/{date}")
-    fun getRoomDavomat1(@Path("room_id") room_id: Long, @Path("date") date: String) : Call<MutableList<DavomatDataItem>>
-
-    @GET("api/student/{room_id}")
-    fun getRoomStudent1(@Path("room_id") room_id: Long) : Call<MutableList<StudentDataItem>>
 
     @POST("api/davomat")
     fun setDavomat(@Body davomat: List<DavomatDataItem>) : Call<MutableList<DavomatDataItem>>
 
+    @GET("api/admin")
+    fun getAdmin() : Flow<AdminData>
+
+    @DELETE("api/admin/delete/{id}")
+    fun deleteAdmin(@Path("id") id: Long) : Call<Message>
+
+    @GET("api/auth/{id}")
+    fun getAuth(@Path("id") id: Long) : Flow<AuthDataItem>
+
+    @PUT("api/admin/update")
+    fun editAdmin(@Body adminDataItem: AdminDataItem) : Call<AdminDataItem>
+
+    @PUT("api/auth/update")
+    fun editAuth(@Body auth: AuthDataItem) : Call<AuthDataItem>
 }

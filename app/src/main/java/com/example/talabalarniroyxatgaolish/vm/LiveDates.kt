@@ -2,6 +2,8 @@ package com.example.talabalarniroyxatgaolish.vm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.talabalarniroyxatgaolish.data.AdminDataItem
+import com.example.talabalarniroyxatgaolish.data.AuthDataItem
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
@@ -19,15 +21,25 @@ class LiveDates : ViewModel() {
     var addTadbirStudentLiveData: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
     var rateLiveData: MutableLiveData<MutableList<Rate>> = MutableLiveData()
     var baholashLiveData: MutableLiveData<MutableList<Rate>> = MutableLiveData()
-    var xonaDavomatLiveData: MutableLiveData<MutableList<DavomatDataItem>> = MutableLiveData()
+    var currentDateDavomatLiveData: MutableLiveData<MutableList<DavomatDataItem>> = MutableLiveData()
     var xonaStudentLiveDate: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
+    var adminlarLiveData: MutableLiveData<MutableList<AdminDataItem>> = MutableLiveData()
+    var authLiveDate: MutableLiveData<MutableList<AuthDataItem>> = MutableLiveData()
+
+    fun getAuth() : MutableLiveData<MutableList<AuthDataItem>> {
+        return authLiveDate
+    }
+
+    fun getAdminlar() : MutableLiveData<MutableList<AdminDataItem>> {
+        return adminlarLiveData
+    }
 
     fun getStudentRoom() : MutableLiveData<MutableList<StudentDataItem>>{
         return xonaStudentLiveDate
     }
 
-    fun getXonaDavomat() : MutableLiveData<MutableList<DavomatDataItem>> {
-        return xonaDavomatLiveData
+    fun getCurrentDateDavomat() : MutableLiveData<MutableList<DavomatDataItem>> {
+        return currentDateDavomatLiveData
     }
 
     fun getAddTadbirStudent() : MutableLiveData<MutableList<StudentDataItem>> {

@@ -70,21 +70,4 @@ class XonaDavomatAdminVm : ViewModel(){
         }
     }
 
-    fun getRoomDate(context: Context, date: String, room_id: Long) {
-        val xonaDavomatAdminRep = XonaDavomatAdminRep(ApiClient.getRetrofit(context).create(ApiService::class.java))
-        viewModelScope.launch {
-            try {
-                xonaDavomatAdminRep.getRoomDavomat(date, room_id)
-                    .catch {
-                        roomDavomat.emit(Resource.Error(it))
-                    }
-                    .collect {
-                        roomDavomat.emit(Resource.Success(it))
-                    }
-            } catch (e: Exception) {
-                Log.d(TAG, "getRoomDate: ${e.message}")
-            }
-        }
-    }
-
 }

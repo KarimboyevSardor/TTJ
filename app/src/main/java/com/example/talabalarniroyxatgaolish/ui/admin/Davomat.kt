@@ -15,11 +15,13 @@ import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.XonaAdapter
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
 import com.example.talabalarniroyxatgaolish.databinding.FragmentDavomatAdminBinding
+import com.example.talabalarniroyxatgaolish.utils.Utils.currentDateDavomat
 import com.example.talabalarniroyxatgaolish.utils.Utils.davomatList
 import com.example.talabalarniroyxatgaolish.utils.Utils.xonalarList
 import com.example.talabalarniroyxatgaolish.vm.DavomatAdminVm
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -52,6 +54,7 @@ class Davomat : Fragment() {
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         davomatAdminVm = ViewModelProvider(requireActivity())[DavomatAdminVm::class]
         val date = arguments?.getString("date")
+        getRoomDavomat(date!!)
         getRoom()
         xonaAdapter = XonaAdapter(xonalarList) { xona ->
             val bundle = Bundle()
@@ -93,6 +96,40 @@ class Davomat : Fragment() {
             })
         }
         return binding!!.root
+    }
+
+    private fun getRoomDavomat(date: String) {
+        lifecycleScope.launch {
+            davomatAdminVm.getDateDavomat(requireContext(), formatDate(date))
+            if (isAdded) {
+                try {
+                    davomatAdminVm._dateDavomat.collect {
+                        when (it) {
+                            is Resource.Error -> {
+                                Log.d(TAG, "getStudents: ${it.e.message}")
+                            }
+                            is Resource.Loading -> {}
+                            is Resource.Success -> {
+                                liveDates.currentDateDavomatLiveData.value = mutableListOf()
+                                currentDateDavomat = it.data
+                                liveDates.currentDateDavomatLiveData.value = currentDateDavomat
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.d(TAG, "getStudents: ${e.message}")
+                }
+            }
+        }
+    }
+
+    fun formatDate(inputDate: String): String {
+        val parts = inputDate.split("-")
+        if (parts.size != 3) return "Noto'g'ri format"
+        val year = parts[0]
+        val month = parts[1].padStart(2, '0') // Oy oldiga 0 qo'shish
+        val day = parts[2].padStart(2, '0')   // Kun oldiga 0 qo'shish
+        return "$year-$month-$day"
     }
 
     private fun xonaQidirish(query: String) {

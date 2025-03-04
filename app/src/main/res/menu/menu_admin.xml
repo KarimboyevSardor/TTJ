@@ -5,19 +5,19 @@
         android:id="@+id/yigilish_admin"
         android:icon="@drawable/megaphone"
         android:title="Yig'ilishlar"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/davomat_admin"
         android:icon="@drawable/davomat"
         android:title="Davomat"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/xona_admin"
         android:icon="@drawable/bedroom_child_24dp_undefined"
         android:title="Xonalar"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/adminlar_admin"

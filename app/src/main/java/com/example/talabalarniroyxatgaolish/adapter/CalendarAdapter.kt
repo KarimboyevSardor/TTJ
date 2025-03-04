@@ -89,7 +89,6 @@ class CalendarAdapter(var calendarList: MutableList<Date>, val onClick: (Date) -
                 throw  IllegalArgumentException("Unknown view type")
             }
         }
-
     }
 
     override fun getItemCount() = calendarList.size
