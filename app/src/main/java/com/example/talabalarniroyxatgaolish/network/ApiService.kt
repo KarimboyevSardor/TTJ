@@ -5,11 +5,9 @@ import com.example.talabalarniroyxatgaolish.data.AddedTadbir
 import com.example.talabalarniroyxatgaolish.data.AdminData
 import com.example.talabalarniroyxatgaolish.data.AdminDataItem
 import com.example.talabalarniroyxatgaolish.data.Auth
-import com.example.talabalarniroyxatgaolish.data.AuthData
 import com.example.talabalarniroyxatgaolish.data.AuthDataItem
 import com.example.talabalarniroyxatgaolish.data.DavomatData
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
-import com.example.talabalarniroyxatgaolish.data.LoginData
 import com.example.talabalarniroyxatgaolish.data.Message
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.RateData
@@ -22,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -127,4 +126,11 @@ interface ApiService {
 
     @PUT("api/auth/update")
     fun editAuth(@Body auth: AuthDataItem) : Call<AuthDataItem>
+
+    @POST("api/auth/add")
+    suspend fun addLogin(@Body auth: AuthDataItem) : Call<AuthDataItem>
+
+    @POST("api/admin/add")
+    suspend fun addAdmin(@Body admin: AdminDataItem) : Response<AdminDataItem>
+
 }

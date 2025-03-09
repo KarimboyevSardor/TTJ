@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.talabalarniroyxatgaolish.adapter.LoginAdapter
 import com.example.talabalarniroyxatgaolish.data.AdminDataItem
 import com.example.talabalarniroyxatgaolish.data.AuthDataItem
 import com.example.talabalarniroyxatgaolish.databinding.FragmentEditAdminBinding
@@ -37,7 +36,6 @@ class EditAdmin : Fragment() {
     }
 
     private var binding: FragmentEditAdminBinding? = null
-    lateinit var loginAdapter: LoginAdapter
     lateinit var liveDates: LiveDates
     lateinit var admin: AdminDataItem
     lateinit var editAdminVm: EditAdminVm
@@ -53,21 +51,6 @@ class EditAdmin : Fragment() {
         editAdminVm = ViewModelProvider(requireActivity())[EditAdminVm::class]
         getAuth()
         binding?.apply {
-            passwordEt.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    val counter = 8
-                    val currentLength = s?.length ?: 0
-
-                    if (currentLength < counter) {
-                        passwordIl.error = "Parol 8 ta belgidan iborat bo'lishi kerak."
-                    } else {
-                        passwordIl.error = null
-                    }
-                }
-
-                override fun afterTextChanged(s: Editable?) {}
-            })
             xonaSave.setOnClickListener {
                 saveInfo(loginEt.text.toString(), passwordEt.text.toString(), adminNomiEt.text.toString())
             }
@@ -110,10 +93,6 @@ class EditAdmin : Fragment() {
                             }
                             is Resource.Loading -> {}
                             is Resource.Success -> {
-//                                auth!!.login = it.data.login
-//                                auth!!.password = it.data.password
-//                                auth!!.id = it.data.id
-//                                auth!!.role = it.data.role
                                 auth = it.data
                                 binding!!.adminNomiEt.setText(admin.name)
                                 binding!!.loginEt.setText(it.data.login)

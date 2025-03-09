@@ -4,14 +4,20 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class AdminDataItem(
-    val auth_id: Long = 0,
+    var auth_id: Long = 0,
     val id: Long = 0,
-    var name: String = ""
+    var name: String = "",
+    var login: String = "",
+    var password: String = "",
+    var role: String = "",
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readLong(),
-        parcel.readString().toString()
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
     ) {
     }
 
@@ -19,6 +25,9 @@ data class AdminDataItem(
         parcel.writeLong(auth_id)
         parcel.writeLong(id)
         parcel.writeString(name)
+        parcel.writeString(login)
+        parcel.writeString(password)
+        parcel.writeString(role)
     }
 
     override fun describeContents(): Int {

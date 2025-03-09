@@ -1,17 +1,25 @@
 package com.example.talabalarniroyxatgaolish.ui.admin
 
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.databinding.FragmentBoshAdminBinding
+import com.google.android.material.navigation.NavigationView
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class BoshAdmin : Fragment() {
+class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -24,6 +32,7 @@ class BoshAdmin : Fragment() {
     }
 
     private var binding: FragmentBoshAdminBinding? = null
+    lateinit var callback: OnBackPressedCallback
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,8 +41,8 @@ class BoshAdmin : Fragment() {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container_admin, Tadbirlar())
             .commit()
-
         binding!!.apply {
+            (requireActivity() as AppCompatActivity).setSupportActionBar(boshToolbarAdmin)
             bottomNavigationAdmin.setOnItemSelectedListener {
                 when(it.itemId) {
                     R.id.yigilish_admin -> {
@@ -54,9 +63,35 @@ class BoshAdmin : Fragment() {
                 }
                 true
             }
+            drawerNavigation.setNavigationItemSelectedListener(this@BoshAdmin)
+            val toggle = ActionBarDrawerToggle(
+                requireActivity(), drawerLayout, boshToolbarAdmin,
+                R.string.open_nav, R.string.close_nav
+            )
+            drawerLayout.addDrawerListener(toggle)
+            toggle.syncState()
+            toggle.syncState()
+            callback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        drawerLayout.closeDrawer(GravityCompat.START)
+                    } else {
+                        isEnabled = false
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+
+            }
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), callback)
+
         return binding!!.root
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 
     private fun replaceFragment(fr: Fragment) {
@@ -79,5 +114,26 @@ class BoshAdmin : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.yigilish_admin -> {
+                Toast.makeText(requireContext(), "Tadbirlar", Toast.LENGTH_SHORT).show()
+            }
+            R.id.xona_admin -> {
+                Toast.makeText(requireContext(), "Xonalar", Toast.LENGTH_SHORT).show()
+            }
+            R.id.davomat_admin -> {
+                Toast.makeText(requireContext(), "Davomat", Toast.LENGTH_SHORT).show()
+            }
+            R.id.profil_admin -> {
+                Toast.makeText(requireContext(), "Profil", Toast.LENGTH_SHORT).show()
+            }
+            R.id.adminlar_admin -> {
+                Toast.makeText(requireContext(), "Adminlar", Toast.LENGTH_SHORT).show()
+            }
+        }
+        return true
     }
 }

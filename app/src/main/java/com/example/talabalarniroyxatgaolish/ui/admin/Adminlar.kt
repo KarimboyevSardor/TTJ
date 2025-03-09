@@ -74,6 +74,14 @@ class Adminlar : Fragment() {
         }
         binding?.apply {
             recyclerViewAdmins.adapter = adminlarAdapter
+            addAdmin.setOnClickListener {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_admin, AddAdmin())
+                    .addToBackStack(null)
+                    .commit()
+                bottomNavigation.visibility = View.GONE
+                toolbar1.visibility = View.GONE
+            }
         }
 
         return binding?.root

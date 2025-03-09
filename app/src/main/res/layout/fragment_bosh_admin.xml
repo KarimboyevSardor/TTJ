@@ -1,36 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.admin.BoshAdmin">
+    tools:context=".ui.admin.BoshAdmin"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    android:id="@+id/drawer_layout"
+    >
 
-    <androidx.appcompat.widget.Toolbar
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/bosh_toolbar_admin"
-        android:background="@color/green"
-        app:title="Admin"
-        app:titleTextColor="@color/white"
+        android:layout_height="match_parent"
+        >
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/bosh_toolbar_admin"
+            android:background="@color/green"
+            app:title="Admin"
+            app:titleTextColor="@color/white"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            />
+
+        <FrameLayout
+            android:id="@+id/fragment_container_admin"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation_admin"
+            app:layout_constraintTop_toBottomOf="@id/bosh_toolbar_admin"
+            />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottom_navigation_admin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/menu_admin"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/admin_drawer_header"
+        android:layout_gravity="start"
+        app:menu="@menu/admin_drawerlayout_menu"
+        android:background="@drawable/radius_back"
+        app:itemIconTint="@color/green"
+        app:itemTextColor="@color/green"
+        android:id="@+id/drawer_navigation"
         />
 
-    <FrameLayout
-        android:id="@+id/fragment_container_admin"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_admin"
-        app:layout_constraintTop_toBottomOf="@id/bosh_toolbar_admin"
-        />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottom_navigation_admin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/menu_admin"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -14,14 +14,12 @@
         android:padding="12dp"
         android:gravity="center_vertical">
 
-        <!-- Admin Profile Image -->
         <ImageView
             android:id="@+id/admin_image"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/admins"
             android:scaleType="centerCrop"
-            android:background="@drawable/circle_background"
             android:padding="8dp"/>
 
         <!-- Admin Info -->

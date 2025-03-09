@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="176dp"
+    android:background="@color/green"
+    android:padding="10dp"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    >
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/user_setting"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Admin"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp"
+        />
+
+</LinearLayout>

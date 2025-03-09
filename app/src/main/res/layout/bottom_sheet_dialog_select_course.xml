@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bottom_sheet_dialog"
+    android:layout_margin="10dp"
+    >
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bottom_sheet_dialog_top_icon"
+        android:layout_width="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="10dp"
+        android:id="@+id/topIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/topIcon"
+        android:id="@+id/select_course_rv"
+        tools:listitem="@layout/select_cource"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
