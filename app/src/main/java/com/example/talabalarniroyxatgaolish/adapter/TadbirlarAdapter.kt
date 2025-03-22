@@ -61,7 +61,7 @@ class TadbirlarAdapter(
         }
         holder.binding.yigilishJoyi.text = yigilishData.meeting_place
         holder.binding.yigilishName.text = yigilishData.name
-        holder.binding.yigilishVaqti.text = yigilishData.time
+        holder.binding.yigilishVaqti.text = formatDate(yigilishData.time)
         holder.binding.yigilishDescription.text = yigilishData.description
         if (yigilishData.image_base64 != null) {
             Glide.with(context)
@@ -73,5 +73,14 @@ class TadbirlarAdapter(
         holder.itemView.setOnClickListener {
             onClickItem(yigilishData)
         }
+    }
+
+    fun formatDate(inputDate: String): String {
+        val parts = inputDate.split("-")
+        if (parts.size != 3) return "Noto'g'ri format"
+        val year = parts[0]
+        val month = parts[1].padStart(2, '0') // Oy oldiga 0 qo'shish
+        val day = parts[2].padStart(2, '0')   // Kun oldiga 0 qo'shish
+        return "$year-$month-$day"
     }
 }
