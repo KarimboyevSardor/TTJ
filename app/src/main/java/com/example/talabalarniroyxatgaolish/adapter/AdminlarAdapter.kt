@@ -18,7 +18,7 @@ class AdminlarAdapter(var admins: MutableList<AdminDataItem>, val editOnClick: (
     inner class AdminlarAdapterVH(val binding: AdminlarRvItemBinding) : ViewHolder(binding.root) {
         fun onBind(admin: AdminDataItem) {
             binding.adminName.text = admin.name
-            binding.adminRole.text = admin.role
+            binding.adminRole.text = "admin"
             binding.btnEdit.setOnClickListener {
                 editOnClick(admin)
             }

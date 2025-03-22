@@ -1,6 +1,7 @@
 package com.example.talabalarniroyxatgaolish.network
 
 import com.example.talabalarniroyxatgaolish.data.AddedRate
+import com.example.talabalarniroyxatgaolish.data.AddedStudentDataItem
 import com.example.talabalarniroyxatgaolish.data.AddedTadbir
 import com.example.talabalarniroyxatgaolish.data.AdminData
 import com.example.talabalarniroyxatgaolish.data.AdminDataItem
@@ -132,5 +133,9 @@ interface ApiService {
 
     @POST("api/admin/add")
     suspend fun addAdmin(@Body admin: AdminDataItem) : Response<AdminDataItem>
+
+    @POST("api/student")
+    suspend fun addStudent(@Body addedStudentDataItem: AddedStudentDataItem) : Response<StudentDataItem>
+
 
 }

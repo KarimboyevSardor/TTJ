@@ -68,8 +68,6 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.0")
     //lottie animation
     implementation("com.airbnb.android:lottie:5.2.0")
-    //socket
-    implementation("io.socket:socket.io-client:2.1.0") // Socket.IO kutubxonasi
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

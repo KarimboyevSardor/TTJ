@@ -1,10 +1,17 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Asosiy -->
     <item android:title="Asosiy">
         <menu>
             <item
-                android:id="@+id/add_student_drawer"
+                android:id="@+id/profil_drawer_admin"
+                android:icon="@drawable/person_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                android:title="Profil"
+                />
+            <item
+                android:id="@+id/add_student_drawer_admin"
                 android:title="Student qo'shish"
                 android:icon="@drawable/add_student_icon"
                 />
@@ -16,12 +23,12 @@
         >
         <menu>
             <item
-                android:id="@+id/settings_drawer"
+                android:id="@+id/settings_drawer_admin"
                 android:title="Sozlamalar"
                 android:icon="@drawable/settings_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
                 />
             <item
-                android:id="@+id/xavfsizlik_drawer"
+                android:id="@+id/xavfsizlik_drawer_admin"
                 android:title="Xavfsizlik"
                 android:icon="@drawable/lock_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
                 />
@@ -32,18 +39,18 @@
     <item android:title="Qo‘shimcha">
         <menu>
             <item
-                android:id="@+id/baholash_drawer"
+                android:id="@+id/baholash_drawer_admin"
                 android:title="Ilovani baholash"
                 android:icon="@drawable/star_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
                 />
             <item
-                android:id="@+id/dastur_haqida_drawer"
+                android:id="@+id/dastur_haqida_drawer_admin"
                 android:title="Dastur haqida"
                 android:icon="@drawable/info_24dp_undefined_fill0_wght400_grad0_opsz24"
                 />
 
             <item
-                android:id="@+id/chiqish_drawer"
+                android:id="@+id/chiqish_drawer_admin"
                 android:title="Chiqish"
                 android:icon="@drawable/logout_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
                 />

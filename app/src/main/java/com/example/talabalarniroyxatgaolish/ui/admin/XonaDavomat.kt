@@ -96,6 +96,7 @@ class XonaDavomat : Fragment(), StudentDavomatAdapter.AdapterListener {
                 if (isAdded) {
                     try {
                         xonaDavomatAdminVm.setDavomat(requireContext(), qoshilganStudent, requireActivity())
+                        requireActivity().onBackPressed()
                     } catch (e: Exception) {
                         Log.d(TAG, "setDavomat: ${e.message}")
                     }
@@ -104,11 +105,20 @@ class XonaDavomat : Fragment(), StudentDavomatAdapter.AdapterListener {
         }
     }
 
+    fun formatDate(inputDate: String): String {
+        val parts = inputDate.split("-")
+        if (parts.size != 3) return "Noto'g'ri format"
+        val year = parts[0]
+        val month = parts[1].padStart(2, '0') // Oy oldiga 0 qo'shish
+        val day = parts[2].padStart(2, '0')   // Kun oldiga 0 qo'shish
+        return "$year-$month-$day"
+    }
+
     private fun setStudent(students: MutableList<StudentDataItem>) {
         for (i in 0 until students.size) {
             qoshilganStudent.add(
                 DavomatDataItem(
-                    date = date,
+                    date = formatDate(date),
                     id = 0,
                     is_there = false,
                     room_id = room_id,

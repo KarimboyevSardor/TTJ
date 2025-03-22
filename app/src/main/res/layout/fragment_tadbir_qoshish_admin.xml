@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:background="#4CAF50"
         app:titleTextColor="@color/white"
-        app:title="Yig'ilish qo'shish"
+        app:title="Tadbir qo'shish"
         app:layout_constraintTop_toTopOf="parent"
         />
     <ScrollView
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/const1"
-                android:hint="Yig'ilish nomi"
+                android:hint="Tadbir nomi"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_margin="10dp"
                 android:id="@+id/yigilish_name_il"
@@ -87,23 +87,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/yigilish_name_il"
-                android:hint="Yig'ilish maqsadi"
+                android:hint="Tadbir maqsadi"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_margin="10dp"
                 android:id="@+id/yigilish_maqsad_il"
                 >
+
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/yigilish_maqsad_et"
-                    />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/yigilish_maqsad_il"
-                android:hint="Yig'ilish joyi"
+                android:hint="Tadbir joyi"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_margin="10dp"
                 android:id="@+id/yigilish_joyi_il"
@@ -214,7 +214,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
-            android:text="Yig'ilishni qo'shish"
+            android:text="Tadbirni qo'shish"
             android:textAllCaps="false"
             android:textSize="15sp"
             android:textColor="@color/white"

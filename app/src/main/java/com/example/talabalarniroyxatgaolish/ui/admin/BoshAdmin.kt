@@ -1,19 +1,28 @@
 package com.example.talabalarniroyxatgaolish.ui.admin
 
 import android.os.Bundle
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.databinding.FragmentBoshAdminBinding
+import com.example.talabalarniroyxatgaolish.db.MyDatabase
+import com.example.talabalarniroyxatgaolish.ui.DasturHaqida
+import com.example.talabalarniroyxatgaolish.ui.Login
+import com.example.talabalarniroyxatgaolish.ui.Settings
+import com.example.talabalarniroyxatgaolish.ui.Xavfsizlik
+import com.example.talabalarniroyxatgaolish.utils.Utils.myInfo
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
 private const val ARG_PARAM1 = "param1"
@@ -33,14 +42,23 @@ class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
     private var binding: FragmentBoshAdminBinding? = null
     lateinit var callback: OnBackPressedCallback
+    private lateinit var myDatabase: MyDatabase
+    private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var toolbar1: Toolbar
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentBoshAdminBinding.inflate(layoutInflater)
+        myDatabase = MyDatabase(requireContext())
+        myInfo = myDatabase.getAuth()[0]
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container_admin, Tadbirlar())
             .commit()
+        bottomNavigation = binding!!.bottomNavigationAdmin
+        toolbar1 = binding!!.boshToolbarAdmin
+        bottomNavigation.visibility = VISIBLE
+
         binding!!.apply {
             (requireActivity() as AppCompatActivity).setSupportActionBar(boshToolbarAdmin)
             bottomNavigationAdmin.setOnItemSelectedListener {
@@ -54,9 +72,6 @@ class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
                     R.id.davomat_admin -> {
                         replaceFragment(EskiDavomat())
                     }
-                    R.id.profil_admin -> {
-                        replaceFragment(Profile())
-                    }
                     R.id.adminlar_admin -> {
                         replaceFragment(Adminlar())
                     }
@@ -69,7 +84,9 @@ class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
                 R.string.open_nav, R.string.close_nav
             )
             drawerLayout.addDrawerListener(toggle)
-            toggle.syncState()
+            val header = drawerNavigation.getHeaderView(0)
+            val tv = header.findViewById<TextView>(R.id.name_header)
+            tv.text = myInfo!!.name
             toggle.syncState()
             callback = object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -118,22 +135,49 @@ class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.yigilish_admin -> {
-                Toast.makeText(requireContext(), "Tadbirlar", Toast.LENGTH_SHORT).show()
+            R.id.profil_drawer_admin -> {
+                replaceFragmentDrawer(Profile())
             }
-            R.id.xona_admin -> {
-                Toast.makeText(requireContext(), "Xonalar", Toast.LENGTH_SHORT).show()
+            R.id.add_student_drawer_admin -> {
+                replaceFragmentDrawer(AddStudent())
             }
-            R.id.davomat_admin -> {
-                Toast.makeText(requireContext(), "Davomat", Toast.LENGTH_SHORT).show()
+            R.id.settings_drawer_admin -> {
+                replaceFragmentDrawer(Settings())
             }
-            R.id.profil_admin -> {
-                Toast.makeText(requireContext(), "Profil", Toast.LENGTH_SHORT).show()
+            R.id.xavfsizlik_drawer_admin -> {
+                replaceFragmentDrawer(Xavfsizlik())
             }
-            R.id.adminlar_admin -> {
-                Toast.makeText(requireContext(), "Adminlar", Toast.LENGTH_SHORT).show()
+            R.id.baholash_drawer_admin -> {
+                Toast.makeText(requireContext(), "Baholash", Toast.LENGTH_SHORT).show()
+            }
+            R.id.dastur_haqida_drawer_admin -> {
+                replaceFragmentDrawer(DasturHaqida())
+            }
+            R.id.chiqish_drawer_admin -> {
+                myInfo = null
+                myDatabase.deleteAuth()
+                val fragmentManager = requireActivity().supportFragmentManager
+
+                for (fragment in fragmentManager.fragments) {
+                    fragmentManager.beginTransaction().remove(fragment).commit()
+                }
+
+                fragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, Login())
+                    .commit()
             }
         }
         return true
+    }
+
+    private fun replaceFragmentDrawer(fr: Fragment) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_admin, fr)
+            .addToBackStack(null)
+            .commit()
+        bottomNavigation.visibility = View.GONE
+        if (binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding!!.drawerLayout.closeDrawer(GravityCompat.START)
+        }
     }
 }

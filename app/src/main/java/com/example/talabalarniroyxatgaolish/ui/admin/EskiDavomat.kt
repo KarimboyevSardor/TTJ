@@ -149,23 +149,21 @@ class EskiDavomat : Fragment() {
         lifecycleScope.launch {
             if (isAdded) {
                 try {
-                    if (davomatList.isEmpty()) {
-                        eskiDavomatAdminVm.getDavomat(requireContext())
-                        eskiDavomatAdminVm._davomat.collect {
-                            when (it) {
-                                is Resource.Error -> {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Server bilan bog'lanib bo'lmadi.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+                    eskiDavomatAdminVm.getDavomat(requireContext())
+                    eskiDavomatAdminVm._davomat.collect {
+                        when (it) {
+                            is Resource.Error -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Server bilan bog'lanib bo'lmadi.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
 
-                                is Resource.Loading -> {}
-                                is Resource.Success -> {
-                                    davomatList = it.data
-                                    liveDates.davomatLiveData.value = davomatList
-                                }
+                            is Resource.Loading -> {}
+                            is Resource.Success -> {
+                                davomatList = it.data
+                                liveDates.davomatLiveData.value = davomatList
                             }
                         }
                     }

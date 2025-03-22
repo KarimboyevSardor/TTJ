@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import tech.thdev.network.flowcalladapterfactory.FlowCallAdapterFactory
 
 object ApiClient {
-    private val BASE_URL = "http://192.168.246.124:3000/"
+    private val BASE_URL = "http://192.168.74.109:3000/"
     fun getRetrofit(context: Context) : Retrofit {
         val chuckerInterceptor = ChuckerInterceptor.Builder(context).build()
         val okHttpClient = OkHttpClient.Builder().addInterceptor(chuckerInterceptor).build()

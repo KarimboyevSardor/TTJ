@@ -11,9 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.databinding.FragmentLoginBinding
+import com.example.talabalarniroyxatgaolish.db.MyDatabase
 import com.example.talabalarniroyxatgaolish.ui.admin.BoshAdmin
+import com.example.talabalarniroyxatgaolish.ui.student.BoshStudent
+import com.example.talabalarniroyxatgaolish.utils.Utils.myInfo
 import com.example.talabalarniroyxatgaolish.vm.LoginVm
-import com.example.talabalarniroyxatgaolish.vm.Resource
 // o'z paket nomingizni qo'llang
 import kotlinx.coroutines.launch
 
@@ -35,6 +37,7 @@ class Login : Fragment() {
 
     private var binding: FragmentLoginBinding? = null
     lateinit var loginVm: LoginVm
+    lateinit var myDatabase: MyDatabase
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +45,20 @@ class Login : Fragment() {
         binding = FragmentLoginBinding.inflate(layoutInflater)
 
         loginVm = ViewModelProvider(requireActivity())[LoginVm::class.java]
+        myDatabase = MyDatabase(requireContext())
+        if (myDatabase.getAuth().isNotEmpty()) {
+            myInfo = myDatabase.getAuth()[0]
+            Log.d(TAG, "onCreateView: $myInfo")
+            if (myInfo!!.role == "admin") {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, BoshAdmin())
+                    .commit()
+            } else if (myInfo!!.role == "student") {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, BoshStudent())
+                    .commit()
+            }
+        }
 
         binding!!.apply {
             kirish.setOnClickListener {

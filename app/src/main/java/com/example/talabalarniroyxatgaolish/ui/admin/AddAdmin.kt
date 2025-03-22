@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.talabalarniroyxatgaolish.R
@@ -40,14 +42,7 @@ class AddAdmin : Fragment() {
     lateinit var liveDates: LiveDates
     lateinit var addAdminVm: AddAdminVm
     private val TAG = "ADDADMIN"
-    private var isAdmin = ""
-    lateinit var courseAdapter: CourseAdapter
-    lateinit var courses: MutableList<String>
     lateinit var course_count: MutableList<String>
-    private var position = -1
-    private var courseName = ""
-    private var courseCount = ""
-    private var isCourse = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,6 +52,15 @@ class AddAdmin : Fragment() {
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class.java]
 
         binding?.apply {
+            val activity: AppCompatActivity = requireActivity() as AppCompatActivity
+            activity.setSupportActionBar(toolbar)
+            activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            val backIcon = toolbar.navigationIcon
+            backIcon?.setTint(ContextCompat.getColor(requireContext(), R.color.white))
+            toolbar.navigationIcon = backIcon
+            toolbar.setNavigationOnClickListener {
+                requireActivity().onBackPressed()
+            }
             addAdmin.setOnClickListener {
                 checkInfo(adminNameEt.text.toString(), loginEt.text.toString(), parolEt.text.toString())
             }
@@ -65,47 +69,6 @@ class AddAdmin : Fragment() {
             }
         }
         return binding?.root
-    }
-
-    private fun setCourseCount() {
-        course_count = mutableListOf()
-        course_count.add("1-KURS")
-        course_count.add("2-KURS")
-        course_count.add("3-KURS")
-        course_count.add("4-KURS")
-    }
-
-    private fun setCourses() {
-        courses = mutableListOf()
-        courses.add("TELEKOMMUNIKATSIYA TEXNOLOGIYALARI YO'NALISHI")
-        courses.add("DASTURIY INJINIRING YO'NALISHI")
-        courses.add("AXBOROT XAVFSIZLIGI YO'NALISHI")
-        courses.add("KOMPYUTER INJINIRING (KOMPYUTER INJINIRING, IT-SERVIS) YO'NALISHI")
-        courses.add("AXBOROT-KOMMUNIKATSIYALAR SOHASIDA KASB TA'LIMI YO'NALISHI")
-        courses.add("POCHTA ALOQASI TEXNOLOGIYASI YO'NALISHI")
-        courses.add("KUTUBXONA-AXBOROT FAOLIYATI (FAOLIYAT TURLARI BO'YICHA) YO'NALISHI")
-    }
-
-    private fun showBottomSheetDialogCourse(list: MutableList<String>, isCourse: Boolean, course: AppCompatButton) {
-        val bottomSheet = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
-        val bottomSheetBinding: BottomSheetDialogSelectCourseBinding = BottomSheetDialogSelectCourseBinding.inflate(layoutInflater)
-        bottomSheet.setContentView(bottomSheetBinding.root)
-        bottomSheetBinding.apply {
-            courseAdapter = CourseAdapter(list, position) { text, position ->
-                this@AddAdmin.position = position
-                Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
-                if (isCourse) {
-                    courseName = list[position]
-                    course.text = courseName
-                } else {
-                    courseCount = list[position]
-                    course.text = courseCount
-                }
-                bottomSheet.dismiss()
-            }
-            selectCourseRv.adapter = courseAdapter
-        }
-        bottomSheet.show()
     }
 
     private fun checkInfo(adminName: String, login: String, parol: String) {
@@ -118,7 +81,7 @@ class AddAdmin : Fragment() {
         lifecycleScope.launch {
             if (isAdded) {
                 try {
-                    addAdminVm.addAdmin(requireContext(), requireActivity(), AdminDataItem(0, 0, adminName, login, parol, isAdmin))
+                    addAdminVm.addAdmin(requireContext(), requireActivity(), AdminDataItem(0, 0, adminName, login, parol, "admin"))
                 } catch (e: Exception) {
                     Log.d(TAG, "savedInfo: ${e.message}")
                 }

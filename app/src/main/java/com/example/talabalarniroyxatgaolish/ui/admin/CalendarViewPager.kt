@@ -53,8 +53,6 @@ class CalendarViewPager : Fragment() {
         dayCount = yearMonth.lengthOfMonth()
         setMonthYear()
         dayList = generateMonthDays()
-        setColor()
-        //setCalendar()
         val bottomNavigation: FrameLayout = requireActivity().findViewById(R.id.bottom_navigation_admin)
         val toolbar1: Toolbar = requireActivity().findViewById(R.id.bosh_toolbar_admin)
         calendarAdapter = CalendarAdapter(dayList) {
@@ -81,17 +79,6 @@ class CalendarViewPager : Fragment() {
         }
 
         return binding!!.root
-    }
-
-    private fun setColor() {
-        val yashil = ContextCompat.getColor(requireContext(), R.color.light_green)
-        for (i in 0 until dayList.size) {
-            val currentDayAttendance = davomatList.filter { formatDate(it.date) == "${dayList[i].yil}-${dayList[i].oy}-${dayList[i].kun}" }
-            Log.d(TAG, "setColor: ${currentDayAttendance.size}, ${dayList[i].yil}-${dayList[i].oy}-${dayList[i].kun}")
-            if (currentDayAttendance.size == studentlarList.size) {
-                dayList[i].color = yashil
-            }
-        }
     }
 
     private fun showMonthYearPicker() {
@@ -127,8 +114,7 @@ class CalendarViewPager : Fragment() {
     }
 
     private fun generateMonthDays(): MutableList<Date> {
-        val yashil = ContextCompat.getColor(requireContext(), R.color.light_green)
-        val qizil = ContextCompat.getColor(requireContext(), R.color.red_light_coral)
+        val oq = ContextCompat.getColor(requireContext(), R.color.white)
         var daysList: MutableList<Date> = mutableListOf()
         val haftaKuni = getDayHafta()
         var i = 1
@@ -136,21 +122,20 @@ class CalendarViewPager : Fragment() {
         var weekcounter = 1
         var dayCounter = 1
         var isAdd = false
-        var isNextMonth = false
         while (i < 42) {
             if (dayCounter - 1 == dayCount) {
                 dayCounter = 1
-                daysList.add(Date(oy!! + 1, yil!!, weekcounter, dayCounter, false, color = qizil))
+                daysList.add(Date(oy!! + 1, yil!!, weekcounter, dayCounter, false, color = oq))
                 dayCounter++
                 break
             }
             if (isAdd) {
-                daysList.add(Date(oy!!, yil!!, weekcounter, dayCounter, true, color = qizil))
+                daysList.add(Date(oy!!, yil!!, weekcounter, dayCounter, true, color = oq))
                 dayCounter++
             } else {
                 if (weekcounter == haftaKuni) {
                     isAdd = true
-                    daysList.add(Date(oy!!, yil!!, weekcounter, dayCounter, true, color = qizil))
+                    daysList.add(Date(oy!!, yil!!, weekcounter, dayCounter, true, color = oq))
                     dayCounter++
                 } else {
                     isAdd = false
@@ -164,7 +149,7 @@ class CalendarViewPager : Fragment() {
                         oy1 = oy!! - 1
                     }
                     val day = getDayCount(yil1, oy1) - (haftaKuni - i1)
-                    daysList.add(Date(oy1, yil1, weekcounter, day, false, color = qizil))
+                    daysList.add(Date(oy1, yil1, weekcounter, day, false, color = oq))
                 }
             }
             if (weekcounter == 7) {
@@ -176,7 +161,7 @@ class CalendarViewPager : Fragment() {
         }
         while (daysList.size < 42) {
             weekcounter++
-            daysList.add(Date(oy!! + 1, yil!!, weekcounter, dayCounter, false, color = qizil))
+            daysList.add(Date(oy!! + 1, yil!!, weekcounter, dayCounter, false, color = oq))
             if (weekcounter == 7) {
                 weekcounter = 1
             }

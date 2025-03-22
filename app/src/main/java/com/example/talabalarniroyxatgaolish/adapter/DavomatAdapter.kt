@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.databinding.StudentDavomatRvItemBinding
+import java.util.Calendar
 
 class DavomatAdapter(var davomatList: MutableList<DavomatDataItem>, val context: Context) : Adapter<DavomatAdapter.DavomatVh>() {
     inner class DavomatVh(var binding: StudentDavomatRvItemBinding) : ViewHolder(binding.root)
@@ -50,4 +51,5 @@ class DavomatAdapter(var davomatList: MutableList<DavomatDataItem>, val context:
         holder.binding.studentDetails.text = davomat.course
         holder.binding.studentRoom.text = davomat.room_count + " - xona"
     }
+
 }

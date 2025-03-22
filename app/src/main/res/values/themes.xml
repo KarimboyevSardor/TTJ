@@ -13,6 +13,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
@@ -36,5 +37,9 @@
         <item name="boxStrokeColor">#4CAF50</item>
     </style>
 
-
+    //textview theme
+    <style name="Theme.MyCustomTextview" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
+    //
 </resources>

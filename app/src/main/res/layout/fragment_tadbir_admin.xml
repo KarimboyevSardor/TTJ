@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:background="#4CAF50"
         app:titleTextColor="@color/white"
-        app:title="Yig'ilish yangilash"
+        app:title="Tadbirni yangilash"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/ochirish_menu"
         />

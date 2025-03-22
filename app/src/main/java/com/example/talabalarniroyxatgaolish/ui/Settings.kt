@@ -1,4 +1,4 @@
-package com.example.talabalarniroyxatgaolish.ui.admin
+package com.example.talabalarniroyxatgaolish.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +10,7 @@ import com.example.talabalarniroyxatgaolish.R
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class Profile : Fragment() {
+class Settings : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -26,13 +26,13 @@ class Profile : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile_admin, container, false)
+        return inflater.inflate(R.layout.fragment_settings_admin, container, false)
     }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            Profile().apply {
+            Settings().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

@@ -55,7 +55,7 @@ class XonaDavomatAdminVm : ViewModel(){
                         if (response.isSuccessful) {
                             davomatList = response.body()!!
                             liveDates.davomatLiveData.value = davomatList
-                            Log.d(TAG, "onResponse: ${response.body()!!.size}")
+                            Log.d(TAG, "onResponse: ${response.body()}")
                         } else {
                             Log.d(TAG, "onResponse: ${response.message()}")
                         }

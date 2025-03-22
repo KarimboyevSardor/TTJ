@@ -1,16 +1,20 @@
 package com.example.talabalarniroyxatgaolish.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
 import com.example.talabalarniroyxatgaolish.databinding.StudentAddDavomatRvItemBinding
+import java.util.Calendar
 
 class StudentDavomatAdapter(var studentList: MutableList<DavomatDataItem>, val listener: AdapterListener) : RecyclerView.Adapter<StudentDavomatAdapter.StudentDavomatAdapterVM>() {
 
+    private val TAG = "STUDENTDAVOMATADAPTER"
     interface AdapterListener {
         fun onAdapterFunctionCalled(position: Int, switch: CheckBox)
     }
@@ -55,7 +59,28 @@ class StudentDavomatAdapter(var studentList: MutableList<DavomatDataItem>, val l
         holder.binding.switchAttendance.setOnClickListener {
             listener.onAdapterFunctionCalled(position, holder.binding.switchAttendance)
         }
+        if (student.date != getCurrentDay()) {
+            holder.binding.switchAttendance.isEnabled = false
+        } else if (student.room_count.isNotEmpty() && student.date == getCurrentDay()) {
+            holder.binding.switchAttendance.isEnabled = false
+        }
     }
 
+    private fun formatDate(inputDate: String): String {
+        val parts = inputDate.split("-")
+        if (parts.size != 3) return "Noto'g'ri format"
+        val year = parts[0]
+        val month = parts[1].padStart(2, '0')
+        val day = parts[2].padStart(2, '0')
+        return "$year-$month-$day"
+    }
+
+    private fun getCurrentDay() : String {
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val year = calendar.get(Calendar.YEAR)
+        return formatDate("$year-$month-$day")
+    }
 
 }

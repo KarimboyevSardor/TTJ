@@ -36,8 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="John Doe"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#444"/>
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/admin_role"

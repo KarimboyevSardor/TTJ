@@ -1,5 +1,7 @@
 package com.example.talabalarniroyxatgaolish.adapter
 
+import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -63,6 +65,7 @@ class CalendarAdapter(var calendarList: MutableList<Date>, val onClick: (Date) -
 //            }
 //        }
 //    }
+
 
     inner class SecondViewHolder(val secondBinding: UncalendarDayRvItemBinding) : ViewHolder(secondBinding.root) {
         fun bind(date: Date) {

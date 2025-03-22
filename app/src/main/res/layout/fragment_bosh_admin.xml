@@ -41,6 +41,7 @@
             android:id="@+id/bottom_navigation_admin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/menu_admin"
+            app:labelVisibilityMode="labeled"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
