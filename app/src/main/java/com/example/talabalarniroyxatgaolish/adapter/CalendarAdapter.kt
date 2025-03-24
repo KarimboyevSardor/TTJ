@@ -42,7 +42,9 @@ class CalendarAdapter(var calendarList: MutableList<Date>, val onClick: (Date) -
     inner class FirstViewHolder(val firstBinding: CalendarDayRvItemBinding) : ViewHolder(firstBinding.root) {
         fun bind(date: Date) {
             val currentDayToList = "${date.yil}-${date.oy}-${date.kun}"
-            if ((currentD <= date.kun && currentM <= date.oy && currentY <= date.yil)) {} else {
+            if ((currentD <= date.kun && currentM <= date.oy && currentY <= date.yil)) {
+
+            } else {
                 firstBinding.calendarCardviewRvItem.setCardBackgroundColor(date.color)
             }
             if (currentDay == currentDayToList) {

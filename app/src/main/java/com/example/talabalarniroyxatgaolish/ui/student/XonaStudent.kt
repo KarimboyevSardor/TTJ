@@ -10,7 +10,7 @@ import com.example.talabalarniroyxatgaolish.R
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class Yigilishlar : Fragment() {
+class XonaStudent : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -26,13 +26,13 @@ class Yigilishlar : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_tadbirlar_student, container, false)
+        return inflater.inflate(R.layout.fragment_xona_student, container, false)
     }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            Yigilishlar().apply {
+            XonaStudent().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

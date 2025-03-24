@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Asosiy">
+        <menu>
+            <item
+                android:id="@+id/profil_drawer_student"
+                android:icon="@drawable/person_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                android:title="Profil"
+                />
+        </menu>
+    </item>
+
+    <!-- Sozlamalar -->
+    <item android:title="Sozlamalar"
+        >
+        <menu>
+            <item
+                android:id="@+id/settings_drawer_student"
+                android:title="Sozlamalar"
+                android:icon="@drawable/settings_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                />
+            <item
+                android:id="@+id/xavfsizlik_drawer_student"
+                android:title="Xavfsizlik"
+                android:icon="@drawable/lock_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                />
+        </menu>
+    </item>
+
+    <!-- Qo‘shimcha -->
+    <item android:title="Qo‘shimcha">
+        <menu>
+            <item
+                android:id="@+id/baholash_drawer_student"
+                android:title="Ilovani baholash"
+                android:icon="@drawable/star_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                />
+
+            <item
+                android:id="@+id/chiqish_drawer_student"
+                android:title="Chiqish"
+                android:icon="@drawable/logout_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                />
+
+        </menu>
+    </item>
+</menu>

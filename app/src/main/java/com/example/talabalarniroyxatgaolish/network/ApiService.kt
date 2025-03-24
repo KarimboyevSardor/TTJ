@@ -32,10 +32,12 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
-    @POST("api/auth/{login}/{password}")
+    @POST("api/auth/{login}/{password}/{device}/{date}")
     fun auth(
         @Path("login") login: String,
-        @Path("password") password: String
+        @Path("password") password: String,
+        @Path("device") device: String,
+        @Path("date") date: String
     ): Call<Auth>
 
     @GET("api/yigilish/geturl")
@@ -122,8 +124,14 @@ interface ApiService {
     @GET("api/auth/{id}")
     fun getAuth(@Path("id") id: Long) : Flow<AuthDataItem>
 
-    @PUT("api/admin/update")
-    fun editAdmin(@Body adminDataItem: AdminDataItem) : Call<AdminDataItem>
+    @Multipart
+    @PUT("api/admin/{id}")
+    fun editAdmin(
+        @Path("id") id: Long,
+        @Part image: MultipartBody.Part?,
+        @Part("name") name: RequestBody,
+        @Part("auth_id") auth_id: RequestBody
+    ) : Call<AdminDataItem>
 
     @PUT("api/auth/update")
     fun editAuth(@Body auth: AuthDataItem) : Call<AuthDataItem>
@@ -131,11 +139,32 @@ interface ApiService {
     @POST("api/auth/add")
     suspend fun addLogin(@Body auth: AuthDataItem) : Call<AuthDataItem>
 
+    @Multipart
     @POST("api/admin/add")
-    suspend fun addAdmin(@Body admin: AdminDataItem) : Response<AdminDataItem>
+    suspend fun addAdmin(
+        @Part image: MultipartBody.Part?,
+        @Part("login") login: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part("role") role: RequestBody
+    ) : Response<AdminDataItem>
 
     @POST("api/student")
     suspend fun addStudent(@Body addedStudentDataItem: AddedStudentDataItem) : Response<StudentDataItem>
 
+    @GET("api/student")
+    suspend fun getStudents() : Response<StudentData>
+
+    @DELETE("api/student/{id}")
+    suspend fun deleteStudent(@Path("id") id: Long) : Response<Message>
+
+    @PUT("api/auth/update")
+    suspend fun editAuthStudent(@Body auth: AuthDataItem) : Response<AuthDataItem>
+
+    @PUT("api/student")
+    suspend fun editStudent(@Body student: StudentDataItem) : Response<StudentDataItem>
+
+    @GET("api/admin/{id}")
+    suspend fun getAdminId(@Path("id") id: Long) : Response<AdminDataItem>
 
 }

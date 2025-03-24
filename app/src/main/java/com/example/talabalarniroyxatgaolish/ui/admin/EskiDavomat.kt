@@ -91,20 +91,6 @@ class EskiDavomat : Fragment() {
             })
 
             studentDavomatRv.adapter = davomatAdapter
-//            calenarView.setOnDateChangeListener { p0, p1, p2, p3 ->
-//                val date = "$p1-${p2 + 1}-$p3"
-//                val bundle = Bundle()
-//                bundle.putString("date", date)
-//                val fr = Davomat()
-//                fr.arguments = bundle
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_container_admin, fr)
-//                    .addToBackStack(null)
-//                    .commit()
-//                toolbar1.visibility = View.GONE
-//                bottomNavigation.visibility = View.GONE
-//            }
-
         }
 
         return binding!!.root

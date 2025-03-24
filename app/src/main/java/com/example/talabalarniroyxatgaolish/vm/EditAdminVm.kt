@@ -18,6 +18,8 @@ import com.example.talabalarniroyxatgaolish.utils.Utils.adminsList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,13 +45,13 @@ class EditAdminVm : ViewModel() {
         }
     }
 
-    fun editAdmin(context: Context, activity: FragmentActivity, admin: AdminDataItem) {
+    fun editAdmin(context: Context, activity: FragmentActivity, id: Long, name: RequestBody, image: MultipartBody.Part?, auth_id: RequestBody) {
         val apiService = ApiClient.getRetrofit(context).create(ApiService::class.java)
         val liveDates = ViewModelProvider(activity)[LiveDates::class]
-        val position = adminsList.indexOf(adminsList.filter { it.id == admin.id }[0])
+        val position = adminsList.indexOf(adminsList.filter { it.id == id }[0])
         viewModelScope.launch {
             try {
-                apiService.editAdmin(admin).enqueue(object : Callback<AdminDataItem> {
+                apiService.editAdmin(id = id, name = name, image =  image, auth_id = auth_id).enqueue(object : Callback<AdminDataItem> {
                     override fun onResponse(
                         call: Call<AdminDataItem>,
                         response: Response<AdminDataItem>

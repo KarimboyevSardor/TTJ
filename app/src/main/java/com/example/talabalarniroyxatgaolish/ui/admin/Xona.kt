@@ -119,8 +119,6 @@ class Xona : Fragment() {
     private fun deleteRoom(xonaDataItem: XonaDataItem) {
         lifecycleScope.launch {
             val updateStudent = studentlarList.filter { it.room_id == xonaDataItem.id }.toMutableList()
-            xonalarList.remove(xonaDataItem)
-            liveDates.xonalarLiveData.value = xonalarList
             for (i in 0 until updateStudent.size) {
                 updateStudent[i].room_id = -1
                 delay(100)

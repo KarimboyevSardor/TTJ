@@ -1,8 +1,5 @@
 package com.example.talabalarniroyxatgaolish.ui.admin
 
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.StudentRoomUpdateAdapter
-import com.example.talabalarniroyxatgaolish.adapter.StudentsAdapter
+import com.example.talabalarniroyxatgaolish.adapter.StudentsRoomAdapter
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
 import com.example.talabalarniroyxatgaolish.databinding.FragmentStudentUpdateRoomBottomSheetDialogAdminBinding
@@ -44,7 +41,7 @@ class XonaStudentViewPager : Fragment() {
 
     lateinit var liveDates: LiveDates
     lateinit var xonaAdminVm: XonaAdminVm
-    lateinit var studentsAdapter: StudentsAdapter
+    lateinit var studentsRoomAdapter: StudentsRoomAdapter
     private val TAG = "XONASTUDENTVIEWPAGER"
     private var binding: FragmentXonaStudentViewPagerAdminBinding? = null
     lateinit var studentRoomUpdateAdapter: StudentRoomUpdateAdapter
@@ -55,17 +52,17 @@ class XonaStudentViewPager : Fragment() {
         binding = FragmentXonaStudentViewPagerAdminBinding.inflate(layoutInflater)
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class.java]
         xonaAdminVm = ViewModelProvider(requireActivity())[XonaAdminVm::class.java]
-        studentsAdapter = StudentsAdapter(studentlarList.filter { it.room_id == param1!!.id }.toMutableList()) {
+        studentsRoomAdapter = StudentsRoomAdapter(studentlarList.filter { it.room_id == param1!!.id }.toMutableList()) {
             showUpdateStudentRoomDeleteDialog(it)
         }
         getStudents()
 
         liveDates.getStudentlar().observe(requireActivity()) { it ->
-            studentsAdapter.filter(it.filter { it.room_id == param1!!.id }.toMutableList())
+            studentsRoomAdapter.filter(it.filter { it.room_id == param1!!.id }.toMutableList())
         }
 
         binding!!.apply {
-            studentRv.adapter = studentsAdapter
+            studentRv.adapter = studentsRoomAdapter
             addStudentRoom.setOnClickListener {
                 showUpdateStudentRoomDialog()
             }
@@ -145,24 +142,21 @@ class XonaStudentViewPager : Fragment() {
         lifecycleScope.launch {
             if (isAdded) {
                 try {
-                    if (studentlarList.isEmpty()) {
-                        xonaAdminVm.getStudentRoomId(requireContext())
-                        xonaAdminVm._students.collect {
-                            when (it) {
-                                is Resource.Error -> {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Server bilan bog'lanib bo'lmadi.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    Log.d(TAG, "getStudents: ${it.e.message}")
-                                }
-
-                                is Resource.Loading -> {}
-                                is Resource.Success -> {
-                                    studentlarList = it.data
-                                    liveDates.studentlarLiveData.value = studentlarList
-                                }
+                    xonaAdminVm.getStudentRoomId(requireContext())
+                    xonaAdminVm._students.collect {
+                        when (it) {
+                            is Resource.Error -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Server bilan bog'lanib bo'lmadi.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.d(TAG, "getStudents: ${it.e.message}")
+                            }
+                            is Resource.Loading -> {}
+                            is Resource.Success -> {
+                                studentlarList = it.data
+                                liveDates.studentlarLiveData.value = studentlarList
                             }
                         }
                     }

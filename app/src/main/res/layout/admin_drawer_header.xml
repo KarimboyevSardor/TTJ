@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="176dp"
+    android:layout_height="160dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/green"
     android:padding="10dp"
     android:gravity="bottom"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image_admin"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_margin="10dp"
-        android:src="@drawable/user_setting"
+        android:backgroundTint="@color/white"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/blackwhite"
         />
 
     <TextView
@@ -21,7 +24,7 @@
         android:text="Admin"
         android:textSize="20sp"
         android:textColor="@color/white"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:id="@+id/name_header"
         />
 

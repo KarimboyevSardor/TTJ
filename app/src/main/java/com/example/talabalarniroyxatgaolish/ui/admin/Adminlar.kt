@@ -15,6 +15,7 @@ import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.AdminlarAdapter
 import com.example.talabalarniroyxatgaolish.databinding.FragmentAdminlarBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.adminsList
+import com.example.talabalarniroyxatgaolish.utils.Utils.myInfo
 import com.example.talabalarniroyxatgaolish.vm.AdminVm
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
@@ -52,7 +53,7 @@ class Adminlar : Fragment() {
         bottomNavigation.visibility = View.VISIBLE
         toolbar1.visibility = View.VISIBLE
         adminlarAdapter = AdminlarAdapter(
-            adminsList,
+            adminsList.filter { it.id != myInfo!!.id }.toMutableList(),
             editOnClick = { admin ->
                 val bundle = Bundle()
                 val fr = EditAdmin()
@@ -69,8 +70,8 @@ class Adminlar : Fragment() {
             adminVm.deleteAdmin(requireContext(), requireActivity(), id)
         }
         getAdmins()
-        liveDates.getAdminlar().observe(requireActivity()) {
-            adminlarAdapter.updateList(it)
+        liveDates.getAdminlar().observe(requireActivity()) { it ->
+            adminlarAdapter.updateList(it.filter { it.id != myInfo!!.id }.toMutableList())
         }
         binding?.apply {
             recyclerViewAdmins.adapter = adminlarAdapter

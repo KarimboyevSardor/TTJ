@@ -23,12 +23,12 @@ import retrofit2.Response
 class LoginVm : ViewModel() {
     private val TAG = "LOGINVIEWMODEL"
     lateinit var myDatabase: MyDatabase
-    fun auth(login: String, password: String, context: Context, activity: FragmentActivity) {
+    fun auth(login: String, password: String, device: String, dateTime: String, context: Context, activity: FragmentActivity) {
         val loginRep = ApiClient.getRetrofit(context).create(ApiService::class.java)
         myDatabase = MyDatabase(context)
         try {
             viewModelScope.launch {
-                loginRep.auth(login, password).enqueue(object : Callback<Auth>{
+                loginRep.auth(login, password, device, dateTime).enqueue(object : Callback<Auth>{
                     override fun onResponse(call: Call<Auth>, response: Response<Auth>) {
                         if (response.isSuccessful) {
                             myDatabase.setAuth(response.body()!!)

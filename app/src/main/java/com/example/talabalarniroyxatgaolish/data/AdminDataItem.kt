@@ -10,6 +10,9 @@ data class AdminDataItem(
     var login: String = "",
     var password: String = "",
     var role: String = "",
+    var image_name: String = "",
+    var image_path: String = "",
+    var image_url: String? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -18,6 +21,9 @@ data class AdminDataItem(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString()
     ) {
     }
 
@@ -28,6 +34,9 @@ data class AdminDataItem(
         parcel.writeString(login)
         parcel.writeString(password)
         parcel.writeString(role)
+        parcel.writeString(image_name)
+        parcel.writeString(image_path)
+        parcel.writeString(image_url)
     }
 
     override fun describeContents(): Int {

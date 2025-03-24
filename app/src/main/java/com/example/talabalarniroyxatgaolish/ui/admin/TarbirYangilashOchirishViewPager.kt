@@ -36,7 +36,7 @@ import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
 import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 import com.example.talabalarniroyxatgaolish.databinding.FragmentStudentUpdateRoomBottomSheetDialogAdminBinding
-import com.example.talabalarniroyxatgaolish.databinding.FragmentYigilishlarTadbirOchirishViewPagerAdminBinding
+import com.example.talabalarniroyxatgaolish.databinding.FragmentTadbirOchirishViewPagerAdminBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
 import com.example.talabalarniroyxatgaolish.utils.Utils.studentlarList
 import com.example.talabalarniroyxatgaolish.utils.Utils.tadbirlarList
@@ -74,7 +74,7 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
     private var uri: Uri? = null
     private lateinit var yigilishData: TadbirlarDataItem
     lateinit var yigilishlarniYangilashOchirishAdminVm: YigilishlarniYangilashOchirishAdminVm
-    private var binding: FragmentYigilishlarTadbirOchirishViewPagerAdminBinding? = null
+    private var binding: FragmentTadbirOchirishViewPagerAdminBinding? = null
     lateinit var liveDates: LiveDates
     private var rates: MutableList<Rate> = mutableListOf()
     private lateinit var qoshilganStudents: MutableList<StudentDataItem>
@@ -84,7 +84,7 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentYigilishlarTadbirOchirishViewPagerAdminBinding.inflate(layoutInflater)
+        binding = FragmentTadbirOchirishViewPagerAdminBinding.inflate(layoutInflater)
         yigilishlarniYangilashOchirishAdminVm = ViewModelProvider(requireActivity())[YigilishlarniYangilashOchirishAdminVm::class]
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         yigilishData = tadbirlarList.filter { it.id == param1!!.toLong() }[0]
@@ -113,10 +113,10 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
                 }
             }
             yigilishImage.setOnClickListener {
-                openGallery()
+                checkPermissionAndOpenGallery()
             }
             rasmJoylashTv.setOnClickListener {
-                openGallery()
+                checkPermissionAndOpenGallery()
             }
             dateTv.setOnClickListener {
                 val calendar = Calendar.getInstance()
@@ -310,16 +310,6 @@ class TarbirYangilashOchirishViewPager : Fragment(), View.OnClickListener {
             } catch (e: Exception) {
                 throw e
             }
-        }
-    }
-
-    private fun base64ToBitmap(base64String: String): Bitmap? {
-        return try {
-            val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
-            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-            null
         }
     }
 

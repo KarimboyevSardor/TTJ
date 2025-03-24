@@ -15,8 +15,6 @@ import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.CalendarAdapter
 import com.example.talabalarniroyxatgaolish.data.Date
 import com.example.talabalarniroyxatgaolish.databinding.FragmentCalendarViewPagerAdminBinding
-import com.example.talabalarniroyxatgaolish.utils.Utils.davomatList
-import com.example.talabalarniroyxatgaolish.utils.Utils.studentlarList
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.time.LocalDate

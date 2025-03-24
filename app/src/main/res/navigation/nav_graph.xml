@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/xona_student"
-        android:name="com.example.talabalarniroyxatgaolish.ui.student.Xona"
+        android:name="com.example.talabalarniroyxatgaolish.ui.student.XonaStudent"
         android:label="fragment_xona_student"
         tools:layout="@layout/fragment_xona_student" />
     <fragment
@@ -80,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/davomat_student"
-        android:name="com.example.talabalarniroyxatgaolish.ui.student.Davomat"
+        android:name="com.example.talabalarniroyxatgaolish.ui.student.DavomatStudent"
         android:label="fragment_davomat_student"
         tools:layout="@layout/fragment_davomat_student" />
     <fragment
@@ -108,7 +108,7 @@
     </fragment>
     <fragment
         android:id="@+id/yigilishlar_student"
-        android:name="com.example.talabalarniroyxatgaolish.ui.student.Yigilishlar"
+        android:name="com.example.talabalarniroyxatgaolish.ui.student.YigilishlarStudent"
         android:label="fragment_yigilishlar_student"
         tools:layout="@layout/fragment_tadbirlar_student" />
     <fragment

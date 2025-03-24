@@ -12,8 +12,8 @@
                 />
             <item
                 android:id="@+id/add_student_drawer_admin"
-                android:title="Student qo'shish"
-                android:icon="@drawable/add_student_icon"
+                android:title="Studentlar"
+                android:icon="@drawable/student"
                 />
         </menu>
     </item>
@@ -42,11 +42,6 @@
                 android:id="@+id/baholash_drawer_admin"
                 android:title="Ilovani baholash"
                 android:icon="@drawable/star_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                />
-            <item
-                android:id="@+id/dastur_haqida_drawer_admin"
-                android:title="Dastur haqida"
-                android:icon="@drawable/info_24dp_undefined_fill0_wght400_grad0_opsz24"
                 />
 
             <item

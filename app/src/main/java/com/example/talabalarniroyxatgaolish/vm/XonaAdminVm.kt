@@ -111,7 +111,7 @@ class XonaAdminVm : ViewModel() {
                         response: Response<StudentDataItem>
                     ) {
                         if (response.isSuccessful) {
-                            val studentIndex = studentlarList.indexOf(studentDataItem)
+                            val studentIndex = studentlarList.indexOf(studentlarList.filter { it.id == studentDataItem.id }[0])
                             studentlarList[studentIndex] = response.body()!!
                             liveDates.studentlarLiveData.value = studentlarList
                         } else {

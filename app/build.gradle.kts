@@ -68,6 +68,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.0")
     //lottie animation
     implementation("com.airbnb.android:lottie:5.2.0")
+    //dumaloq imageview
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -14,16 +15,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.databinding.FragmentBoshAdminBinding
 import com.example.talabalarniroyxatgaolish.db.MyDatabase
-import com.example.talabalarniroyxatgaolish.ui.DasturHaqida
 import com.example.talabalarniroyxatgaolish.ui.Login
-import com.example.talabalarniroyxatgaolish.ui.Settings
-import com.example.talabalarniroyxatgaolish.ui.Xavfsizlik
 import com.example.talabalarniroyxatgaolish.utils.Utils.myInfo
+import com.example.talabalarniroyxatgaolish.vm.BoshAdminVm
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import de.hdodenhof.circleimageview.CircleImageView
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -45,13 +47,17 @@ class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var myDatabase: MyDatabase
     private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var toolbar1: Toolbar
+    lateinit var boshAdminVm: BoshAdminVm
+    lateinit var image: CircleImageView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBoshAdminBinding.inflate(layoutInflater)
         myDatabase = MyDatabase(requireContext())
+        boshAdminVm = ViewModelProvider(requireActivity())[BoshAdminVm::class.java]
         myInfo = myDatabase.getAuth()[0]
+        getAdminInfo(myInfo!!.id)
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container_admin, Tadbirlar())
             .commit()
@@ -87,6 +93,7 @@ class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
             val header = drawerNavigation.getHeaderView(0)
             val tv = header.findViewById<TextView>(R.id.name_header)
             tv.text = myInfo!!.name
+            image = header.findViewById(R.id.image_admin)
             toggle.syncState()
             callback = object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -97,13 +104,30 @@ class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
                 }
-
             }
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), callback)
 
         return binding!!.root
+    }
+
+    private fun getAdminInfo(id: Long) {
+        boshAdminVm.getAdminId(requireContext(), id)
+        boshAdminVm._admin.observe(viewLifecycleOwner) {
+            if (isAdded) {
+                when(it) {
+                    "Serverga ulanib bo'lmadi." -> {
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        Glide.with(requireActivity())
+                            .load(it)
+                            .into(image)
+                    }
+                }
+            }
+        }
     }
 
     override fun onDetach() {
@@ -136,23 +160,22 @@ class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.profil_drawer_admin -> {
-                replaceFragmentDrawer(Profile())
+                Toast.makeText(requireContext(), "Hozirda profil bo'limi ishga tushmagan.", Toast.LENGTH_SHORT).show()
+                //replaceFragmentDrawer(Profile())
             }
             R.id.add_student_drawer_admin -> {
-                replaceFragmentDrawer(AddStudent())
+                replaceFragmentDrawer(Studentlar())
             }
             R.id.settings_drawer_admin -> {
-                replaceFragmentDrawer(Settings())
+                Toast.makeText(requireContext(), "Hozirda xavfsizlik bo'limi ishga tushmagan.", Toast.LENGTH_SHORT).show()
+                //replaceFragmentDrawer(Settings())
             }
             R.id.xavfsizlik_drawer_admin -> {
-                replaceFragmentDrawer(Xavfsizlik())
+                Toast.makeText(requireContext(), "Hozirda xavfsizlik bo'limi ishga tushmagan.", Toast.LENGTH_SHORT).show()
+                //replaceFragmentDrawer(Xavfsizlik())
             }
             R.id.baholash_drawer_admin -> {
-                Toast.makeText(requireContext(), "Baholash", Toast.LENGTH_SHORT).show()
-            }
-            R.id.dastur_haqida_drawer_admin -> {
-                replaceFragmentDrawer(DasturHaqida())
-            }
+                Toast.makeText(requireContext(), "Hozirda baholash bo'limi ishga tushmagan.", Toast.LENGTH_SHORT).show()            }
             R.id.chiqish_drawer_admin -> {
                 myInfo = null
                 myDatabase.deleteAuth()

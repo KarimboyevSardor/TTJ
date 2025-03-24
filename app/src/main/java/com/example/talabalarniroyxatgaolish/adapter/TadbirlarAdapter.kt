@@ -50,9 +50,6 @@ class TadbirlarAdapter(
             for (i in rates.indices) {
                 val chip = Chip(context)
                 chip.text = rates[i].name
-                chip.setOnClickListener {
-                    Toast.makeText(context, chip.text.toString(), Toast.LENGTH_SHORT).show()
-                }
                 holder.binding.yigilishChipgroupRvItem.addView(chip)
             }
             holder.binding.tadbirStudentRvItem.visibility = View.VISIBLE

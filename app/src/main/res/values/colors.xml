@@ -26,5 +26,10 @@
     <color name="red_tomato">#FF6347</color>
     <color name="red_orange_red">#FF4500</color>
     <color name="red_deep_pink">#FF1493</color>
+    <color name="primary_green">#4CAF50</color>
+    <color name="light_gray">#F5F5F5</color>
+    <color name="dark_gray">#757575</color>
+
+
 
 </resources>

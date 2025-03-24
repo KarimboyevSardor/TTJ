@@ -1,5 +1,6 @@
 package com.example.talabalarniroyxatgaolish.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,8 +17,18 @@ import com.example.talabalarniroyxatgaolish.ui.admin.BoshAdmin
 import com.example.talabalarniroyxatgaolish.ui.student.BoshStudent
 import com.example.talabalarniroyxatgaolish.utils.Utils.myInfo
 import com.example.talabalarniroyxatgaolish.vm.LoginVm
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 // o'z paket nomingizni qo'llang
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -72,11 +83,19 @@ class Login : Fragment() {
         return binding!!.root
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun auth(login: String, password: String) {
         lifecycleScope.launch {
             if (isAdded) {
                 try {
-                    loginVm.auth(login, password, requireContext(), requireActivity())
+                    val manufacturer = Build.MANUFACTURER
+                    val model = Build.MODEL
+                    val deviceInfo = "$manufacturer $model"
+                    val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(
+                        Date()
+                    )
+                    Log.d(TAG, "auth: $deviceInfo, $currentTime")
+                    loginVm.auth(login, password, deviceInfo, currentTime, requireContext(), requireActivity())
                 } catch (e: Exception) {
                     Log.d(TAG, "auth: ${e.message}")
                 }

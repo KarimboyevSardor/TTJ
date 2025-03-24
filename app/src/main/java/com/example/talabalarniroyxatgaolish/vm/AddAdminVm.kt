@@ -12,15 +12,17 @@ import com.example.talabalarniroyxatgaolish.network.ApiClient
 import com.example.talabalarniroyxatgaolish.network.ApiService
 import com.example.talabalarniroyxatgaolish.utils.Utils.adminsList
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class AddAdminVm : ViewModel() {
     private val TAG = "ADDADMINVIEWMODEL"
-    fun addAdmin(context: Context, activity: FragmentActivity, admin: AdminDataItem) {
+    fun addAdmin(context: Context, activity: FragmentActivity, name: RequestBody, login: RequestBody, password: RequestBody, role: RequestBody, image: MultipartBody.Part?) {
         val apiService = ApiClient.getRetrofit(context).create(ApiService::class.java)
         val liveDates = ViewModelProvider(activity)[LiveDates::class.java]
         viewModelScope.launch {
             try {
-                val response = apiService.addAdmin(admin)
+                val response = apiService.addAdmin(name = name, login = login, password = password, role = role, image =  image)
                 if (response.code() == 200) {
                     adminsList.add(response.body()!!)
                     liveDates.adminlarLiveData.value = adminsList

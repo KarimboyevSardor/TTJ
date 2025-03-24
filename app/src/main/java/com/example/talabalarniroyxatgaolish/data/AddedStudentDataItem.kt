@@ -8,5 +8,6 @@ data class AddedStudentDataItem(
     var room_id: Long = 0,
     val login: String = "",
     val password: String = "",
-    val role: String = "student"
+    val role: String = "student",
+    var auth_id: Long = 0
 )

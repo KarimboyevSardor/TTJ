@@ -1,61 +1,42 @@
 package com.example.talabalarniroyxatgaolish.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
-import com.example.talabalarniroyxatgaolish.databinding.StudentsRvItemBinding
+import com.example.talabalarniroyxatgaolish.databinding.StudentRvItemBinding
 
-class StudentsAdapter(var studentsList: MutableList<StudentDataItem>, val onDeleteClick: (StudentDataItem) -> Unit) : Adapter<StudentsAdapter.StudentAdapterVh>() {
+class StudentsAdapter(var studentsList: MutableList<StudentDataItem>, val onClick: (student: StudentDataItem) -> Unit, val deleteStudent: (student: StudentDataItem) -> Unit) : Adapter<StudentsAdapter.StudentsAdapterVh>() {
 
-    inner class StudentAdapterVh(val binding: StudentsRvItemBinding) : ViewHolder(binding.root)
-
-    fun filter(studentList: MutableList<StudentDataItem>) {
-        val diffCallback = StudentsDiffUtil(this.studentsList, studentList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.studentsList = studentList
-        diffResult.dispatchUpdatesTo(this)
+    fun updateList(studentsList: MutableList<StudentDataItem>) {
+        this.studentsList = studentsList
+        notifyDataSetChanged()
     }
 
-    class StudentsDiffUtil(
-        private val oldList: List<StudentDataItem>,
-        private val newList: List<StudentDataItem>
-    ) : DiffUtil.Callback() {
-        override fun getOldListSize(): Int = oldList.size
-        override fun getNewListSize(): Int = newList.size
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
-        }
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
+    inner class StudentsAdapterVh(val binding: StudentRvItemBinding) : ViewHolder(binding.root) {
+        fun onBind(student: StudentDataItem) {
+            binding.tvStudentName.text = student.name
+            binding.tvCourse.text = "${student.course_count} - kurs talabasi"
+            binding.tvFaculty.text = student.course
+            binding.root.setOnClickListener {
+                onClick(student)
+            }
+            binding.btnDelete.setOnClickListener{
+                deleteStudent(student)
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentAdapterVh {
-        return StudentAdapterVh(StudentsRvItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentsAdapterVh {
+        return StudentsAdapterVh(StudentRvItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun getItemCount(): Int {
         return studentsList.size
     }
 
-    override fun onBindViewHolder(holder: StudentAdapterVh, position: Int) {
-        val student = studentsList[position]
-        holder.binding.tvStudentName.text = student.name
-        holder.binding.tvUniversity.text = student.course
-        holder.binding.tvCourseYear.text = "${student.course_count} - kurs talabasi"
-        holder.binding.btnDelete.setOnClickListener {
-            onDeleteClick(student)
-        }
+    override fun onBindViewHolder(holder: StudentsAdapterVh, position: Int) {
+        holder.onBind(studentsList[position])
     }
-
-
 }

@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.TadbirlarAdapter
+import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 import com.example.talabalarniroyxatgaolish.databinding.FragmentTadbirlarAdminBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
 import com.example.talabalarniroyxatgaolish.utils.Utils.studentlarList
@@ -21,6 +23,7 @@ import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
 import com.example.talabalarniroyxatgaolish.vm.YigilishlarAdminVm
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -87,9 +90,35 @@ class Tadbirlar : Fragment() {
                 bottomNavigation.visibility = View.GONE
                 toolbar.visibility = View.GONE
             }
+            yigilishSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (query != null) {
+                        searchTadbir(query)
+                    }
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText != null) {
+                        searchTadbir(newText)
+                    }
+                    return false
+                }
+            })
         }
 
         return binding!!.root
+    }
+
+    private fun searchTadbir(query: String) {
+        val tadbirlar: MutableList<TadbirlarDataItem> = mutableListOf()
+        for (i in 0 until tadbirlarList.size) {
+            if (tadbirlarList[i].name.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT))) {
+                tadbirlar.add(tadbirlarList[i])
+            }
+        }
+        tadbirlarAdapter.filterYigilish(tadbirlar)
+        tadbirlarAdapter.filterRate(rateList)
     }
 
     private fun getYigilishlar() {
@@ -100,11 +129,7 @@ class Tadbirlar : Fragment() {
                     yigilishlarAdminVm._stateYigilishlar.collect {
                         when (it) {
                             is Resource.Error -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Yig'ilishlarni olib bo'lmadi.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Log.d(TAG, "getYigilishlar: ${it.e.message}")
                             }
 
                             is Resource.Loading -> {}
@@ -160,11 +185,9 @@ class Tadbirlar : Fragment() {
                     yigilishlarAdminVm._students.collect{
                         when (it) {
                             is Resource.Error -> {
-                                Toast.makeText(requireContext(), "${it.e.message}", Toast.LENGTH_SHORT).show()
+                                Log.d(TAG, "getStudents: ${it.e.message}")
                             }
-                            is Resource.Loading -> {
-
-                            }
+                            is Resource.Loading -> {}
                             is Resource.Success -> {
                                 studentlarList = it.data
                             }
