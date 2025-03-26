@@ -14,6 +14,7 @@ import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.RateData
 import com.example.talabalarniroyxatgaolish.data.StudentData
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
+import com.example.talabalarniroyxatgaolish.data.StudentInfo
 import com.example.talabalarniroyxatgaolish.data.XonaData
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
 import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
@@ -166,5 +167,8 @@ interface ApiService {
 
     @GET("api/admin/{id}")
     suspend fun getAdminId(@Path("id") id: Long) : Response<AdminDataItem>
+
+    @GET("api/student/student/{id}")
+    suspend fun getStudentInfo(@Path("id") id: Long) : Response<StudentInfo>
 
 }

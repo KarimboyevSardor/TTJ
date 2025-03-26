@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="12dp"
+    >
+
+    <com.example.talabalarniroyxatgaolish.utils.RoundedImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/tadbir_rv_item_img"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher_background"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Tadbir name"
+        android:id="@+id/tadbir_name_rv_item"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Baho: 4/5"
+        android:id="@+id/rate_student"
+        />
+
+</LinearLayout>

@@ -180,11 +180,9 @@ class BoshAdmin : Fragment(), NavigationView.OnNavigationItemSelectedListener {
                 myInfo = null
                 myDatabase.deleteAuth()
                 val fragmentManager = requireActivity().supportFragmentManager
-
                 for (fragment in fragmentManager.fragments) {
                     fragmentManager.beginTransaction().remove(fragment).commit()
                 }
-
                 fragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView, Login())
                     .commit()

@@ -70,6 +70,8 @@ dependencies {
     implementation("com.airbnb.android:lottie:5.2.0")
     //dumaloq imageview
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    //shimmer effect
+    implementation(libs.shimmer)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

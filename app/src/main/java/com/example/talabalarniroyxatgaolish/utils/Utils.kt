@@ -7,6 +7,7 @@ import com.example.talabalarniroyxatgaolish.data.Date
 import com.example.talabalarniroyxatgaolish.data.Oy
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
+import com.example.talabalarniroyxatgaolish.data.StudentInfo
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
 import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 
@@ -22,4 +23,5 @@ object Utils {
     var currentDateDavomat: MutableList<DavomatDataItem> = mutableListOf()
     var adminsList: MutableList<AdminDataItem> = mutableListOf()
     var myInfo: Auth? = null
+    var studentInfoData: StudentInfo? = null
 }

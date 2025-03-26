@@ -15,9 +15,9 @@
         app:showAsAction="ifRoom"
         />
     <item
-        android:id="@+id/xona_student"
-        android:icon="@drawable/bedroom_child_24dp_undefined"
-        android:title="Xonam"
+        android:id="@+id/profil_drawer_student"
+        android:icon="@drawable/person_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+        android:title="Profil"
         app:showAsAction="ifRoom"
         />
 </menu>

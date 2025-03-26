@@ -74,13 +74,19 @@ class Tadbirlar : Fragment() {
             toolbar.visibility = View.GONE
         }
         liveDates.getYigilish().observe(requireActivity()) {
-            tadbirlarAdapter.filterYigilish(it)
+            if (it.isNotEmpty()) {
+                tadbirlarAdapter.filterYigilish(it)
+                binding!!.shimmerYigilish.stopShimmer()
+                binding!!.shimmerYigilish.visibility = View.GONE
+                binding!!.yigilishRv.visibility = View.VISIBLE
+            }
         }
         liveDates.getRate().observe(requireActivity()) {
             tadbirlarAdapter.filterRate(it)
         }
 
         binding!!.apply {
+            shimmerYigilish.startShimmer()
             yigilishRv.adapter = tadbirlarAdapter
             addYigilish.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()

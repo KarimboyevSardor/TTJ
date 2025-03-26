@@ -51,8 +51,8 @@ class BoshStudent : Fragment(), NavigationView.OnNavigationItemSelectedListener 
                     R.id.yigilish_student -> {
                         replaceFragment(YigilishlarStudent())
                     }
-                    R.id.xona_student -> {
-                        replaceFragment(XonaStudent())
+                    R.id.profil_drawer_student -> {
+                        replaceFragmentDrawer(ProfileStudent())
                     }
                     R.id.davomat_student -> {
                         replaceFragment(DavomatStudent())
@@ -109,10 +109,6 @@ class BoshStudent : Fragment(), NavigationView.OnNavigationItemSelectedListener 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.profil_drawer_student -> {
-                Toast.makeText(requireContext(), "Hozirda profil bo'limi ishga tushmagan.", Toast.LENGTH_SHORT).show()
-                //replaceFragmentDrawer(Profile())
-            }
             R.id.settings_drawer_student -> {
                 Toast.makeText(requireContext(), "Hozirda xavfsizlik bo'limi ishga tushmagan.", Toast.LENGTH_SHORT).show()
                 //replaceFragmentDrawer(Settings())
@@ -127,11 +123,9 @@ class BoshStudent : Fragment(), NavigationView.OnNavigationItemSelectedListener 
                 myInfo = null
                 myDatabase.deleteAuth()
                 val fragmentManager = requireActivity().supportFragmentManager
-
                 for (fragment in fragmentManager.fragments) {
                     fragmentManager.beginTransaction().remove(fragment).commit()
                 }
-
                 fragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView, Login())
                     .commit()

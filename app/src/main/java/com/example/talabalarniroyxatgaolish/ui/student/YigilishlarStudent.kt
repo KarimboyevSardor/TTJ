@@ -9,19 +9,15 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.adapter.TadbirlarAdapter
 import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 import com.example.talabalarniroyxatgaolish.databinding.FragmentTadbirlarStudentBinding
-import com.example.talabalarniroyxatgaolish.ui.admin.Tadbir
-import com.example.talabalarniroyxatgaolish.ui.admin.TadbirQoshish
 import com.example.talabalarniroyxatgaolish.utils.Utils.rateList
 import com.example.talabalarniroyxatgaolish.utils.Utils.studentlarList
 import com.example.talabalarniroyxatgaolish.utils.Utils.tadbirlarList
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
 import com.example.talabalarniroyxatgaolish.vm.TadbirlarStudentVm
-import com.example.talabalarniroyxatgaolish.vm.YigilishlarAdminVm
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -57,11 +53,16 @@ class YigilishlarStudent : Fragment() {
         tadbirlarAdapter = TadbirlarAdapter(tadbirlarList, rateList, requireContext()) {}
         liveDates.getYigilish().observe(requireActivity()) {
             tadbirlarAdapter.filterYigilish(it)
+            binding!!.yigilishRv.visibility = View.VISIBLE
+            binding!!.shimmerYigilish.visibility = View.GONE
+            binding!!.shimmerYigilish.stopShimmer()
         }
         liveDates.getRate().observe(requireActivity()) {
             tadbirlarAdapter.filterRate(it)
+
         }
         binding!!.apply {
+            shimmerYigilish.startShimmer()
             yigilishRv.adapter = tadbirlarAdapter
             yigilishSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -105,7 +106,9 @@ class YigilishlarStudent : Fragment() {
                                 Log.d(TAG, "getYigilishlar: ${it.e.message}")
                             }
 
-                            is Resource.Loading -> {}
+                            is Resource.Loading -> {
+
+                            }
                             is Resource.Success -> {
                                 tadbirlarList = it.data
                                 liveDates.tarbirlarLiveData.value = tadbirlarList

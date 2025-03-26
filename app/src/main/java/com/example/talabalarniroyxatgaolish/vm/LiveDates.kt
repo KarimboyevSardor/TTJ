@@ -7,6 +7,7 @@ import com.example.talabalarniroyxatgaolish.data.AuthDataItem
 import com.example.talabalarniroyxatgaolish.data.DavomatDataItem
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.StudentDataItem
+import com.example.talabalarniroyxatgaolish.data.StudentInfo
 import com.example.talabalarniroyxatgaolish.data.XonaDataItem
 import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 
@@ -25,6 +26,11 @@ class LiveDates : ViewModel() {
     var xonaStudentLiveDate: MutableLiveData<MutableList<StudentDataItem>> = MutableLiveData()
     var adminlarLiveData: MutableLiveData<MutableList<AdminDataItem>> = MutableLiveData()
     var authLiveDate: MutableLiveData<MutableList<AuthDataItem>> = MutableLiveData()
+    var studentInfo: MutableLiveData<StudentInfo> = MutableLiveData()
+
+    fun getStudentInfoData() : MutableLiveData<StudentInfo> {
+        return studentInfo
+    }
 
     fun getAuth() : MutableLiveData<MutableList<AuthDataItem>> {
         return authLiveDate

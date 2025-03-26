@@ -5,7 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.talabalarniroyxatgaolish.R
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.talabalarniroyxatgaolish.adapter.TadbirProfileStudentAdapter
+import com.example.talabalarniroyxatgaolish.databinding.FragmentProfileStudentBinding
+import com.example.talabalarniroyxatgaolish.utils.Utils.myInfo
+import com.example.talabalarniroyxatgaolish.utils.Utils.studentInfoData
+import com.example.talabalarniroyxatgaolish.vm.LiveDates
+import com.example.talabalarniroyxatgaolish.vm.ProfileStudentVm
+import kotlinx.coroutines.launch
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -22,11 +31,58 @@ class ProfileStudent : Fragment() {
         }
     }
 
+    private var binding: FragmentProfileStudentBinding? = null
+    lateinit var profileStudentVm: ProfileStudentVm
+    lateinit var liveDates: LiveDates
+    lateinit var profileStudentAdapter: TadbirProfileStudentAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile_student, container, false)
+        binding = FragmentProfileStudentBinding.inflate(layoutInflater)
+        liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
+        profileStudentVm = ViewModelProvider(requireActivity())[ProfileStudentVm::class]
+        liveDates.getStudentInfoData().observe(viewLifecycleOwner) {
+            if (it.student.id != 0L) {
+                profileStudentAdapter = TadbirProfileStudentAdapter(
+                    studentInfoData!!.meetings.toMutableList(),
+                    requireContext()
+                )
+                binding!!.tadbirlarRv.adapter = profileStudentAdapter
+                binding!!.studentNameProfil.text = studentInfoData!!.student.name
+                binding!!.studentXonaProfile.text = studentInfoData!!.rooms.room_count
+                binding!!.studentFakultetProfil.text = studentInfoData!!.student.course
+                binding!!.studentKursCountProfile.text = studentInfoData!!.student.course_count.toString()
+                binding!!.studentMeetingCountProfile.text = studentInfoData!!.meetings.size.toString()
+            }
+        }
+        binding!!.apply {
+            lifecycleScope.launch {
+                if (isAdded) {
+                    profileStudentVm.getStudentInfo(requireContext(), myInfo!!.id)
+                    profileStudentVm._studentInfo.observe(viewLifecycleOwner) {
+                        when (it) {
+                            "qoshildi" -> {
+                                liveDates.studentInfo.value = studentInfoData
+                            }
+                            else -> {
+                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        liveDates.getStudentInfoData().observe(viewLifecycleOwner) {
+            profileStudentAdapter.updateList(it.meetings.toMutableList())
+        }
+        return binding!!.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
     companion object {
