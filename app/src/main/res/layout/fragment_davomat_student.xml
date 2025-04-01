@@ -33,6 +33,26 @@
                     />
             </androidx.cardview.widget.CardView>
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/cardView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/student_shimmer"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+                    <include layout="@layout/student_davomat_rv_item_shimmer"/>
+                    <include layout="@layout/student_davomat_rv_item_shimmer"/>
+                    <include layout="@layout/student_davomat_rv_item_shimmer"/>
+                    <include layout="@layout/student_davomat_rv_item_shimmer"/>
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
@@ -42,9 +62,20 @@
                 tools:listitem="@layout/student_davomat_rv_item"
                 android:id="@+id/student_davomat_rv"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:visibility="gone"
                 />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/noConnectLayout"
+        >
+        <include layout="@layout/no_network" android:id="@+id/no_internet"/>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

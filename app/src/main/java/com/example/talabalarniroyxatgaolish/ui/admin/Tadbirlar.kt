@@ -53,9 +53,10 @@ class Tadbirlar : Fragment() {
 
         yigilishlarAdminVm = ViewModelProvider(requireActivity())[YigilishlarAdminVm::class]
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
+        binding!!.shimmerYigilish.startShimmer()
         getYigilishlar()
         getStudents()
-
+        isCheckEmpty()
         val bottomNavigation: FrameLayout = requireActivity().findViewById(R.id.bottom_navigation_admin)
         val toolbar: Toolbar = requireActivity().findViewById(R.id.bosh_toolbar_admin)
         bottomNavigation.visibility = View.VISIBLE
@@ -74,19 +75,13 @@ class Tadbirlar : Fragment() {
             toolbar.visibility = View.GONE
         }
         liveDates.getYigilish().observe(requireActivity()) {
-            if (it.isNotEmpty()) {
-                tadbirlarAdapter.filterYigilish(it)
-                binding!!.shimmerYigilish.stopShimmer()
-                binding!!.shimmerYigilish.visibility = View.GONE
-                binding!!.yigilishRv.visibility = View.VISIBLE
-            }
+            tadbirlarAdapter.filterYigilish(it)
         }
         liveDates.getRate().observe(requireActivity()) {
             tadbirlarAdapter.filterRate(it)
         }
 
         binding!!.apply {
-            shimmerYigilish.startShimmer()
             yigilishRv.adapter = tadbirlarAdapter
             addYigilish.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
@@ -116,6 +111,14 @@ class Tadbirlar : Fragment() {
         return binding!!.root
     }
 
+    private fun isCheckEmpty() {
+        if (tadbirlarList.isNotEmpty()) {
+            binding!!.shimmerYigilish.stopShimmer()
+            binding!!.shimmerYigilish.visibility = View.GONE
+            binding!!.yigilishRv.visibility = View.VISIBLE
+        }
+    }
+
     private fun searchTadbir(query: String) {
         val tadbirlar: MutableList<TadbirlarDataItem> = mutableListOf()
         for (i in 0 until tadbirlarList.size) {
@@ -130,19 +133,19 @@ class Tadbirlar : Fragment() {
     private fun getYigilishlar() {
         lifecycleScope.launch {
             if (isAdded) {
-                if (tadbirlarList.isEmpty()) {
-                    yigilishlarAdminVm.getYigilishlar(requireContext())
-                    yigilishlarAdminVm._stateYigilishlar.collect {
-                        when (it) {
-                            is Resource.Error -> {
-                                Log.d(TAG, "getYigilishlar: ${it.e.message}")
-                            }
-
-                            is Resource.Loading -> {}
-                            is Resource.Success -> {
-                                tadbirlarList = it.data
-                                liveDates.tarbirlarLiveData.value = tadbirlarList
-                            }
+                yigilishlarAdminVm.getYigilishlar(requireContext())
+                yigilishlarAdminVm._stateYigilishlar.collect {
+                    when (it) {
+                        is Resource.Error -> {
+                            Log.d(TAG, "getYigilishlar: ${it.e.message}")
+                            binding!!.shimmerYigilish.stopShimmer()
+                            binding!!.shimmerYigilish.visibility = View.GONE
+                        }
+                        is Resource.Loading -> {}
+                        is Resource.Success -> {
+                            tadbirlarList = it.data
+                            liveDates.tarbirlarLiveData.value = tadbirlarList
+                            isCheckEmpty()
                         }
                     }
                 }

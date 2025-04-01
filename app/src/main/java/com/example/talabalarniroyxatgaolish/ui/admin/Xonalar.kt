@@ -61,6 +61,7 @@ class Xonalar : Fragment() {
         val toolbar1: Toolbar = requireActivity().findViewById(R.id.bosh_toolbar_admin)
         toolbar1.visibility = View.VISIBLE
         bottomNavigation.visibility = View.VISIBLE
+        isCheckEmpty()
         xonaAdapter = XonaAdapter(xonalarList) {
             val bundle = Bundle()
             val fm = Xona()
@@ -80,6 +81,7 @@ class Xonalar : Fragment() {
         getXona()
 
         binding!!.apply {
+            roomsShimmer.startShimmer()
             xonaRv.adapter = xonaAdapter
             addRoom.setOnClickListener {
                 showDialog()
@@ -102,6 +104,14 @@ class Xonalar : Fragment() {
         }
 
         return binding!!.root
+    }
+
+    private fun isCheckEmpty() {
+        if (xonalarList.isNotEmpty()) {
+            binding!!.roomsShimmer.stopShimmer()
+            binding!!.xonaRv.visibility = View.VISIBLE
+            binding!!.roomsShimmer.visibility = View.GONE
+        }
     }
 
     private fun xonaQidirish(query: String) {
@@ -168,6 +178,8 @@ class Xonalar : Fragment() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     Log.d(TAG, "getXona: ${it.e.message}")
+                                    binding!!.roomsShimmer.stopShimmer()
+                                    binding!!.roomsShimmer.visibility = View.GONE
                                 }
 
                                 is Resource.Loading -> {
@@ -177,6 +189,7 @@ class Xonalar : Fragment() {
                                 is Resource.Success -> {
                                     liveDates.xonalarLiveData.value = it.data
                                     xonalarList = it.data
+                                    isCheckEmpty()
                                 }
                             }
                         }

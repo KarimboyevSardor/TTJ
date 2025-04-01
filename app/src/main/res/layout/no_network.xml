@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/no_netwok"
+    >
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:lottie_rawRes="@raw/no_connection"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
+
+    <TextView
+        android:fontFamily="@font/txt_font"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="Internet ulanishi yo'q!!"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="@color/green"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:background="@drawable/login_btn"
+        android:text="Qayta yuklash"
+        android:textAllCaps="false"
+        android:fontFamily="@font/txt_font"
+        android:id="@+id/rety_network"
+        android:textColor="@color/white"
+        />
+
+</LinearLayout>

@@ -69,7 +69,6 @@ class Studentlar : Fragment() {
                 when (it) {
                     "O'chirildi." -> {
                         liveDates.studentlarLiveData.value = studentlarList
-
                     }
                     else -> {
                         Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
@@ -98,7 +97,6 @@ class Studentlar : Fragment() {
                     searchStudent(query!!)
                     return false
                 }
-
                 override fun onQueryTextChange(newText: String?): Boolean {
                     searchStudent(newText!!)
                     return false

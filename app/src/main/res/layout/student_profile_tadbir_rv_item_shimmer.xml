@@ -11,22 +11,25 @@
         android:layout_height="100dp"
         android:id="@+id/tadbir_rv_item_img"
         android:scaleType="fitXY"
-        android:src="@drawable/no_image"
+        android:background="@drawable/shimmer_back"
         />
 
     <TextView
         android:layout_width="match_parent"
+        android:layout_marginEnd="40dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Tadbir name"
         android:id="@+id/tadbir_name_rv_item"
+        android:background="@drawable/shimmer_back"
         />
 
     <TextView
+        android:layout_marginTop="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Baho: 4/5"
+        android:layout_marginEnd="80dp"
         android:id="@+id/rate_student"
+        android:background="@drawable/shimmer_back"
         />
 
 </LinearLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="16dp"
+    android:layout_margin="16dp"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.example.talabalarniroyxatgaolish.utils.RoundedImageView
+            android:id="@+id/imageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:layout_alignParentTop="true"
+            android:elevation="6dp"
+            android:background="@drawable/shimmer_back"
+            />
+
+        <TextView
+            style="@style/Theme.MyCustomTextview"
+            android:id="@+id/room_name"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_toEndOf="@id/imageView"
+            android:layout_alignTop="@id/imageView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/shimmer_back"
+            />
+
+        <TextView
+            android:id="@+id/room_description"
+            android:layout_width="match_parent"
+            android:background="@drawable/shimmer_back"
+            android:layout_marginEnd="20dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#757575"
+            android:layout_below="@id/room_name"
+            android:layout_toEndOf="@id/imageView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/details_button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@id/room_description"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/shimmer_back"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp"
+            android:layout_centerHorizontal="true"
+            android:radius="12dp"
+            android:scaleType="centerInside" />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

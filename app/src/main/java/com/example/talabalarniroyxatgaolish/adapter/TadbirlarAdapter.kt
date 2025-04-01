@@ -4,17 +4,22 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import coil.load
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.talabalarniroyxatgaolish.R
 import com.example.talabalarniroyxatgaolish.data.Rate
 import com.example.talabalarniroyxatgaolish.data.TadbirlarDataItem
 import com.example.talabalarniroyxatgaolish.databinding.YigilishRvItemBinding
 import com.google.android.material.chip.Chip
+import com.squareup.picasso.Picasso
 
 class TadbirlarAdapter(
     var yigilishlarList: MutableList<TadbirlarDataItem>,
@@ -22,6 +27,7 @@ class TadbirlarAdapter(
     val context: Context,
     val onClickItem: (TadbirlarDataItem) -> Unit
 ) : Adapter<TadbirlarAdapter.YigilishlarVh>() {
+    private val TAG = "TADBIRLARADAPTER"
     inner class YigilishlarVh(var binding: YigilishRvItemBinding) : ViewHolder(binding.root)
 
     fun filterYigilish(yigilishlarList: MutableList<TadbirlarDataItem>) {
@@ -61,8 +67,10 @@ class TadbirlarAdapter(
         holder.binding.yigilishVaqti.text = formatDate(yigilishData.time)
         holder.binding.yigilishDescription.text = yigilishData.description
         if (yigilishData.image_base64 != null) {
+            holder.binding.yigilishImage.visibility = View.VISIBLE
             Glide.with(context)
                 .load(yigilishData.image_base64)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.binding.yigilishImage)
         } else {
             holder.binding.yigilishImage.visibility = View.GONE

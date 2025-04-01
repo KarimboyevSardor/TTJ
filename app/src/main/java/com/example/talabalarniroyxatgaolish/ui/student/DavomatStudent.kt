@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -66,12 +67,14 @@ class DavomatStudent : Fragment() {
         davomatStudentVm = ViewModelProvider(requireActivity())[DavomatStudentVm::class]
         setDate()
         getDavomat()
+        isCheckEmpty()
         calendarViewPagerAdapter = CalendarViewPagerAdapterStudent(this,currentMonth + 12)
-        davomatAdapter = DavomatAdapter(davomatList.filter { !it.is_there }.toMutableList(), requireContext())
+        davomatAdapter = DavomatAdapter(davomatList.filter { !it.is_there && it.student_id == myInfo!!.id }.toMutableList(), requireContext())
         liveDates.getDavomat().observe(requireActivity()) { it ->
             davomatAdapter.updateList(it.filter { !it.is_there && it.student_id == myInfo!!.id }.toMutableList())
         }
         binding!!.apply {
+            studentShimmer.startShimmer()
             viewpager2.adapter = calendarViewPagerAdapter
             viewpager2.layoutDirection = View.LAYOUT_DIRECTION_LTR
             viewpager2.setCurrentItem(calendarViewPagerAdapter.itemCount - 1, false)
@@ -87,6 +90,14 @@ class DavomatStudent : Fragment() {
         return binding!!.root
     }
 
+    private fun isCheckEmpty() {
+        if (davomatList.isNotEmpty()) {
+            binding!!.studentShimmer.stopShimmer()
+            binding!!.studentShimmer.visibility = GONE
+            binding!!.studentDavomatRv.visibility = VISIBLE
+        }
+    }
+
     private fun getDavomat() {
         lifecycleScope.launch {
             if (isAdded) {
@@ -100,13 +111,15 @@ class DavomatStudent : Fragment() {
                                     "Server bilan bog'lanib bo'lmadi.",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                binding!!.studentShimmer.stopShimmer()
+                                binding!!.studentShimmer.visibility = GONE
                             }
 
                             is Resource.Loading -> {}
                             is Resource.Success -> {
                                 davomatList = it.data
                                 liveDates.davomatLiveData.value = davomatList
-                                
+                                isCheckEmpty()
                             }
                         }
                     }

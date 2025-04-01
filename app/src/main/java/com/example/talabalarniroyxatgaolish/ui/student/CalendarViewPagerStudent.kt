@@ -55,6 +55,7 @@ class CalendarViewPagerStudent : Fragment() {
         dayCount = yearMonth.lengthOfMonth()
         setMonthYear()
         dayList = generateMonthDays()
+        setColor()
         calendarAdapter = CalendarAdapter(dayList) {}
         calendarAdapter.filter(dayList)
         liveDates.getDavomat().observe(viewLifecycleOwner) {

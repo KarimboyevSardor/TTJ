@@ -2,7 +2,6 @@ package com.example.talabalarniroyxatgaolish.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.talabalarniroyxatgaolish.ui.admin.CalendarViewPager
 import com.example.talabalarniroyxatgaolish.ui.student.CalendarViewPagerStudent
 import com.example.talabalarniroyxatgaolish.utils.Utils.oyList
 

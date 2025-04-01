@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -17,6 +19,7 @@ import com.example.talabalarniroyxatgaolish.databinding.FragmentAdminlarBinding
 import com.example.talabalarniroyxatgaolish.utils.Utils.adminsList
 import com.example.talabalarniroyxatgaolish.utils.Utils.myInfo
 import com.example.talabalarniroyxatgaolish.vm.AdminVm
+import com.example.talabalarniroyxatgaolish.vm.ConnectLiveData
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
 import kotlinx.coroutines.launch
@@ -41,6 +44,7 @@ class Adminlar : Fragment() {
     lateinit var liveDates: LiveDates
     private val TAG = "ADMINLAR"
     lateinit var adminlarAdapter: AdminlarAdapter
+    lateinit var connectLiveDate: ConnectLiveData
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,10 +52,13 @@ class Adminlar : Fragment() {
         binding = FragmentAdminlarBinding.inflate(layoutInflater)
         adminVm = ViewModelProvider(requireActivity())[AdminVm::class.java]
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class.java]
+        connectLiveDate = ConnectLiveData(requireContext())
         val bottomNavigation: FrameLayout = requireActivity().findViewById(R.id.bottom_navigation_admin)
         val toolbar1: Toolbar = requireActivity().findViewById(R.id.bosh_toolbar_admin)
-        bottomNavigation.visibility = View.VISIBLE
-        toolbar1.visibility = View.VISIBLE
+        bottomNavigation.visibility = VISIBLE
+        toolbar1.visibility = VISIBLE
+        getAdmins()
+        isCheckEmpty()
         adminlarAdapter = AdminlarAdapter(
             adminsList.filter { it.id != myInfo!!.id }.toMutableList(),
             editOnClick = { admin ->
@@ -69,7 +76,6 @@ class Adminlar : Fragment() {
         ) { id ->
             adminVm.deleteAdmin(requireContext(), requireActivity(), id)
         }
-        getAdmins()
         liveDates.getAdminlar().observe(requireActivity()) { it ->
             adminlarAdapter.updateList(it.filter { it.id != myInfo!!.id }.toMutableList())
         }
@@ -88,6 +94,14 @@ class Adminlar : Fragment() {
         return binding?.root
     }
 
+    private fun isCheckEmpty() {
+        if (adminsList.isNotEmpty()) {
+            binding!!.adminShimmer.stopShimmer()
+            binding!!.adminShimmer.visibility = GONE
+            binding!!.recyclerViewAdmins.visibility = VISIBLE
+        }
+    }
+
     private fun getAdmins() {
         lifecycleScope.launch {
             if (isAdded) {
@@ -97,12 +111,16 @@ class Adminlar : Fragment() {
                         when (it) {
                             is Resource.Error -> {
                                 Toast.makeText(requireContext(), "${it.e.message}", Toast.LENGTH_SHORT).show()
+                                binding!!.adminShimmer.stopShimmer()
+                                binding!!.adminShimmer.visibility = GONE
                             }
-                            is Resource.Loading -> {}
+                            is Resource.Loading -> {
+
+                            }
                             is Resource.Success -> {
                                 adminsList = it.data
                                 liveDates.adminlarLiveData.value = adminsList
-                                Log.d(TAG, "getAdmins: ${it.data}")
+                                isCheckEmpty()
                             }
                         }
                     }

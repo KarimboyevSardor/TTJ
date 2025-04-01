@@ -31,7 +31,6 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import kotlin.math.abs
 
 
 private const val ARG_PARAM1 = "param1"
@@ -73,14 +72,15 @@ class EskiDavomat : Fragment() {
         bottomNavigation.visibility = VISIBLE
         getDavomat()
         setDate()
+        isCheckEmpty()
         calendarViewPagerAdapter = CalendarViewPagerAdapter(this,currentMonth + 12)
-
         davomatAdapter = DavomatAdapter(davomatList.filter { !it.is_there }.toMutableList(), requireContext())
         liveDates.getDavomat().observe(requireActivity()) { it ->
             davomatAdapter.updateList(it.filter { !it.is_there }.toMutableList())
         }
 
         binding!!.apply {
+            studentShimmer.startShimmer()
             viewpager2.adapter = calendarViewPagerAdapter
             viewpager2.layoutDirection = View.LAYOUT_DIRECTION_LTR
             viewpager2.setCurrentItem(calendarViewPagerAdapter.itemCount - 1, false)
@@ -89,11 +89,17 @@ class EskiDavomat : Fragment() {
                     super.onPageSelected(position)
                 }
             })
-
             studentDavomatRv.adapter = davomatAdapter
         }
-
         return binding!!.root
+    }
+
+    private fun isCheckEmpty() {
+        if (davomatList.isNotEmpty()) {
+            binding!!.studentShimmer.stopShimmer()
+            binding!!.studentShimmer.visibility = GONE
+            binding!!.studentDavomatRv.visibility = VISIBLE
+        }
     }
 
     fun formatDate(date: String): String {
@@ -144,12 +150,15 @@ class EskiDavomat : Fragment() {
                                     "Server bilan bog'lanib bo'lmadi.",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                binding!!.studentShimmer.stopShimmer()
+                                binding!!.studentShimmer.visibility = GONE
                             }
 
                             is Resource.Loading -> {}
                             is Resource.Success -> {
                                 davomatList = it.data
                                 liveDates.davomatLiveData.value = davomatList
+                                isCheckEmpty()
                             }
                         }
                     }

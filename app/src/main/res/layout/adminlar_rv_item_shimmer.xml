@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/admin_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/shimmer_back"
+            android:scaleType="centerCrop"
+            android:padding="8dp"/>
+
+        <!-- Admin Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="12dp">
+
+            <TextView
+                android:id="@+id/admin_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
+                android:textSize="18sp"
+                android:background="@drawable/shimmer_back"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:background="@drawable/shimmer_back"
+                android:layout_marginEnd="80dp"
+                android:textColor="#777"
+                android:layout_marginTop="4dp"
+                />
+        </LinearLayout>
+
+        <!-- Action Buttons -->
+        <ImageButton
+            android:id="@+id/btn_edit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:background="@drawable/shimmer_back"
+            />
+
+        <ImageView
+            android:id="@+id/btn_remove"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:background="@drawable/shimmer_back"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

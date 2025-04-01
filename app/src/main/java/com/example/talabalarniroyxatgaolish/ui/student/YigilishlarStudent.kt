@@ -50,16 +50,13 @@ class YigilishlarStudent : Fragment() {
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         getYigilishlar()
         getStudents()
+        isCheckEmpty()
         tadbirlarAdapter = TadbirlarAdapter(tadbirlarList, rateList, requireContext()) {}
         liveDates.getYigilish().observe(requireActivity()) {
             tadbirlarAdapter.filterYigilish(it)
-            binding!!.yigilishRv.visibility = View.VISIBLE
-            binding!!.shimmerYigilish.visibility = View.GONE
-            binding!!.shimmerYigilish.stopShimmer()
         }
         liveDates.getRate().observe(requireActivity()) {
             tadbirlarAdapter.filterRate(it)
-
         }
         binding!!.apply {
             shimmerYigilish.startShimmer()
@@ -84,6 +81,14 @@ class YigilishlarStudent : Fragment() {
         return binding!!.root
     }
 
+    private fun isCheckEmpty() {
+        if (tadbirlarList.isNotEmpty()) {
+            binding!!.shimmerYigilish.stopShimmer()
+            binding!!.shimmerYigilish.visibility = View.GONE
+            binding!!.yigilishRv.visibility = View.VISIBLE
+        }
+    }
+
     private fun searchTadbir(query: String) {
         val tadbirlar: MutableList<TadbirlarDataItem> = mutableListOf()
         for (i in 0 until tadbirlarList.size) {
@@ -104,6 +109,8 @@ class YigilishlarStudent : Fragment() {
                         when (it) {
                             is Resource.Error -> {
                                 Log.d(TAG, "getYigilishlar: ${it.e.message}")
+                                binding!!.shimmerYigilish.stopShimmer()
+                                binding!!.shimmerYigilish.visibility = View.GONE
                             }
 
                             is Resource.Loading -> {
@@ -112,6 +119,7 @@ class YigilishlarStudent : Fragment() {
                             is Resource.Success -> {
                                 tadbirlarList = it.data
                                 liveDates.tarbirlarLiveData.value = tadbirlarList
+                                isCheckEmpty()
                             }
                         }
                     }

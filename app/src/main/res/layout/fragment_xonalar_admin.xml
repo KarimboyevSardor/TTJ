@@ -18,6 +18,30 @@
         app:tint="@color/white"
         />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/xona_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:shimmer_duration="1000"
+        app:shimmer_auto_start="true"
+        android:id="@+id/rooms_shimmer"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <include layout="@layout/room_rv_item_shimmer"/>
+            <include layout="@layout/room_rv_item_shimmer"/>
+            <include layout="@layout/room_rv_item_shimmer"/>
+            <include layout="@layout/room_rv_item_shimmer"/>
+            <include layout="@layout/room_rv_item_shimmer"/>
+            <include layout="@layout/room_rv_item_shimmer"/>
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,6 +62,7 @@
         app:layout_constraintTop_toBottomOf="@id/xona_search"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/room_rv_item"
+        android:visibility="gone"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

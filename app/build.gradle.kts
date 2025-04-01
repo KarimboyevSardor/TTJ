@@ -65,13 +65,15 @@ dependencies {
     //picasso
     implementation("com.squareup.picasso:picasso:2.8")
     //glide
-    implementation("com.github.bumptech.glide:glide:4.15.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     //lottie animation
     implementation("com.airbnb.android:lottie:5.2.0")
     //dumaloq imageview
     implementation("de.hdodenhof:circleimageview:3.1.0")
     //shimmer effect
     implementation(libs.shimmer)
+    //coil
+    implementation("io.coil-kt:coil:2.6.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
