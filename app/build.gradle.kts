@@ -74,6 +74,8 @@ dependencies {
     implementation(libs.shimmer)
     //coil
     implementation("io.coil-kt:coil:2.6.0")
+    //socket
+    implementation("io.socket:socket.io-client:2.0.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

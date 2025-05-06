@@ -132,6 +132,12 @@ class XonaDavomat : Fragment(), StudentDavomatAdapter.AdapterListener {
         setAdapter()
     }
 
+//    private fun isCheckEmpty() {
+//        binding!!.roomsShimmer.stopShimmer()
+//        binding!!.rvStudentList.visibility = View.VISIBLE
+//        binding!!.roomsShimmer.visibility = View.GONE
+//    }
+
     private fun getStudents() {
         lifecycleScope.launch {
             if (isAdded) {

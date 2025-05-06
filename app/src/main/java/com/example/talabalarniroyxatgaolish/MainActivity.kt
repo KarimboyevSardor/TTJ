@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.talabalarniroyxatgaolish.databinding.ActivityMainBinding
 import com.example.talabalarniroyxatgaolish.ui.Login
-import com.example.talabalarniroyxatgaolish.utils.Utils.myInfo
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -14,15 +13,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null) { // faqat birinchi marta yuklash uchun
+        if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, Login()) // containerga Fragment joylash
+                .replace(R.id.fragmentContainerView, Login())
                 .commit()
         }
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }

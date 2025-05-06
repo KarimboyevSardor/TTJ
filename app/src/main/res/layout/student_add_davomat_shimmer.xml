@@ -28,40 +28,49 @@
 
             <TextView
                 android:id="@+id/tvStudentName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="40dp"
                 android:layout_height="wrap_content"
-                android:text="Matrasulov Matrasul"
-                android:textColor="#222222"
+                android:background="@drawable/shimmer_back"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                />
 
             <TextView
+                android:layout_marginTop="8dp"
                 android:id="@+id/fakultet_tv"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:lines="2"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:text="Telekommunikatsiya texnologiyalari injineringi fakulteti"
                 android:textColor="#777777"
+                android:background="@drawable/shimmer_back"
                 android:textSize="14sp" />
             <TextView
                 android:id="@+id/kurs_tv"
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
+                android:background="@drawable/shimmer_back"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="100dp"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:text="4-kurs talabasi"
                 android:textColor="#777777"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                />
         </LinearLayout>
 
         <!-- Davomat uchun Switch -->
-        <CheckBox
-            android:enabled="true"
+        <ImageView
+            android:src="@drawable/shimmer_back"
+            android:background="@drawable/shimmer_back"
             android:id="@+id/switchAttendance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:text="Bor"
             android:textSize="14sp"
+            android:layout_marginStart="4dp"
             android:textColor="#333333"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -14,7 +14,7 @@
         app:titleTextColor="@color/white"
         android:id="@+id/toolbar"
         />
-    <!-- RecyclerView studentlar uchun -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvStudentList"
         android:layout_width="match_parent"
@@ -25,6 +25,7 @@
         android:paddingBottom="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/student_add_davomat_rv_item"
+        android:visibility="visible"
         />
 
     <!-- Davomatni saqlash tugmasi -->

@@ -23,6 +23,7 @@ import com.example.talabalarniroyxatgaolish.utils.Utils.xonalarList
 import com.example.talabalarniroyxatgaolish.vm.LiveDates
 import com.example.talabalarniroyxatgaolish.vm.Resource
 import com.example.talabalarniroyxatgaolish.vm.XonalarAdminVm
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -61,7 +62,9 @@ class Xonalar : Fragment() {
         val toolbar1: Toolbar = requireActivity().findViewById(R.id.bosh_toolbar_admin)
         toolbar1.visibility = View.VISIBLE
         bottomNavigation.visibility = View.VISIBLE
-        isCheckEmpty()
+        if (xonalarList.isNotEmpty()) {
+            isCheckEmpty()
+        }
         xonaAdapter = XonaAdapter(xonalarList) {
             val bundle = Bundle()
             val fm = Xona()
@@ -107,11 +110,10 @@ class Xonalar : Fragment() {
     }
 
     private fun isCheckEmpty() {
-        if (xonalarList.isNotEmpty()) {
-            binding!!.roomsShimmer.stopShimmer()
-            binding!!.xonaRv.visibility = View.VISIBLE
-            binding!!.roomsShimmer.visibility = View.GONE
-        }
+        binding!!.roomsShimmer.stopShimmer()
+        binding!!.xonaRv.visibility = View.VISIBLE
+        binding!!.roomsShimmer.visibility = View.GONE
+
     }
 
     private fun xonaQidirish(query: String) {
@@ -149,9 +151,9 @@ class Xonalar : Fragment() {
         apiService.addXona(XonaDataItem(0, xona)).enqueue(object : Callback<XonaDataItem>{
             override fun onResponse(call: Call<XonaDataItem>, response: Response<XonaDataItem>) {
                 if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), "Xona qo'shildi.", Toast.LENGTH_SHORT).show()
                     xonalarList.add(response.body()!!)
                     liveDates.xonalarLiveData.value = xonalarList
-                    Toast.makeText(requireContext(), "Xona qo'shildi.", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireContext(), response.message(), Toast.LENGTH_SHORT).show()
                 }
@@ -178,8 +180,7 @@ class Xonalar : Fragment() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     Log.d(TAG, "getXona: ${it.e.message}")
-                                    binding!!.roomsShimmer.stopShimmer()
-                                    binding!!.roomsShimmer.visibility = View.GONE
+                                    isCheckEmpty()
                                 }
 
                                 is Resource.Loading -> {

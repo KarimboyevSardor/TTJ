@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.admin.XonaOzgaritirishViewPager">
+    tools:context=".ui.admin.XonaOzgaritirishViewPager"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:src="@drawable/xona_rasm"
+            android:src="@drawable/photo"
             android:layout_marginTop="10dp"
             android:scaleType="fitXY"
             android:id="@+id/yigilish_image"

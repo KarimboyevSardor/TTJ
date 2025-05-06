@@ -72,7 +72,9 @@ class EskiDavomat : Fragment() {
         bottomNavigation.visibility = VISIBLE
         getDavomat()
         setDate()
-        isCheckEmpty()
+        if (davomatList.isNotEmpty()) {
+            isCheckEmpty()
+        }
         calendarViewPagerAdapter = CalendarViewPagerAdapter(this,currentMonth + 12)
         davomatAdapter = DavomatAdapter(davomatList.filter { !it.is_there }.toMutableList(), requireContext())
         liveDates.getDavomat().observe(requireActivity()) { it ->
@@ -95,11 +97,9 @@ class EskiDavomat : Fragment() {
     }
 
     private fun isCheckEmpty() {
-        if (davomatList.isNotEmpty()) {
             binding!!.studentShimmer.stopShimmer()
             binding!!.studentShimmer.visibility = GONE
             binding!!.studentDavomatRv.visibility = VISIBLE
-        }
     }
 
     fun formatDate(date: String): String {
@@ -150,8 +150,7 @@ class EskiDavomat : Fragment() {
                                     "Server bilan bog'lanib bo'lmadi.",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                binding!!.studentShimmer.stopShimmer()
-                                binding!!.studentShimmer.visibility = GONE
+                                isCheckEmpty()
                             }
 
                             is Resource.Loading -> {}

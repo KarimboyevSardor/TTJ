@@ -83,7 +83,6 @@ class Login : Fragment() {
         return binding!!.root
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun auth(login: String, password: String) {
         lifecycleScope.launch {
             if (isAdded) {

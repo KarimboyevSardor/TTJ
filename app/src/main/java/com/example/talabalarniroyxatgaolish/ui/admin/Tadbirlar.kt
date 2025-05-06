@@ -54,9 +54,11 @@ class Tadbirlar : Fragment() {
         yigilishlarAdminVm = ViewModelProvider(requireActivity())[YigilishlarAdminVm::class]
         liveDates = ViewModelProvider(requireActivity())[LiveDates::class]
         binding!!.shimmerYigilish.startShimmer()
+        if (tadbirlarList.isNotEmpty() && binding!!.shimmerYigilish.isShimmerStarted) {
+            isCheckEmpty()
+        }
         getYigilishlar()
         getStudents()
-        isCheckEmpty()
         val bottomNavigation: FrameLayout = requireActivity().findViewById(R.id.bottom_navigation_admin)
         val toolbar: Toolbar = requireActivity().findViewById(R.id.bosh_toolbar_admin)
         bottomNavigation.visibility = View.VISIBLE
@@ -107,12 +109,11 @@ class Tadbirlar : Fragment() {
                 }
             })
         }
-
         return binding!!.root
     }
 
     private fun isCheckEmpty() {
-        if (tadbirlarList.isNotEmpty()) {
+        if (binding != null) {
             binding!!.shimmerYigilish.stopShimmer()
             binding!!.shimmerYigilish.visibility = View.GONE
             binding!!.yigilishRv.visibility = View.VISIBLE
@@ -138,8 +139,7 @@ class Tadbirlar : Fragment() {
                     when (it) {
                         is Resource.Error -> {
                             Log.d(TAG, "getYigilishlar: ${it.e.message}")
-                            binding!!.shimmerYigilish.stopShimmer()
-                            binding!!.shimmerYigilish.visibility = View.GONE
+                            isCheckEmpty()
                         }
                         is Resource.Loading -> {}
                         is Resource.Success -> {

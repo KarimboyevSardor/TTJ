@@ -8,13 +8,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import tech.thdev.network.flowcalladapterfactory.FlowCallAdapterFactory
 
 object ApiClient {
-    private val BASE_URL = "http://192.168.197.149:3000/"
+    private val BASE_URL = "https://ttj-api-production.up.railway.app/"
     fun getRetrofit(context: Context) : Retrofit {
         val chuckerInterceptor = ChuckerInterceptor.Builder(context).build()
         val okHttpClient = OkHttpClient.Builder().addInterceptor(chuckerInterceptor).build()
         val retrofit = Retrofit
             .Builder()
-            .client(okHttpClient)
+            //.client(okHttpClient)
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(FlowCallAdapterFactory())
